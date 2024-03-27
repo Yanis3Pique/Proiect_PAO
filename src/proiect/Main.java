@@ -322,7 +322,6 @@ public class Main {
                     System.out.print("Introdu prenumele curent al jucatorului: ");
                     String prenumeCurentJucator = scanner.nextLine();
 
-                    // Assuming you can uniquely identify a player by their name and prename
                     System.out.print("Introdu noul nume al jucatorului: ");
                     String numeNou = scanner.nextLine();
 

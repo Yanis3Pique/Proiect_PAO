@@ -1,4 +1,4 @@
-package repository;
+package proiect.repository;
 
 import proiect.model.Antrenor;
 
@@ -7,35 +7,34 @@ import java.util.List;
 
 public class AntrenorRepository {
 
-    private final List<Antrenor> antrenori = new ArrayList<>();
+    private static List<Antrenor> antrenori = new ArrayList<>();
 
-    public void create(Antrenor antrenor) {
-        antrenori.add(antrenor);
-    }
+    public void createAntrenor(Antrenor antrenor) { antrenori.add(antrenor); }
 
-    public Antrenor read(String nume) {
+    public Antrenor readAntrenor(String nume, String prenume) {
         for (Antrenor antrenor : antrenori) {
-            if (antrenor.getNume().equals(nume)) {
+            if (antrenor.getNume().equals(nume) && antrenor.getPrenume().equals(prenume)) {
                 return antrenor;
             }
         }
         return null;
     }
 
-    public void update(Antrenor updatedAntrenor) {
-        antrenori.forEach(antrenor -> {
-            if (antrenor.getNume().equals(updatedAntrenor.getNume())) {
-                antrenor.setPrenume(updatedAntrenor.getPrenume());
-                antrenor.setNationalitate(updatedAntrenor.getNationalitate());
-                antrenor.setVarsta(updatedAntrenor.getVarsta());
-                antrenor.setSalariu(updatedAntrenor.getSalariu());
-                antrenor.setAniExperienta(updatedAntrenor.getAniExperienta());
+    public void updateAntrenor(String nume, String prenume, Antrenor antrenorUpdated) {
+        for (Antrenor antrenor : antrenori) {
+            if (antrenor.getNume().equals(nume) && antrenor.getPrenume().equals(prenume)) {
+                antrenor.setNume(antrenorUpdated.getNume());
+                antrenor.setPrenume(antrenorUpdated.getPrenume());
+                antrenor.setVarsta(antrenorUpdated.getVarsta());
+                antrenor.setSalariu(antrenorUpdated.getSalariu());
+                antrenor.setAniExperienta(antrenorUpdated.getAniExperienta());
+                antrenor.setNationalitate(antrenorUpdated.getNationalitate());
+                return;
             }
-        });
+        }
     }
 
-    public void delete(String nume) {
-        antrenori.removeIf(antrenor -> antrenor.getNume().equals(nume));
-    }
+    public void deleteAntrenor(Antrenor antrenor) { antrenori.remove(antrenor); }
 
+    public List<Antrenor> findAllAntrenori() { return new ArrayList<>(antrenori); }
 }
