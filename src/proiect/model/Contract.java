@@ -59,7 +59,7 @@ public class Contract {
 
     @Override
     public String toString() {
-        return "Contractul nr. " + getId() +  ", semnat intre" + team.getNume() + " si " + sponsor.getName() + "," + '\n' +
+        return "Contractul nr. " + getId() +  ", semnat intre " + team.getNume() + " si " + sponsor.getName() + "," + '\n' +
                 "Durata: " + getDurationYears() + " ani" + '\n' +
                 "Suma: " + getSumMoney() + '\n';
     }

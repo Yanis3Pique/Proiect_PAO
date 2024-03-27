@@ -62,15 +62,26 @@ public class Echipa {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Echipa:").append('\n');
-        sb.append("Nume: ").append(getNume()).append('\n');
-        sb.append("Antrenor: ").append(getAntrenor().getNume()).append(' ').append(getAntrenor().getPrenume()).append('\n');
-
-        sb.append("Jucatori:\n");
-        for (Jucator jucator : getJucatori()) {
-            sb.append(jucator.getNume()).append(' ').append(jucator.getPrenume()).append('\n');
+        sb.append("Nume: ").append(nume).append('\n');
+        if (antrenor != null) {
+            sb.append("Antrenor: ").append(antrenor.getNume()).append(' ').append(antrenor.getPrenume()).append('\n');
+        } else {
+            sb.append("Antrenor: ").append("N/A").append('\n');
         }
-
-        sb.append("Stadion: ").append(getStadion().getNume()).append('\n');
+        // Assuming jucatori is never null but may be empty
+        sb.append("Jucatori:\n");
+        if (!jucatori.isEmpty()) {
+            for (Jucator jucator : jucatori) {
+                sb.append(jucator.getNume()).append(' ').append(jucator.getPrenume()).append('\n');
+            }
+        } else {
+            sb.append("No players\n");
+        }
+        if (stadion != null) {
+            sb.append("Stadion: ").append(stadion.getNume()).append('\n');
+        } else {
+            sb.append("Stadion: ").append("N/A").append('\n');
+        }
 
         return sb.toString();
     }
