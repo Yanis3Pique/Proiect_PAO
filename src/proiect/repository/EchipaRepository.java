@@ -24,6 +24,7 @@ public class EchipaRepository {
     public void updateEchipa(String nume, Echipa echipaUpdated) {
         for (Echipa echipa : echipe) {
             if (echipa.getNume().equals(nume)) {
+                echipa.setId(echipaUpdated.getId());
                 echipa.setNume(echipaUpdated.getNume());
                 echipa.setAntrenor(echipaUpdated.getAntrenor());
                 echipa.setJucatori(echipaUpdated.getJucatori());

@@ -23,6 +23,7 @@ public class StadionRepository {
     public void update(String nume, Stadion updatedStadion) {
         for (Stadion stadion : stadions) {
             if (stadion.getNume().equals(nume)) {
+                stadion.setId(updatedStadion.getId());
                 stadion.setNume(updatedStadion.getNume());
                 stadion.setCapacitate(updatedStadion.getCapacitate());
                 stadion.setLocatie(updatedStadion.getLocatie());

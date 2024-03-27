@@ -3,12 +3,14 @@ package proiect.model;
 import java.util.Objects;
 
 public class Contract {
+    int id;
     private Echipa team;
     private Sponsor sponsor;
     private int durationYears;
     private double sumMoney;
 
-    public Contract(Echipa team, Sponsor sponsor, int durationYears, double sumMoney) {
+    public Contract(int id, Echipa team, Sponsor sponsor, int durationYears, double sumMoney) {
+        this.id = id;
         this.team = team;
         this.sponsor = sponsor;
         this.durationYears = durationYears;
@@ -47,9 +49,17 @@ public class Contract {
         this.sumMoney = sumMoney;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "Contract intre" + team.getNume() + " si " + sponsor.getName() + "," + '\n' +
+        return "Contractul nr. " + getId() +  ", semnat intre" + team.getNume() + " si " + sponsor.getName() + "," + '\n' +
                 "Durata: " + getDurationYears() + " ani" + '\n' +
                 "Suma: " + getSumMoney() + '\n';
     }

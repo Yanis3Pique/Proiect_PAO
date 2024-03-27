@@ -24,6 +24,7 @@ public class JucatorRepository {
     public void updateJucator(String nume, String prenume, Jucator updatedJucator) {
         for (Jucator jucator : jucatori) {
             if (jucator.getNume().equals(nume) && jucator.getPrenume().equals(prenume)) {
+                jucator.setId(updatedJucator.getId());
                 jucator.setNume(updatedJucator.getNume());
                 jucator.setPrenume(updatedJucator.getPrenume());
                 jucator.setVarsta(updatedJucator.getVarsta());
@@ -33,11 +34,12 @@ public class JucatorRepository {
             }
         }
     }
-    public void deleteJucator(String nume, String prenume) {
-        jucatori.removeIf(jucator -> jucator.getNume().equals(nume) && jucator.getPrenume().equals(prenume));
-    }
 
     public List<Jucator> findAllJucator() {
         return new ArrayList<>(jucatori);
+    }
+
+    public void deleteJucator(Jucator jucator) {
+        jucatori.remove(jucator);
     }
 }

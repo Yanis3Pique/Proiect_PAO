@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Echipa {
+    int id;
     private String nume;
     private Antrenor antrenor;
     private ArrayList<Jucator> jucatori;
     private Stadion stadion;
 
-    public Echipa(String nume, Antrenor antrenor, Stadion stadion) {
+    public Echipa(int id, String nume, Antrenor antrenor, Stadion stadion) {
+        this.id = id;
         this.nume = nume;
         this.antrenor = antrenor;
         this.stadion = stadion;
@@ -48,12 +50,12 @@ public class Echipa {
         this.stadion = stadion;
     }
 
-    public void adaugaJucator(Jucator jucator) {
-        this.jucatori.add(jucator);
+    public int getId() {
+        return id;
     }
 
-    public void eliminaJucator(Jucator jucator) {
-        this.jucatori.remove(jucator);
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

@@ -23,6 +23,7 @@ public class AntrenorRepository {
     public void updateAntrenor(String nume, String prenume, Antrenor antrenorUpdated) {
         for (Antrenor antrenor : antrenori) {
             if (antrenor.getNume().equals(nume) && antrenor.getPrenume().equals(prenume)) {
+                antrenor.setId(antrenorUpdated.getId());
                 antrenor.setNume(antrenorUpdated.getNume());
                 antrenor.setPrenume(antrenorUpdated.getPrenume());
                 antrenor.setVarsta(antrenorUpdated.getVarsta());

@@ -3,39 +3,28 @@ package proiect.dao;
 import proiect.model.Sponsor;
 import proiect.repository.SponsorRepository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SponsorDAOService {
-    private SponsorRepository sponsorRepository;
+    private final SponsorRepository sponsorRepository = new SponsorRepository();
 
-    public SponsorDAOService() {
-        this.sponsorRepository = new SponsorRepository();
+    public void addSponsor(Sponsor sponsor) {
+        sponsorRepository.createSponsor(sponsor);
     }
 
-    public void addSponsor(String name, String country) {
-        Sponsor newSponsor = new Sponsor(name, country);
-        sponsorRepository.createSponsor(newSponsor);
-        System.out.println("Sponsor creat cu succes: " + name + " din " + country);
+    public Sponsor getSponsorByName(String name) {
+        return sponsorRepository.readSponsor(name);
     }
 
     public void updateSponsor(String name, Sponsor sponsor) {
         sponsorRepository.updateSponsor(name, sponsor);
-        System.out.println("Sponsor updated: " + name);
     }
 
-    public boolean removeSponsor(String name) {
-        for (Sponsor sponsor : sponsorRepository.findAllSponsor()) {
-            if (sponsor.getName().equalsIgnoreCase(name)) {
-                sponsorRepository.deleteSponsor(sponsor);
-                System.out.println("Sponsor eliminat cu success: " + name);
-                return true;
-            }
-        }
-        System.out.println("Sponsorul nu a fost gasit!");
-        return false;
+    public void removeSponsor(Sponsor sponsor) {
+        sponsorRepository.deleteSponsor(sponsor);
     }
 
-    public void listAllSponsors() {
-        sponsorRepository.findAllSponsor().forEach(sponsor -> System.out.println(sponsor));
+    public List<Sponsor> getAllSponsors() {
+        return sponsorRepository.findAllSponsor();
     }
 }

@@ -3,6 +3,7 @@ package proiect.model;
 import java.util.Objects;
 
 public class Meci {
+    int id;
     private Echipa echipa1;
     private Echipa echipa2;
     private String data;
@@ -10,7 +11,8 @@ public class Meci {
     private int scor2;
     private Stadion stadion;
 
-    public Meci(Echipa echipa1, Echipa echipa2, String data, int scor1, int scor2, Stadion stadion) {
+    public Meci(int id, Echipa echipa1, Echipa echipa2, String data, int scor1, int scor2, Stadion stadion) {
+        this.id = id;
         this.echipa1 = echipa1;
         this.echipa2 = echipa2;
         this.data = data;
@@ -65,6 +67,14 @@ public class Meci {
 
     public void setStadion(Stadion stadion) {
         this.stadion = stadion;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

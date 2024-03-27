@@ -3,13 +3,15 @@ package proiect.model;
 import java.util.Objects;
 
 public abstract class Angajat {
+    private int id;
     private String nume;
     private String prenume;
     private String nationalitate;
     private int varsta;
     private double salariu;
 
-    public Angajat(String nume, String prenume, String nationalitate, int varsta, double salariu) {
+    public Angajat(int id, String nume, String prenume, String nationalitate, int varsta, double salariu) {
+        this.id = id;
         this.nume = nume;
         this.prenume = prenume;
         this.nationalitate = nationalitate;
@@ -57,9 +59,18 @@ public abstract class Angajat {
         this.salariu = salariu;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Angajat:" + '\n' +
+                "ID: " + getId() + '\n' +
                 "Nume: " + getNume() + " " + getPrenume() + '\n' +
                 "Nationalitate: " + getNationalitate() + '\n' +
                 "Varsta: " + getVarsta() + '\n' +

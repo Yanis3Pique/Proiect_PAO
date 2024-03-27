@@ -25,6 +25,7 @@ public class ContractRepository {
     public void updateContract(String teamName, String sponsorName, Contract contractUpdated) {
         for (Contract contract : contracts) {
             if (contract.getTeam().getNume().equals(teamName) && contract.getSponsor().getName().equals(sponsorName)) {
+                contract.setId(contractUpdated.getId());
                 contract.setTeam(contractUpdated.getTeam());
                 contract.setSponsor(contractUpdated.getSponsor());
                 contract.setSumMoney(contractUpdated.getSumMoney());

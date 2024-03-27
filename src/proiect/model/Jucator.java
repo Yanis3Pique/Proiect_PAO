@@ -6,9 +6,8 @@ public class Jucator extends Angajat {
     private String pozitie;
     private int numarTricou;
 
-    public Jucator(String nume, String prenume, String nationalitate, int varsta, double salariu, String pozitie, int numarTricou) {
-        super(nume, prenume, nationalitate, varsta, salariu);
-        this.pozitie = pozitie;
+    public Jucator(int id, String nume, String prenume, String nationalitate, int varsta, double salariu, int numarTricou) {
+        super(id, nume, prenume, nationalitate, varsta, salariu);
         this.numarTricou = numarTricou;
     }
 
@@ -31,6 +30,7 @@ public class Jucator extends Angajat {
     @Override
     public String toString() {
         return "Jucator:" + '\n' +
+                "ID: " + getId() + '\n' +
                 "Nume: " + getNume() + " " + getPrenume() + '\n' +
                 "Nationalitate: " + getNationalitate() + '\n' +
                 "Varsta: " + getVarsta() + '\n' +

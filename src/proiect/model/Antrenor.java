@@ -5,8 +5,8 @@ import java.util.Objects;
 public class Antrenor extends Angajat {
     private int aniExperienta;
 
-    public Antrenor(String nume, String prenume, String nationalitate, int varsta, double salariu, int aniExperienta) {
-        super(nume, prenume, nationalitate, varsta, salariu);
+    public Antrenor(int id, String nume, String prenume, String nationalitate, int varsta, double salariu, int aniExperienta) {
+        super(id, nume, prenume, nationalitate, varsta, salariu);
         this.aniExperienta = aniExperienta;
     }
 
@@ -21,6 +21,7 @@ public class Antrenor extends Angajat {
     @Override
     public String toString() {
         return "Antrenor:" + '\n' +
+                "ID: " + getId() + '\n' +
                 "Nume: " + getNume() + " " + getPrenume() + '\n' +
                 "Nationalitate: " + getNationalitate() + '\n' +
                 "Varsta: " + getVarsta() + '\n' +

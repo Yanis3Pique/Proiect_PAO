@@ -28,7 +28,6 @@ public class MeciRepository {
                 meci.setScor2(newScorEchipa2);
                 return;
             }
-
         }
     }
 

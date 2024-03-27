@@ -24,6 +24,7 @@ public class SponsorRepository {
     public void updateSponsor(String name, Sponsor sponsorUpdated) {
         for(Sponsor sponsor : sponsors) {
             if(sponsor.getName().equalsIgnoreCase(name)) {
+                sponsor.setId(sponsorUpdated.getId());
                 sponsor.setName(sponsorUpdated.getName());
                 sponsor.setCountry(sponsorUpdated.getCountry());
                 return;

@@ -3,11 +3,13 @@ package proiect.model;
 import java.util.Objects;
 
 public class Stadion {
+    int id;
     private String nume;
     private int capacitate;
     private String locatie;
 
-    public Stadion(String nume, int capacitate, String locatie) {
+    public Stadion(int id, String nume, int capacitate, String locatie) {
+        this.id = id;
         this.nume = nume;
         this.capacitate = capacitate;
         this.locatie = locatie;
@@ -37,9 +39,18 @@ public class Stadion {
         this.locatie = locatie;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "Stadion:" +
+        return "Stadion:" + '\n' +
+                "ID: " + getId() + '\n' +
                 "Nume: " + getNume() + '\n' +
                 "Capacitate: " + getCapacitate() + '\n' +
                 "Locatie: " + getLocatie() + 'n';
