@@ -1,5 +1,6 @@
 package proiect.repository;
 
+import proiect.model.Antrenor;
 import proiect.model.Echipa;
 
 import java.util.ArrayList;
@@ -36,6 +37,14 @@ public class EchipaRepository {
 
     public void deleteEchipa(String nume) {
         echipe.removeIf(echipa -> echipa.getNume().equals(nume));
+    }
+
+    public void removeAntrenorFromEchipa(Antrenor antrenor) {
+        for (Echipa echipa : echipe) {
+            if (echipa.getAntrenor() != null && echipa.getAntrenor().equals(antrenor)) {
+                echipa.setAntrenor(null);
+            }
+        }
     }
 
     public List<Echipa> findAllEchipa() {

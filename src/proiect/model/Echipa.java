@@ -68,7 +68,6 @@ public class Echipa {
         } else {
             sb.append("Antrenor: ").append("N/A").append('\n');
         }
-        // Assuming jucatori is never null but may be empty
         sb.append("Jucatori:\n");
         if (!jucatori.isEmpty()) {
             for (Jucator jucator : jucatori) {

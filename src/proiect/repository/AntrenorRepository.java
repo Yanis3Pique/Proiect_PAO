@@ -35,7 +35,12 @@ public class AntrenorRepository {
         }
     }
 
-    public void deleteAntrenor(Antrenor antrenor) { antrenori.remove(antrenor); }
+    public void deleteAntrenor(Antrenor antrenor) {
+        antrenori.remove(antrenor);
+
+        EchipaRepository echipaRepository = new EchipaRepository();
+        echipaRepository.removeAntrenorFromEchipa(antrenor);
+    }
 
     public List<Antrenor> findAllAntrenori() { return new ArrayList<>(antrenori); }
 }
