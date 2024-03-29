@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContractRepository {
+    private static int nextId = 1;
     private static List<Contract> contracts = new ArrayList<>();
 
     public void createContract(Contract contract) {
+        contract.setId(nextId++);
         contracts.add(contract);
     }
 

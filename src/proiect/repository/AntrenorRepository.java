@@ -8,9 +8,13 @@ import java.util.List;
 
 public class AntrenorRepository {
 
+    private static int nextId = 1;
     private static List<Antrenor> antrenori = new ArrayList<>();
 
-    public void createAntrenor(Antrenor antrenor) { antrenori.add(antrenor); }
+    public void createAntrenor(Antrenor antrenor) {
+        antrenor.setId(nextId++);
+        antrenori.add(antrenor);
+    }
 
     public Antrenor readAntrenor(String nume, String prenume) {
         for (Antrenor antrenor : antrenori) {

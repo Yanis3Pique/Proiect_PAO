@@ -65,22 +65,16 @@ public class Echipa {
         sb.append("Name: ").append(nume).append('\n');
         if (antrenor != null) {
             sb.append("Coach: ").append(antrenor.getNume()).append(' ').append(antrenor.getPrenume()).append('\n');
-        } else {
-            sb.append("Coach: ").append("N/A").append('\n');
-        }
+        } else {sb.append("Coach: ").append("N/A").append('\n');}
         sb.append("Players:\n");
         if (!jucatori.isEmpty()) {
             for (Jucator jucator : jucatori) {
                 sb.append(jucator.getNume()).append(' ').append(jucator.getPrenume()).append('\n');
             }
-        } else {
-            sb.append("No players\n");
         }
-        if (stadion != null) {
-            sb.append("Stadium: ").append(stadion.getNume()).append('\n');
-        } else {
-            sb.append("Stadium: ").append("N/A").append('\n');
-        }
+        else {sb.append("No players\n");}
+        if (stadion != null) {sb.append("Stadium: ").append(stadion.getNume()).append('\n');}
+        else {sb.append("Stadium: ").append("N/A").append('\n');}
 
         return sb.toString();
     }

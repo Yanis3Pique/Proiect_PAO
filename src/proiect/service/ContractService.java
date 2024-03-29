@@ -67,29 +67,22 @@ public class ContractService {
 
     public void updateContract(Scanner scanner) {
         System.out.println("Update a Contract:");
-
         System.out.print("Enter team name: ");
         String teamName = scanner.nextLine();
-
         System.out.print("Enter sponsor name: ");
         String sponsorName = scanner.nextLine();
-
         Contract existingContract = contractDAOService.getContractByTeamAndSponsor(teamName, sponsorName);
         if (existingContract == null) {
             System.out.println("Contract not found.");
             return;
         }
-
         System.out.print("Enter new contract duration (years): ");
         int duration = scanner.nextInt();
-
         System.out.print("Enter new sum of money for the contract: ");
         double sumMoney = scanner.nextDouble();
         scanner.nextLine();
-
         existingContract.setDurationYears(duration);
         existingContract.setSumMoney(sumMoney);
-
         contractDAOService.updateContract(teamName, sponsorName, existingContract);
         System.out.println("Contract updated successfully.");
     }

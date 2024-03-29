@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MeciRepository {
+    private static int nextId = 1;
     private static List<Meci> meciuri = new ArrayList<>();
 
     public void createMeci(Meci meci) {
+        meci.setId(nextId++);
         meciuri.add(meci);
     }
 

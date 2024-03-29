@@ -18,51 +18,53 @@ public class MeciService {
         this.stadionDAOService = new StadionDAOService();
     }
 
-    public void createMeci(Scanner scanner) {
-        System.out.println("Creating a new Match:");
-
-        System.out.print("Enter home team name: ");
-        String homeTeamName = scanner.nextLine();
-        Echipa homeTeam = echipaDAOService.getEchipaByName(homeTeamName);
-        if (homeTeam == null) {
-            System.out.println("Home team not found.");
-            return;
+    private Echipa getTeamByName(Scanner scanner, String teamType) {
+        System.out.print("Enter " + teamType + " team name: ");
+        String teamName = scanner.nextLine();
+        Echipa team = echipaDAOService.getEchipaByName(teamName);
+        if (team == null) {
+            System.out.println(teamType + " team not found.");
         }
+        return team;
+    }
 
-        System.out.print("Enter away team name: ");
-        String awayTeamName = scanner.nextLine();
-        Echipa awayTeam = echipaDAOService.getEchipaByName(awayTeamName);
-        if (awayTeam == null) {
-            System.out.println("Away team not found.");
-            return;
-        }
-
-        System.out.print("Enter match date (dd/mm/yyyy): ");
-        String date = scanner.nextLine();
-
+    private Stadion getStadiumByName(Scanner scanner) {
         System.out.print("Enter stadium name: ");
         String stadiumName = scanner.nextLine();
         Stadion stadium = stadionDAOService.getStadionByName(stadiumName);
         if (stadium == null) {
             System.out.println("Stadium not found.");
-            return;
         }
+        return stadium;
+    }
+
+    public void createMeci(Scanner scanner) {
+        System.out.println("Creating a new Match:");
+        Echipa homeTeam = getTeamByName(scanner, "home");
+        if (homeTeam == null) return;
+
+        Echipa awayTeam = getTeamByName(scanner, "away");
+        if (awayTeam == null) return;
+
+        System.out.print("Enter match date (dd/mm/yyyy): ");
+        String date = scanner.nextLine();
+
+        Stadion stadium = getStadiumByName(scanner);
+        if (stadium == null) return;
 
         Meci meci = new Meci(0, homeTeam, awayTeam, date, 0, 0, stadium);
         meciDAOService.addMeci(meci);
         System.out.println("Match created successfully.");
     }
 
+
     public void viewMeci(Scanner scanner) {
         System.out.print("Enter home team name: ");
         String homeTeamName = scanner.nextLine();
-
         System.out.print("Enter away team name: ");
         String awayTeamName = scanner.nextLine();
-
         System.out.print("Enter match date (dd/mm/yyyy): ");
         String date = scanner.nextLine();
-
         Meci meci = meciDAOService.getMeci(homeTeamName, awayTeamName, date);
         if (meci != null) {
             System.out.println(meci);
@@ -73,45 +75,34 @@ public class MeciService {
 
     public void updateMeci(Scanner scanner) {
         System.out.println("Updating a Match:");
-
         System.out.print("Enter home team name: ");
         String homeTeamName = scanner.nextLine();
-
         System.out.print("Enter away team name: ");
         String awayTeamName = scanner.nextLine();
-
         System.out.print("Enter match date (dd/mm/yyyy): ");
         String date = scanner.nextLine();
-
         Meci existingMeci = meciDAOService.getMeci(homeTeamName, awayTeamName, date);
         if (existingMeci == null) {
             System.out.println("Match not found.");
             return;
         }
-
         System.out.print("Enter new score for home team: ");
         int scoreHome = scanner.nextInt();
-
         System.out.print("Enter new score for away team: ");
         int scoreAway = scanner.nextInt();
         scanner.nextLine();
-
         meciDAOService.updateMeci(homeTeamName, awayTeamName, date, scoreHome, scoreAway);
         System.out.println("Match updated successfully.");
     }
 
     public void deleteMeci(Scanner scanner) {
         System.out.println("Deleting a Match:");
-
         System.out.print("Enter home team name: ");
         String homeTeamName = scanner.nextLine();
-
         System.out.print("Enter away team name: ");
         String awayTeamName = scanner.nextLine();
-
         System.out.print("Enter match date (dd/mm/yyyy): ");
         String date = scanner.nextLine();
-
         Meci meci = meciDAOService.getMeci(homeTeamName, awayTeamName, date);
         if (meci != null) {
             meciDAOService.removeMeci(meci);

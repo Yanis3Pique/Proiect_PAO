@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EchipaRepository {
+    private static int nextId = 1;
     private static List<Echipa> echipe = new ArrayList<>();
 
     public void createEchipa(Echipa echipa) {
+        echipa.setId(nextId++);
         echipe.add(echipa);
     }
 
@@ -24,17 +26,11 @@ public class EchipaRepository {
     public void updateEchipa(String nume, Echipa echipaUpdated) {
         for (Echipa echipa : echipe) {
             for(Meci meci : new MeciRepository().findAllMeci()) {
-                if(meci.getEchipa1().getNume().equals(nume)) {
-                    meci.setEchipa1(echipaUpdated);
-                }
-                if(meci.getEchipa2().getNume().equals(nume)) {
-                    meci.setEchipa2(echipaUpdated);
-                }
+                if(meci.getEchipa1().getNume().equals(nume)) {meci.setEchipa1(echipaUpdated);}
+                if(meci.getEchipa2().getNume().equals(nume)) {meci.setEchipa2(echipaUpdated);}
             }
             for(Contract contract : new ContractRepository().findAllContract()) {
-                if(contract.getTeam().getNume().equals(nume)) {
-                    contract.setTeam(echipaUpdated);
-                }
+                if(contract.getTeam().getNume().equals(nume)) {contract.setTeam(echipaUpdated);}
             }
             if (echipa.getNume().equals(nume)) {
                 echipa.setId(echipaUpdated.getId());

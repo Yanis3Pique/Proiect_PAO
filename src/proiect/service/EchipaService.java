@@ -48,6 +48,39 @@ public class EchipaService {
         }
     }
 
+    private void updateCoach(Scanner scanner, Echipa echipa) {
+        System.out.print("Enter new coach's first and last name (or press Enter to skip): ");
+        String antrenorNume = scanner.nextLine();
+        if (!antrenorNume.isEmpty()) {
+            String[] names = antrenorNume.split(" ");
+            if (names.length < 2) {
+                System.out.println("Please enter both first and last name.");
+                return;
+            }
+            Antrenor antrenor = (Antrenor) antrenorDAOService.getAngajatByName(names[0], names[1]);
+            if (antrenor != null) {
+                echipa.setAntrenor(antrenor);
+            } else {
+                System.out.println("Coach not found.");
+                throw new IllegalArgumentException("Coach not found.");
+            }
+        }
+    }
+
+    private void updateStadium(Scanner scanner, Echipa echipa) {
+        System.out.print("Enter new stadium name (or press Enter to skip): ");
+        String stadionNume = scanner.nextLine();
+        if (!stadionNume.isEmpty()) {
+            Stadion stadion = stadionDAOService.getStadionByName(stadionNume);
+            if (stadion != null) {
+                echipa.setStadion(stadion);
+            } else {
+                System.out.println("Stadium not found.");
+                throw new IllegalArgumentException("Stadium not found.");
+            }
+        }
+    }
+
     public void updateEchipa(Scanner scanner) {
         System.out.print("Enter the name of the team you want to update: ");
         String nume = scanner.nextLine();
@@ -57,32 +90,14 @@ public class EchipaService {
             return;
         }
 
-        System.out.print("Enter new coach's first and last name (or press Enter to skip): ");
-        String antrenorNume = scanner.nextLine();
-        if (!antrenorNume.isEmpty()) {
-            Antrenor antrenor = (Antrenor) antrenorDAOService.getAngajatByName(antrenorNume.split(" ")[0], antrenorNume.split(" ")[1]);
-            if (antrenor != null) {
-                echipa.setAntrenor(antrenor);
-            } else {
-                System.out.println("Coach not found.");
-                return;
-            }
+        try {
+            updateCoach(scanner, echipa);
+            updateStadium(scanner, echipa);
+            echipaDAOService.updateEchipa(nume, echipa);
+            System.out.println("Team updated successfully.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Team not updated.");
         }
-
-        System.out.print("Enter new stadium name (or press Enter to skip): ");
-        String stadionNume = scanner.nextLine();
-        if (!stadionNume.isEmpty()) {
-            Stadion stadion = stadionDAOService.getStadionByName(stadionNume);
-            if (stadion != null) {
-                echipa.setStadion(stadion);
-            } else {
-                System.out.println("Stadium not found.");
-                return;
-            }
-        }
-
-        echipaDAOService.updateEchipa(nume, echipa);
-        System.out.println("Team updated successfully.");
     }
 
     public void deleteEchipa(Scanner scanner) {

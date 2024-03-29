@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SponsorRepository {
+    private static int nextId = 1;
     private static List<Sponsor> sponsors = new ArrayList<>();
 
     public void createSponsor(Sponsor sponsor) {
+        sponsor.setId(nextId++);
         sponsors.add(sponsor);
     }
 

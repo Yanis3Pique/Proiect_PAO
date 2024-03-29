@@ -36,7 +36,7 @@ public class AngajatService {
         }
     }
 
-    public void updateAngajat(Scanner scanner) {
+    private Angajat fetchAngajatDetails(Scanner scanner) {
         System.out.println("Updating an employee:");
         System.out.println("Enter first name:");
         String firstName = scanner.nextLine();
@@ -46,9 +46,11 @@ public class AngajatService {
         Angajat angajat = angajatDAOService.getAngajatByName(firstName, lastName);
         if (angajat == null) {
             System.out.println("Employee not found.");
-            return;
         }
+        return angajat;
+    }
 
+    private void updateGeneralAttributes(Angajat angajat, Scanner scanner) {
         System.out.println("Enter new first name:");
         String newFirstName = scanner.nextLine();
         System.out.println("Enter new last name:");
@@ -66,8 +68,9 @@ public class AngajatService {
         angajat.setNationalitate(newNationality);
         angajat.setVarsta(newAge);
         angajat.setSalariu(newSalary);
+    }
 
-
+    private void updateSpecificAttributes(Angajat angajat, Scanner scanner) {
         if (angajat instanceof Antrenor antrenor) {
             System.out.println("Enter new years of experience:");
             int newYrsExperience = scanner.nextInt();
@@ -82,6 +85,14 @@ public class AngajatService {
             jucator.setNumarTricou(newNumber);
             jucator.setPozitie(newPosition);
         }
+    }
+
+    public void updateAngajat(Scanner scanner) {
+        Angajat angajat = fetchAngajatDetails(scanner);
+        if (angajat == null) return;
+
+        updateGeneralAttributes(angajat, scanner);
+        updateSpecificAttributes(angajat, scanner);
 
         angajatDAOService.updateAngajat(angajat);
         System.out.println("Employee updated successfully.");

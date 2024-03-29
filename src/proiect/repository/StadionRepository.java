@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StadionRepository {
+    private static int nextId = 1;
     private static List<Stadion> stadions = new ArrayList<>();
 
     public void create(Stadion stadion) {
+        stadion.setId(nextId++);
         stadions.add(stadion);
     }
 
@@ -23,25 +25,24 @@ public class StadionRepository {
 
     public void update(String nume, Stadion updatedStadion) {
         for (Stadion stadion : stadions) {
-            for(Stadion stadion1 : stadions){
-                if(stadion1.getNume().equals(updatedStadion.getNume())){
-                    System.out.println("The stadium named " + updatedStadion.getNume() + " already exists!");
-                    return;
-                }
-            }
-            EchipaRepository echipaRepository = new EchipaRepository();
-            for(Echipa echipa : echipaRepository.findAllEchipa()){
-                if(echipa.getStadion().getNume().equals(nume)){
-                    echipa.getStadion().setNume(updatedStadion.getNume());
-                    echipa.getStadion().setCapacitate(updatedStadion.getCapacitate());
-                    echipa.getStadion().setLocatie(updatedStadion.getLocatie());
-                }
-            }
+            updateEchipaBasedOnStadion(nume, updatedStadion);
+
             if (stadion.getNume().equals(nume)) {
                 stadion.setId(updatedStadion.getId());
                 stadion.setNume(updatedStadion.getNume());
                 stadion.setCapacitate(updatedStadion.getCapacitate());
                 stadion.setLocatie(updatedStadion.getLocatie());
+            }
+        }
+    }
+
+    private void updateEchipaBasedOnStadion(String nume, Stadion updatedStadion) {
+        EchipaRepository echipaRepository = new EchipaRepository();
+        for(Echipa echipa : echipaRepository.findAllEchipa()){
+            if(echipa.getStadion().getNume().equals(nume)){
+                echipa.getStadion().setNume(updatedStadion.getNume());
+                echipa.getStadion().setCapacitate(updatedStadion.getCapacitate());
+                echipa.getStadion().setLocatie(updatedStadion.getLocatie());
             }
         }
     }
