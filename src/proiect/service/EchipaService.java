@@ -3,6 +3,7 @@ package proiect.service;
 import proiect.dao.*;
 import proiect.model.Antrenor;
 import proiect.model.Echipa;
+import proiect.model.Jucator;
 import proiect.model.Stadion;
 
 import java.util.Scanner;
@@ -99,4 +100,70 @@ public class EchipaService {
     }
 
 
+    public void addJucator(Scanner scanner) {
+        System.out.print("Enter the name of the team you want to add a player to: ");
+        String nume = scanner.nextLine();
+        Echipa echipa = echipaDAOService.getEchipaByName(nume);
+        if (echipa == null) {
+            System.out.println("Team not found.");
+            return;
+        }
+        System.out.print("Enter player's first and last name: ");
+        String jucatorNume = scanner.nextLine();
+        String[] names = jucatorNume.split(" ");
+        if (names.length < 2) {
+            System.out.println("Please enter both first and last name.");
+            return;
+        }
+        Jucator jucator = (Jucator) antrenorDAOService.getAngajatByName(names[0], names[1]);
+        if (jucator != null) {
+            echipa.getJucatori().add(jucator);
+            echipaDAOService.updateEchipa(nume, echipa);
+            System.out.println("Player added successfully.");
+        } else {
+            System.out.println("Player not found.");
+        }
+    }
+
+    public void removeJucator(Scanner scanner) {
+        System.out.print("Enter the name of the team you want to remove a player from: ");
+        String nume = scanner.nextLine();
+        Echipa echipa = echipaDAOService.getEchipaByName(nume);
+        if (echipa == null) {
+            System.out.println("Team not found.");
+            return;
+        }
+        System.out.print("Enter player's first and last name: ");
+        String jucatorNume = scanner.nextLine();
+        String[] names = jucatorNume.split(" ");
+        if (names.length < 2) {
+            System.out.println("Please enter both first and last name.");
+            return;
+        }
+        Jucator jucator = (Jucator) antrenorDAOService.getAngajatByName(jucatorNume.split(" ")[0], jucatorNume.split(" ")[1]);
+        if (jucator != null) {
+            echipa.getJucatori().remove(jucator);
+            echipaDAOService.updateEchipa(nume, echipa);
+            System.out.println("Player removed successfully.");
+        } else {
+            System.out.println("Player not found.");
+        }
+    }
+
+    public void viewJucatori(Scanner scanner) {
+        System.out.print("Enter the name of the team you want to view players for: ");
+        String nume = scanner.nextLine();
+        Echipa echipa = echipaDAOService.getEchipaByName(nume);
+        if (echipa == null) {
+            System.out.println("Team not found.");
+            return;
+        }
+        if (!echipa.getJucatori().isEmpty()) {
+            for (Jucator jucator : echipa.getJucatori()) {
+                System.out.println(jucator);
+            }
+        } else {
+            System.out.println("No players found.");
+        }
+    }
 }

@@ -20,13 +20,13 @@ public class Antrenor extends Angajat {
 
     @Override
     public String toString() {
-        return "Antrenor:" + '\n' +
+        return "Coach:" + '\n' +
                 "ID: " + getId() + '\n' +
-                "Nume: " + getNume() + " " + getPrenume() + '\n' +
-                "Nationalitate: " + getNationalitate() + '\n' +
-                "Varsta: " + getVarsta() + '\n' +
-                "Salariu: " + getSalariu() + "$" + '\n' +
-                "Ani de experienta: " + getAniExperienta() + '\n';
+                "Name: " + getNume() + " " + getPrenume() + '\n' +
+                "Nationality: " + getNationalitate() + '\n' +
+                "Age: " + getVarsta() + '\n' +
+                "Salary: " + getSalariu() + "$" + '\n' +
+                "Experience(years): " + getAniExperienta() + '\n';
     }
 
     @Override

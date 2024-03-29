@@ -1,6 +1,7 @@
 package proiect.repository;
 
 import proiect.model.Antrenor;
+import proiect.model.Echipa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,13 @@ public class AntrenorRepository {
     public void updateAntrenor(String nume, String prenume, Antrenor antrenorUpdated) {
         for (Antrenor antrenor : antrenori) {
             if (antrenor.getNume().equals(nume) && antrenor.getPrenume().equals(prenume)) {
+                EchipaRepository echipaRepository = new EchipaRepository();
+                for(Echipa echipa : echipaRepository.findAllEchipa()) {
+                    if(echipa.getAntrenor() != null && echipa.getAntrenor().equals(antrenor)) {
+                        echipa.setAntrenor(antrenorUpdated);
+                        echipaRepository.updateEchipa(echipa.getNume(), echipa);
+                    }
+                }
                 antrenor.setId(antrenorUpdated.getId());
                 antrenor.setNume(antrenorUpdated.getNume());
                 antrenor.setPrenume(antrenorUpdated.getPrenume());

@@ -29,14 +29,14 @@ public class Jucator extends Angajat {
 
     @Override
     public String toString() {
-        return "Jucator:" + '\n' +
+        return "Player:" + '\n' +
                 "ID: " + getId() + '\n' +
-                "Nume: " + getNume() + " " + getPrenume() + '\n' +
-                "Nationalitate: " + getNationalitate() + '\n' +
-                "Varsta: " + getVarsta() + '\n' +
-                "Salariu: " + getSalariu() + "$" + '\n' +
-                "Pozitie: " + getPozitie() + '\n' +
-                "Nr. tricou: " + getNumarTricou() + '\n';
+                "Name: " + getNume() + " " + getPrenume() + '\n' +
+                "Nationality: " + getNationalitate() + '\n' +
+                "Age: " + getVarsta() + '\n' +
+                "Salary: " + getSalariu() + "$" + '\n' +
+                "Position: " + getPozitie() + '\n' +
+                "Shirt no.: " + getNumarTricou() + '\n';
     }
 
     @Override

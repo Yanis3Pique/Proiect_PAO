@@ -40,8 +40,8 @@ public class Sponsor {
     @Override
     public String toString() {
         return "Sponsor:" + '\n' +
-                "Nume: " + getName() + '\n' +
-                "Tara de origine: " + getCountry() + '\n';
+                "Name: " + getName() + '\n' +
+                "Country: " + getCountry() + '\n';
     }
 
     @Override

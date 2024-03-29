@@ -61,14 +61,14 @@ public class Echipa {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Echipa:").append('\n');
-        sb.append("Nume: ").append(nume).append('\n');
+        sb.append("Team:").append('\n');
+        sb.append("Name: ").append(nume).append('\n');
         if (antrenor != null) {
-            sb.append("Antrenor: ").append(antrenor.getNume()).append(' ').append(antrenor.getPrenume()).append('\n');
+            sb.append("Coach: ").append(antrenor.getNume()).append(' ').append(antrenor.getPrenume()).append('\n');
         } else {
-            sb.append("Antrenor: ").append("N/A").append('\n');
+            sb.append("Coach: ").append("N/A").append('\n');
         }
-        sb.append("Jucatori:\n");
+        sb.append("Players:\n");
         if (!jucatori.isEmpty()) {
             for (Jucator jucator : jucatori) {
                 sb.append(jucator.getNume()).append(' ').append(jucator.getPrenume()).append('\n');
@@ -77,9 +77,9 @@ public class Echipa {
             sb.append("No players\n");
         }
         if (stadion != null) {
-            sb.append("Stadion: ").append(stadion.getNume()).append('\n');
+            sb.append("Stadium: ").append(stadion.getNume()).append('\n');
         } else {
-            sb.append("Stadion: ").append("N/A").append('\n');
+            sb.append("Stadium: ").append("N/A").append('\n');
         }
 
         return sb.toString();

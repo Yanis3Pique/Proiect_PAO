@@ -49,11 +49,11 @@ public class Stadion {
 
     @Override
     public String toString() {
-        return "Stadion:" + '\n' +
+        return "Stadium:" + '\n' +
                 "ID: " + getId() + '\n' +
-                "Nume: " + getNume() + '\n' +
-                "Capacitate: " + getCapacitate() + '\n' +
-                "Locatie: " + getLocatie() + 'n';
+                "Name: " + getNume() + '\n' +
+                "Capacity: " + getCapacitate() + '\n' +
+                "Location: " + getLocatie() + '\n';
     }
 
     @Override

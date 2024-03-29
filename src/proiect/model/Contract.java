@@ -59,10 +59,11 @@ public class Contract {
 
     @Override
     public String toString() {
-        return "Contractul nr. " + getId() +  ", semnat intre " + team.getNume() + " si " + sponsor.getName() + "," + '\n' +
-                "Durata: " + getDurationYears() + " ani" + '\n' +
-                "Suma: " + getSumMoney() + '\n';
+        return "Contract No. " + getId() + ", signed between " + team.getNume() + " and " + sponsor.getName() + "," + '\n' +
+                "Duration: " + getDurationYears() + " years" + '\n' +
+                "Amount: " + getSumMoney() + '\n';
     }
+
 
     @Override
     public boolean equals(Object o) {

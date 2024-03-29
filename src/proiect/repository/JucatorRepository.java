@@ -1,5 +1,6 @@
 package proiect.repository;
 
+import proiect.model.Echipa;
 import proiect.model.Jucator;
 
 import java.util.ArrayList;
@@ -24,6 +25,17 @@ public class JucatorRepository {
     public void updateJucator(String nume, String prenume, Jucator updatedJucator) {
         for (Jucator jucator : jucatori) {
             if (jucator.getNume().equals(nume) && jucator.getPrenume().equals(prenume)) {
+                for(Echipa echipa : new EchipaRepository().findAllEchipa()) {
+                    for(Jucator jucatorEchipa : echipa.getJucatori()) {
+                        if(jucatorEchipa.getNume().equals(nume) && jucatorEchipa.getPrenume().equals(prenume)) {
+                            jucatorEchipa.setNume(updatedJucator.getNume());
+                            jucatorEchipa.setPrenume(updatedJucator.getPrenume());
+                            jucatorEchipa.setVarsta(updatedJucator.getVarsta());
+                            jucatorEchipa.setPozitie(updatedJucator.getPozitie());
+                            jucatorEchipa.setNumarTricou(updatedJucator.getNumarTricou());
+                        }
+                    }
+                }
                 jucator.setId(updatedJucator.getId());
                 jucator.setNume(updatedJucator.getNume());
                 jucator.setPrenume(updatedJucator.getPrenume());
@@ -41,5 +53,8 @@ public class JucatorRepository {
 
     public void deleteJucator(Jucator jucator) {
         jucatori.remove(jucator);
+
+        EchipaRepository echipaRepository = new EchipaRepository();
+        echipaRepository.removeJucatorFromEchipa(jucator);
     }
 }

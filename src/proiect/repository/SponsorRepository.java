@@ -1,5 +1,6 @@
 package proiect.repository;
 
+import proiect.model.Contract;
 import proiect.model.Sponsor;
 
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class SponsorRepository {
     public void updateSponsor(String name, Sponsor sponsorUpdated) {
         for(Sponsor sponsor : sponsors) {
             if(sponsor.getName().equalsIgnoreCase(name)) {
+                for(Contract contract : new ContractRepository().findAllContract()) {
+                    if(contract.getSponsor().equals(sponsor)) {
+                        contract.setSponsor(sponsorUpdated);
+                    }
+                }
                 sponsor.setId(sponsorUpdated.getId());
                 sponsor.setName(sponsorUpdated.getName());
                 sponsor.setCountry(sponsorUpdated.getCountry());
@@ -34,6 +40,12 @@ public class SponsorRepository {
 
     public void deleteSponsor(Sponsor sponsor) {
         sponsors.remove(sponsor);
+        ContractRepository contractRepository = new ContractRepository();
+        for(Contract contract : contractRepository.findAllContract()) {
+            if(contract.getSponsor().equals(sponsor)) {
+                contractRepository.deleteContract(contract.getTeam().getNume(), contract.getSponsor().getName());
+            }
+        }
     }
 
     public List<Sponsor> findAllSponsor() {

@@ -49,6 +49,10 @@ public class AngajatService {
             return;
         }
 
+        System.out.println("Enter new first name:");
+        String newFirstName = scanner.nextLine();
+        System.out.println("Enter new last name:");
+        String newLastName = scanner.nextLine();
         System.out.println("Enter new nationality:");
         String newNationality = scanner.nextLine();
         System.out.println("Enter new age:");
@@ -57,18 +61,19 @@ public class AngajatService {
         double newSalary = scanner.nextDouble();
         scanner.nextLine();
 
+        angajat.setNume(newFirstName);
+        angajat.setPrenume(newLastName);
         angajat.setNationalitate(newNationality);
         angajat.setVarsta(newAge);
         angajat.setSalariu(newSalary);
 
-        if (angajat instanceof Antrenor) {
-            Antrenor antrenor = (Antrenor) angajat;
+
+        if (angajat instanceof Antrenor antrenor) {
             System.out.println("Enter new years of experience:");
             int newYrsExperience = scanner.nextInt();
             scanner.nextLine();
             antrenor.setAniExperienta(newYrsExperience);
-        } else if (angajat instanceof Jucator) {
-            Jucator jucator = (Jucator) angajat;
+        } else if (angajat instanceof Jucator jucator) {
             System.out.println("Enter new player number:");
             int newNumber = scanner.nextInt();
             scanner.nextLine();

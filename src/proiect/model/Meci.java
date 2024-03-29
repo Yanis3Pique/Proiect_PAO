@@ -79,12 +79,12 @@ public class Meci {
 
     @Override
     public String toString() {
-        return "Meci:" + '\n' +
-                "Echipa gazda: " + getEchipa1().getNume() + '\n' +
-                "Echipa oaspete: " + getEchipa2().getNume() + '\n' +
-                "Data: " + getData() + '\n' +
-                "Rezultat: " + getScor1() + " - " + getScor2() + '\n' +
-                "Stadion: " + getStadion().getNume() + '\n';
+        return "Game:" + '\n' +
+                "Home Team: " + getEchipa1().getNume() + '\n' +
+                "Away Team: " + getEchipa2().getNume() + '\n' +
+                "Date: " + getData() + '\n' +
+                "Result: " + getScor1() + " - " + getScor2() + '\n' +
+                "Stadium: " + getStadion().getNume() + '\n';
     }
 
     @Override

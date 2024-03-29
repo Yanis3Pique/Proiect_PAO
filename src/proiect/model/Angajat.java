@@ -71,10 +71,10 @@ public abstract class Angajat {
     public String toString() {
         return "Angajat:" + '\n' +
                 "ID: " + getId() + '\n' +
-                "Nume: " + getNume() + " " + getPrenume() + '\n' +
-                "Nationalitate: " + getNationalitate() + '\n' +
-                "Varsta: " + getVarsta() + '\n' +
-                "Salariu: " + getSalariu() + '\n';
+                "Name: " + getNume() + " " + getPrenume() + '\n' +
+                "Nationality: " + getNationalitate() + '\n' +
+                "Age: " + getVarsta() + '\n' +
+                "Salary: " + getSalariu() + '\n';
     }
 
     @Override

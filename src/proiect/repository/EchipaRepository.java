@@ -1,7 +1,6 @@
 package proiect.repository;
 
-import proiect.model.Antrenor;
-import proiect.model.Echipa;
+import proiect.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,19 @@ public class EchipaRepository {
 
     public void updateEchipa(String nume, Echipa echipaUpdated) {
         for (Echipa echipa : echipe) {
+            for(Meci meci : new MeciRepository().findAllMeci()) {
+                if(meci.getEchipa1().getNume().equals(nume)) {
+                    meci.setEchipa1(echipaUpdated);
+                }
+                if(meci.getEchipa2().getNume().equals(nume)) {
+                    meci.setEchipa2(echipaUpdated);
+                }
+            }
+            for(Contract contract : new ContractRepository().findAllContract()) {
+                if(contract.getTeam().getNume().equals(nume)) {
+                    contract.setTeam(echipaUpdated);
+                }
+            }
             if (echipa.getNume().equals(nume)) {
                 echipa.setId(echipaUpdated.getId());
                 echipa.setNume(echipaUpdated.getNume());
@@ -37,6 +49,20 @@ public class EchipaRepository {
 
     public void deleteEchipa(String nume) {
         echipe.removeIf(echipa -> echipa.getNume().equals(nume));
+
+        MeciRepository meciRepository = new MeciRepository();
+        for(Meci meci : meciRepository.findAllMeci()) {
+            if(meci.getEchipa1().getNume().equals(nume) || meci.getEchipa2().getNume().equals(nume)) {
+                meciRepository.deleteMeci(meci);
+            }
+        }
+
+        ContractRepository contractRepository = new ContractRepository();
+        for(Contract contract : contractRepository.findAllContract()) {
+            if(contract.getTeam().getNume().equals(nume)) {
+                contractRepository.deleteContract(contract.getTeam().getNume(), contract.getSponsor().getName());
+            }
+        }
     }
 
     public void removeAntrenorFromEchipa(Antrenor antrenor) {
@@ -49,5 +75,21 @@ public class EchipaRepository {
 
     public List<Echipa> findAllEchipa() {
         return new ArrayList<>(echipe);
+    }
+
+    public void removeJucatorFromEchipa(Jucator jucator) {
+        for (Echipa echipa : echipe) {
+            if (echipa.getJucatori() != null) {
+                echipa.getJucatori().remove(jucator);
+            }
+        }
+    }
+
+    public void removeStadionFromEchipa(Stadion stadion) {
+        for (Echipa echipa : echipe) {
+            if (echipa.getStadion() != null && echipa.getStadion().equals(stadion)) {
+                echipa.setStadion(null);
+            }
+        }
     }
 }
