@@ -26,6 +26,17 @@ public class CampionatService {
             clasament.put(echipa, 0);
         }
 
+        calculatePoints(meciuri, clasament);
+
+        return clasament.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new));
+    }
+
+    private void calculatePoints(List<Meci> meciuri, Map<Echipa, Integer> clasament) {
         for (Meci meci : meciuri) {
             Echipa echipa1 = meci.getEchipa1();
             Echipa echipa2 = meci.getEchipa2();
@@ -40,31 +51,22 @@ public class CampionatService {
                 clasament.put(echipa2, puncteEchipa2 + 1);
             }
         }
-
-        return clasament.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1, e2) -> e1,
-                        LinkedHashMap::new));
     }
 
     public static void manageTeams(Scanner scanner, EchipaService echipaService) {
         manageTeamsMenu();
 
-        int teamChoice = scanner.nextInt();
-        scanner.nextLine();
+        String teamChoice = scanner.nextLine();
 
         switch (teamChoice) {
-            case 1 -> echipaService.createEchipa(scanner);
-            case 2 -> echipaService.viewEchipa(scanner);
-            case 3 -> echipaService.updateEchipa(scanner);
-            case 4 -> echipaService.deleteEchipa(scanner);
-            case 5 -> echipaService.addJucator(scanner);
-            case 6 -> echipaService.removeJucator(scanner);
-            case 7 -> echipaService.viewJucatori(scanner);
-            case 0 -> {
+            case "1" -> echipaService.createEchipa(scanner);
+            case "2" -> echipaService.viewEchipa(scanner);
+            case "3" -> echipaService.updateEchipa(scanner);
+            case "4" -> echipaService.deleteEchipa(scanner);
+            case "5" -> echipaService.addJucator(scanner);
+            case "6" -> echipaService.removeJucator(scanner);
+            case "7" -> echipaService.viewJucatori(scanner);
+            case "0" -> {
                 return;
             }
             default -> System.out.println("Invalid option! Please enter a valid choice.");
@@ -87,15 +89,14 @@ public class CampionatService {
     public static void manageMatches(Scanner scanner, MeciService meciService) {
         manageMatchesMenu();
 
-        int matchChoice = scanner.nextInt();
-        scanner.nextLine();
+        String matchChoice = scanner.nextLine();
 
         switch (matchChoice) {
-            case 1 -> meciService.createMeci(scanner);
-            case 2 -> meciService.viewMeci(scanner);
-            case 3 -> meciService.updateMeci(scanner);
-            case 4 -> meciService.deleteMeci(scanner);
-            case 0 -> {
+            case "1" -> meciService.createMeci(scanner);
+            case "2" -> meciService.viewMeci(scanner);
+            case "3" -> meciService.updateMeci(scanner);
+            case "4" -> meciService.deleteMeci(scanner);
+            case "0" -> {
                 return;
             }
             default -> System.out.println("Invalid option! Please enter a valid choice.");
@@ -115,15 +116,14 @@ public class CampionatService {
     public static void manageEmployees(Scanner scanner, AngajatService angajatService) {
         manageEmployeesMenu();
 
-        int employeeChoice = scanner.nextInt();
-        scanner.nextLine();
+        String employeeChoice = scanner.nextLine();
 
         switch (employeeChoice) {
-            case 1 -> angajatService.createAngajat(scanner);
-            case 2 -> angajatService.readAngajat(scanner);
-            case 3 -> angajatService.updateAngajat(scanner);
-            case 4 -> angajatService.deleteAngajat(scanner);
-            case 0 -> {
+            case "1" -> angajatService.createAngajat(scanner);
+            case "2" -> angajatService.readAngajat(scanner);
+            case "3" -> angajatService.updateAngajat(scanner);
+            case "4" -> angajatService.deleteAngajat(scanner);
+            case "0" -> {
                 return;
             }
             default -> System.out.println("Invalid option! Please enter a valid choice.");
@@ -143,15 +143,14 @@ public class CampionatService {
     public static void manageStadiums(Scanner scanner, StadionService stadionService) {
         manageStadiumsMenu();
 
-        int stadiumChoice = scanner.nextInt();
-        scanner.nextLine();
+        String stadiumChoice = scanner.nextLine();
 
         switch (stadiumChoice) {
-            case 1 -> stadionService.createStadion(scanner);
-            case 2 -> stadionService.viewStadion(scanner);
-            case 3 -> stadionService.updateStadion(scanner);
-            case 4 -> stadionService.deleteStadion(scanner);
-            case 0 -> {
+            case "1" -> stadionService.createStadion(scanner);
+            case "2" -> stadionService.viewStadion(scanner);
+            case "3" -> stadionService.updateStadion(scanner);
+            case "4" -> stadionService.deleteStadion(scanner);
+            case "0" -> {
                 return;
             }
             default -> System.out.println("Invalid option! Please enter a valid choice.");
@@ -171,15 +170,14 @@ public class CampionatService {
     public static void manageSponsors(Scanner scanner, SponsorService sponsorService) {
         manageSponsorsMenu();
 
-        int sponsorChoice = scanner.nextInt();
-        scanner.nextLine();
+        String sponsorChoice = scanner.nextLine();
 
         switch (sponsorChoice) {
-            case 1 -> sponsorService.createSponsor(scanner);
-            case 2 -> sponsorService.viewSponsor(scanner);
-            case 3 -> sponsorService.updateSponsor(scanner        );
-            case 4 -> sponsorService.deleteSponsor(scanner);
-            case 0 -> {
+            case "1" -> sponsorService.createSponsor(scanner);
+            case "2" -> sponsorService.viewSponsor(scanner);
+            case "3" -> sponsorService.updateSponsor(scanner        );
+            case "4" -> sponsorService.deleteSponsor(scanner);
+            case "0" -> {
                 return;
             }
             default -> System.out.println("Invalid option! Please enter a valid choice.");
@@ -199,15 +197,14 @@ public class CampionatService {
     public static void manageContracts(Scanner scanner, ContractService contractService, EchipaService echipaService, SponsorService sponsorService) {
         manageContractsMenu();
 
-        int contractChoice = scanner.nextInt();
-        scanner.nextLine();
+        String contractChoice = scanner.nextLine();
 
         switch (contractChoice) {
-            case 1 -> contractService.createContract(scanner);
-            case 2 -> contractService.viewContract(scanner);
-            case 3 -> contractService.updateContract(scanner);
-            case 4 -> contractService.deleteContract(scanner);
-            case 0 -> {
+            case "1" -> contractService.createContract(scanner);
+            case "2" -> contractService.viewContract(scanner);
+            case "3" -> contractService.updateContract(scanner);
+            case "4" -> contractService.deleteContract(scanner);
+            case "0" -> {
                 return;
             }
             default -> System.out.println("Invalid option! Please enter a valid choice.");

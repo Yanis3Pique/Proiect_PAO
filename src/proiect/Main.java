@@ -22,18 +22,17 @@ public class Main {
         while (true) {
             generalMenu();
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            String choice = scanner.nextLine();
 
             switch (choice) {
-                case 1 -> manageTeams(scanner, echipaService);
-                case 2 -> manageMatches(scanner, meciService);
-                case 3 -> manageEmployees(scanner, angajatService);
-                case 4 -> manageStadiums(scanner, stadionService);
-                case 5 -> manageSponsors(scanner, sponsorService);
-                case 6 -> manageContracts(scanner, contractService, echipaService, sponsorService);
-                case 7 -> viewChampionshipStandings(campionatService);
-                case 0 -> {System.out.println("Exiting..."); return;}
+                case "1" -> manageTeams(scanner, echipaService);
+                case "2" -> manageMatches(scanner, meciService);
+                case "3" -> manageEmployees(scanner, angajatService);
+                case "4" -> manageStadiums(scanner, stadionService);
+                case "5" -> manageSponsors(scanner, sponsorService);
+                case "6" -> manageContracts(scanner, contractService, echipaService, sponsorService);
+                case "7" -> viewChampionshipStandings(campionatService);
+                case "0" -> {System.out.println("Exiting..."); return;}
                 default -> System.out.println("Invalid option! Please enter a number between 0 and 7.");
             }
         }
