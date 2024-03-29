@@ -1,9 +1,7 @@
 package proiect;
 
-import proiect.model.Echipa;
 import proiect.service.*;
 
-import java.util.Map;
 import java.util.Scanner;
 
 import static proiect.service.CampionatService.*;
