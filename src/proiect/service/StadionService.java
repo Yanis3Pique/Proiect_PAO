@@ -1,14 +1,14 @@
 package proiect.service;
 
-import proiect.dao.StadionDAOService;
+import proiect.daoservices.StadionRepositoryService;
 import proiect.model.Stadion;
 import java.util.Scanner;
 
 public class StadionService {
-    private StadionDAOService stadionDAOService;
+    private StadionRepositoryService stadionRepositoryService;
 
     public StadionService() {
-        this.stadionDAOService = new StadionDAOService();
+        this.stadionRepositoryService = new StadionRepositoryService();
     }
 
     public void createStadion(Scanner scanner) {
@@ -21,14 +21,14 @@ public class StadionService {
         System.out.print("Enter stadium location: ");
         String location = scanner.nextLine();
         Stadion stadion = new Stadion(0, name, capacity, location);
-        stadionDAOService.addStadion(stadion);
+        stadionRepositoryService.addStadion(stadion);
         System.out.println("Stadium created successfully.");
     }
 
     public void viewStadion(Scanner scanner) {
         System.out.print("Enter stadium name to view details: ");
         String name = scanner.nextLine();
-        Stadion stadion = stadionDAOService.getStadionByName(name);
+        Stadion stadion = stadionRepositoryService.getStadionByName(name);
         if (stadion != null) {
             System.out.println(stadion);
         } else {
@@ -40,7 +40,7 @@ public class StadionService {
         System.out.println("Updating a Stadium:");
         System.out.print("Enter stadium name: ");
         String name = scanner.nextLine();
-        Stadion existingStadion = stadionDAOService.getStadionByName(name);
+        Stadion existingStadion = stadionRepositoryService.getStadionByName(name);
         if (existingStadion == null) {
             System.out.println("Stadium not found.");
             return;
@@ -52,7 +52,7 @@ public class StadionService {
         String newLocation = scanner.nextLine();
         existingStadion.setCapacitate(newCapacity);
         existingStadion.setLocatie(newLocation);
-        stadionDAOService.updateStadion(name, existingStadion);
+        stadionRepositoryService.updateStadion(name, existingStadion);
         System.out.println("Stadium updated successfully.");
     }
 
@@ -60,9 +60,9 @@ public class StadionService {
         System.out.println("Deleting a Stadium:");
         System.out.print("Enter stadium name: ");
         String name = scanner.nextLine();
-        Stadion stadion = stadionDAOService.getStadionByName(name);
+        Stadion stadion = stadionRepositoryService.getStadionByName(name);
         if (stadion != null) {
-            stadionDAOService.removeStadion(stadion);
+            stadionRepositoryService.removeStadion(stadion);
             System.out.println("Stadium deleted successfully.");
         } else {
             System.out.println("Stadium not found.");

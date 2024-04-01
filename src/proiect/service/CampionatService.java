@@ -2,24 +2,24 @@ package proiect.service;
 
 import proiect.model.Echipa;
 import proiect.model.Meci;
-import proiect.repository.EchipaRepository;
-import proiect.repository.MeciRepository;
+import proiect.dao.EchipaDao;
+import proiect.dao.MeciDao;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class CampionatService {
-    private EchipaRepository echipaRepository;
-    private MeciRepository meciRepository;
+    private EchipaDao echipaDao;
+    private MeciDao meciDao;
 
     public CampionatService() {
-        this.echipaRepository = new EchipaRepository();
-        this.meciRepository = new MeciRepository();
+        this.echipaDao = new EchipaDao();
+        this.meciDao = new MeciDao();
     }
 
     public Map<Echipa, Integer> vizualizeazaClasament() {
-        List<Echipa> echipe = echipaRepository.findAllEchipa();
-        List<Meci> meciuri = meciRepository.findAllMeci();
+        List<Echipa> echipe = echipaDao.findAllEchipa();
+        List<Meci> meciuri = meciDao.findAllMeci();
 
         Map<Echipa, Integer> clasament = new HashMap<>();
         for (Echipa echipa : echipe) {

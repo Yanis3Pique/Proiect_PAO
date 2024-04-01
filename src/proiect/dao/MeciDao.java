@@ -1,13 +1,11 @@
-package proiect.repository;
+package proiect.dao;
 
 import proiect.model.Meci;
-import proiect.model.Echipa;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class MeciRepository {
+public class MeciDao {
     private static int nextId = 1;
     private static List<Meci> meciuri = new ArrayList<>();
 

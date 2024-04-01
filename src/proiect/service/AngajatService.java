@@ -1,6 +1,6 @@
 package proiect.service;
 
-import proiect.dao.AngajatDAOService;
+import proiect.daoservices.AngajatRepositoryService;
 import proiect.model.Angajat;
 import proiect.model.Antrenor;
 import proiect.model.Jucator;
@@ -8,10 +8,10 @@ import proiect.model.Jucator;
 import java.util.Scanner;
 
 public class AngajatService {
-    private AngajatDAOService angajatDAOService;
+    private AngajatRepositoryService angajatRepositoryService;
 
     public AngajatService() {
-        this.angajatDAOService = new AngajatDAOService();
+        this.angajatRepositoryService = new AngajatRepositoryService();
     }
 
     public void createAngajat(Scanner scanner) {
@@ -28,7 +28,7 @@ public class AngajatService {
         String firstName = scanner.nextLine();
         System.out.println("Enter last name:");
         String lastName = scanner.nextLine();
-        Angajat angajat = angajatDAOService.getAngajatByName(firstName, lastName);
+        Angajat angajat = angajatRepositoryService.getAngajatByName(firstName, lastName);
         if (angajat != null) {
             System.out.println(angajat);
         } else {
@@ -43,7 +43,7 @@ public class AngajatService {
         System.out.println("Enter last name:");
         String lastName = scanner.nextLine();
 
-        Angajat angajat = angajatDAOService.getAngajatByName(firstName, lastName);
+        Angajat angajat = angajatRepositoryService.getAngajatByName(firstName, lastName);
         if (angajat == null) {
             System.out.println("Employee not found.");
         }
@@ -94,7 +94,7 @@ public class AngajatService {
         updateGeneralAttributes(angajat, scanner);
         updateSpecificAttributes(angajat, scanner);
 
-        angajatDAOService.updateAngajat(angajat);
+        angajatRepositoryService.updateAngajat(angajat);
         System.out.println("Employee updated successfully.");
     }
 
@@ -104,9 +104,9 @@ public class AngajatService {
         String firstName = scanner.nextLine();
         System.out.println("Enter last name:");
         String lastName = scanner.nextLine();
-        Angajat angajat = angajatDAOService.getAngajatByName(firstName, lastName);
+        Angajat angajat = angajatRepositoryService.getAngajatByName(firstName, lastName);
         if (angajat != null) {
-            angajatDAOService.removeAngajat(angajat);
+            angajatRepositoryService.removeAngajat(angajat);
             System.out.println("Employee deleted successfully.");
         } else {
             System.out.println("Employee not found.");
@@ -139,7 +139,7 @@ public class AngajatService {
             int years = scanner.nextInt();
             scanner.nextLine();
             Antrenor antrenor = new Antrenor(0, firstName, lastName, nationality, age, salary, years);
-            angajatDAOService.addAngajat(antrenor);
+            angajatRepositoryService.addAngajat(antrenor);
         } else if (typeOfAngajat.equals("jucator")) {
             System.out.println("Enter player number:");
             int number = scanner.nextInt();
@@ -148,7 +148,7 @@ public class AngajatService {
             String position = scanner.nextLine();
             Jucator jucator = new Jucator(0, firstName, lastName, nationality, age, salary, number);
             jucator.setPozitie(position);
-            angajatDAOService.addAngajat(jucator);
+            angajatRepositoryService.addAngajat(jucator);
         }
         System.out.println("Employee created successfully.");
     }

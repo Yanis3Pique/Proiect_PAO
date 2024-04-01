@@ -1,14 +1,14 @@
 package proiect.service;
 
-import proiect.dao.SponsorDAOService;
+import proiect.daoservices.SponsorRepositoryService;
 import proiect.model.Sponsor;
 import java.util.Scanner;
 
 public class SponsorService {
-    private SponsorDAOService sponsorDAOService;
+    private SponsorRepositoryService sponsorRepositoryService;
 
     public SponsorService() {
-        this.sponsorDAOService = new SponsorDAOService();
+        this.sponsorRepositoryService = new SponsorRepositoryService();
     }
 
     public void createSponsor(Scanner scanner) {
@@ -21,7 +21,7 @@ public class SponsorService {
         String country = scanner.nextLine();
 
         Sponsor sponsor = new Sponsor(0, name, country);
-        sponsorDAOService.addSponsor(sponsor);
+        sponsorRepositoryService.addSponsor(sponsor);
         System.out.println("Sponsor created successfully.");
     }
 
@@ -29,7 +29,7 @@ public class SponsorService {
         System.out.print("Enter sponsor name to view details: ");
         String name = scanner.nextLine();
 
-        Sponsor sponsor = sponsorDAOService.getSponsorByName(name);
+        Sponsor sponsor = sponsorRepositoryService.getSponsorByName(name);
         if (sponsor != null) {
             System.out.println(sponsor);
         } else {
@@ -43,7 +43,7 @@ public class SponsorService {
         System.out.print("Enter sponsor name: ");
         String name = scanner.nextLine();
 
-        Sponsor existingSponsor = sponsorDAOService.getSponsorByName(name);
+        Sponsor existingSponsor = sponsorRepositoryService.getSponsorByName(name);
         if (existingSponsor == null) {
             System.out.println("Sponsor not found.");
             return;
@@ -54,7 +54,7 @@ public class SponsorService {
 
         existingSponsor.setCountry(newCountry);
 
-        sponsorDAOService.updateSponsor(name, existingSponsor);
+        sponsorRepositoryService.updateSponsor(name, existingSponsor);
         System.out.println("Sponsor updated successfully.");
     }
 
@@ -64,9 +64,9 @@ public class SponsorService {
         System.out.print("Enter sponsor name: ");
         String name = scanner.nextLine();
 
-        Sponsor sponsor = sponsorDAOService.getSponsorByName(name);
+        Sponsor sponsor = sponsorRepositoryService.getSponsorByName(name);
         if (sponsor != null) {
-            sponsorDAOService.removeSponsor(sponsor);
+            sponsorRepositoryService.removeSponsor(sponsor);
             System.out.println("Sponsor deleted successfully.");
         } else {
             System.out.println("Sponsor not found.");

@@ -1,6 +1,6 @@
 package proiect.service;
 
-import proiect.dao.*;
+import proiect.daoservices.*;
 import proiect.model.Contract;
 import proiect.model.Echipa;
 import proiect.model.Sponsor;
@@ -8,14 +8,14 @@ import proiect.model.Sponsor;
 import java.util.Scanner;
 
 public class ContractService {
-    private ContractDAOService contractDAOService;
-    private EchipaDAOService echipaDAOService;
-    private SponsorDAOService sponsorDAOService;
+    private ContractRepositoryService contractRepositoryService;
+    private EchipaRepositoryService echipaRepositoryService;
+    private SponsorRepositoryService sponsorRepositoryService;
 
     public ContractService() {
-        this.contractDAOService = new ContractDAOService();
-        this.echipaDAOService = new EchipaDAOService();
-        this.sponsorDAOService = new SponsorDAOService();
+        this.contractRepositoryService = new ContractRepositoryService();
+        this.echipaRepositoryService = new EchipaRepositoryService();
+        this.sponsorRepositoryService = new SponsorRepositoryService();
     }
 
     public void createContract(Scanner scanner) {
@@ -23,7 +23,7 @@ public class ContractService {
 
         System.out.print("Enter team name: ");
         String teamName = scanner.nextLine();
-        Echipa team = echipaDAOService.getEchipaByName(teamName);
+        Echipa team = echipaRepositoryService.getEchipaByName(teamName);
         if (team == null) {
             System.out.println("Team not found.");
             return;
@@ -31,7 +31,7 @@ public class ContractService {
 
         System.out.print("Enter sponsor name: ");
         String sponsorName = scanner.nextLine();
-        Sponsor sponsor = sponsorDAOService.getSponsorByName(sponsorName);
+        Sponsor sponsor = sponsorRepositoryService.getSponsorByName(sponsorName);
         if (sponsor == null) {
             System.out.println("Sponsor not found.");
             return;
@@ -46,7 +46,7 @@ public class ContractService {
         scanner.nextLine();
 
         Contract contract = new Contract(0, team, sponsor, duration, sumMoney);
-        contractDAOService.addContract(contract);
+        contractRepositoryService.addContract(contract);
         System.out.println("Contract created successfully.");
     }
 
@@ -57,7 +57,7 @@ public class ContractService {
         System.out.print("Enter sponsor name: ");
         String sponsorName = scanner.nextLine();
 
-        Contract contract = contractDAOService.getContractByTeamAndSponsor(teamName, sponsorName);
+        Contract contract = contractRepositoryService.getContractByTeamAndSponsor(teamName, sponsorName);
         if (contract != null) {
             System.out.println(contract);
         } else {
@@ -71,7 +71,7 @@ public class ContractService {
         String teamName = scanner.nextLine();
         System.out.print("Enter sponsor name: ");
         String sponsorName = scanner.nextLine();
-        Contract existingContract = contractDAOService.getContractByTeamAndSponsor(teamName, sponsorName);
+        Contract existingContract = contractRepositoryService.getContractByTeamAndSponsor(teamName, sponsorName);
         if (existingContract == null) {
             System.out.println("Contract not found.");
             return;
@@ -83,7 +83,7 @@ public class ContractService {
         scanner.nextLine();
         existingContract.setDurationYears(duration);
         existingContract.setSumMoney(sumMoney);
-        contractDAOService.updateContract(teamName, sponsorName, existingContract);
+        contractRepositoryService.updateContract(teamName, sponsorName, existingContract);
         System.out.println("Contract updated successfully.");
     }
 
@@ -96,7 +96,7 @@ public class ContractService {
         System.out.print("Enter sponsor name: ");
         String sponsorName = scanner.nextLine();
 
-        contractDAOService.removeContract(teamName, sponsorName);
+        contractRepositoryService.removeContract(teamName, sponsorName);
         System.out.println("Contract deleted successfully.");
     }
 }

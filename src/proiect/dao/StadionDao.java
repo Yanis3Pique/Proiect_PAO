@@ -1,11 +1,11 @@
-package proiect.repository;
+package proiect.dao;
 
 import proiect.model.Echipa;
 import proiect.model.Stadion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StadionRepository {
+public class StadionDao {
     private static int nextId = 1;
     private static List<Stadion> stadions = new ArrayList<>();
 
@@ -37,8 +37,8 @@ public class StadionRepository {
     }
 
     private void updateEchipaBasedOnStadion(String nume, Stadion updatedStadion) {
-        EchipaRepository echipaRepository = new EchipaRepository();
-        for(Echipa echipa : echipaRepository.findAllEchipa()){
+        EchipaDao echipaDao = new EchipaDao();
+        for(Echipa echipa : echipaDao.findAllEchipa()){
             if(echipa.getStadion().getNume().equals(nume)){
                 echipa.getStadion().setNume(updatedStadion.getNume());
                 echipa.getStadion().setCapacitate(updatedStadion.getCapacitate());
@@ -50,8 +50,8 @@ public class StadionRepository {
     public void delete(Stadion stadion) {
         stadions.remove(stadion);
 
-        EchipaRepository echipaRepository = new EchipaRepository();
-        echipaRepository.removeStadionFromEchipa(stadion);
+        EchipaDao echipaDao = new EchipaDao();
+        echipaDao.removeStadionFromEchipa(stadion);
     }
 
     public List<Stadion> findAllStadion() {

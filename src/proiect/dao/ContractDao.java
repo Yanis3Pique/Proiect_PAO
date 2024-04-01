@@ -1,11 +1,11 @@
-package proiect.repository;
+package proiect.dao;
 
 import proiect.model.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContractRepository {
+public class ContractDao {
     private static int nextId = 1;
     private static List<Contract> contracts = new ArrayList<>();
 

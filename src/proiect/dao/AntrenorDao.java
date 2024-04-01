@@ -1,4 +1,4 @@
-package proiect.repository;
+package proiect.dao;
 
 import proiect.model.Antrenor;
 import proiect.model.Echipa;
@@ -6,7 +6,7 @@ import proiect.model.Echipa;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AntrenorRepository {
+public class AntrenorDao {
 
     private static int nextId = 1;
     private static List<Antrenor> antrenori = new ArrayList<>();
@@ -28,11 +28,11 @@ public class AntrenorRepository {
     public void updateAntrenor(String nume, String prenume, Antrenor antrenorUpdated) {
         for (Antrenor antrenor : antrenori) {
             if (antrenor.getNume().equals(nume) && antrenor.getPrenume().equals(prenume)) {
-                EchipaRepository echipaRepository = new EchipaRepository();
-                for(Echipa echipa : echipaRepository.findAllEchipa()) {
+                EchipaDao echipaDao = new EchipaDao();
+                for(Echipa echipa : echipaDao.findAllEchipa()) {
                     if(echipa.getAntrenor() != null && echipa.getAntrenor().equals(antrenor)) {
                         echipa.setAntrenor(antrenorUpdated);
-                        echipaRepository.updateEchipa(echipa.getNume(), echipa);
+                        echipaDao.updateEchipa(echipa.getNume(), echipa);
                     }
                 }
                 antrenor.setId(antrenorUpdated.getId());
@@ -50,8 +50,8 @@ public class AntrenorRepository {
     public void deleteAntrenor(Antrenor antrenor) {
         antrenori.remove(antrenor);
 
-        EchipaRepository echipaRepository = new EchipaRepository();
-        echipaRepository.removeAntrenorFromEchipa(antrenor);
+        EchipaDao echipaDao = new EchipaDao();
+        echipaDao.removeAntrenorFromEchipa(antrenor);
     }
 
     public List<Antrenor> findAllAntrenori() { return new ArrayList<>(antrenori); }

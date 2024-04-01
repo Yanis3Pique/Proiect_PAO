@@ -1,4 +1,4 @@
-package proiect.repository;
+package proiect.dao;
 
 import proiect.model.Echipa;
 import proiect.model.Jucator;
@@ -6,7 +6,7 @@ import proiect.model.Jucator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JucatorRepository {
+public class JucatorDao {
     private static int nextId = 1;
     private static List<Jucator> jucatori = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class JucatorRepository {
     }
 
     private void updatEchipaBasedOnJucator(String nume, String prenume, Jucator updatedJucator) {
-        for(Echipa echipa : new EchipaRepository().findAllEchipa()) {
+        for(Echipa echipa : new EchipaDao().findAllEchipa()) {
             for(Jucator jucatorEchipa : echipa.getJucatori()) {
                 if(jucatorEchipa.getNume().equals(nume) && jucatorEchipa.getPrenume().equals(prenume)) {
                     jucatorEchipa.setNume(updatedJucator.getNume());
@@ -60,7 +60,7 @@ public class JucatorRepository {
     public void deleteJucator(Jucator jucator) {
         jucatori.remove(jucator);
 
-        EchipaRepository echipaRepository = new EchipaRepository();
-        echipaRepository.removeJucatorFromEchipa(jucator);
+        EchipaDao echipaDao = new EchipaDao();
+        echipaDao.removeJucatorFromEchipa(jucator);
     }
 }

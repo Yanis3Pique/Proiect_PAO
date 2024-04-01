@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import static proiect.service.CampionatService.*;
 
-public class Main {
+public class Application {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         AngajatService angajatService = new AngajatService();

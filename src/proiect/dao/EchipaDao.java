@@ -1,11 +1,11 @@
-package proiect.repository;
+package proiect.dao;
 
 import proiect.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EchipaRepository {
+public class EchipaDao {
     private static int nextId = 1;
     private static List<Echipa> echipe = new ArrayList<>();
 
@@ -25,11 +25,11 @@ public class EchipaRepository {
 
     public void updateEchipa(String nume, Echipa echipaUpdated) {
         for (Echipa echipa : echipe) {
-            for(Meci meci : new MeciRepository().findAllMeci()) {
+            for(Meci meci : new MeciDao().findAllMeci()) {
                 if(meci.getEchipa1().getNume().equals(nume)) {meci.setEchipa1(echipaUpdated);}
                 if(meci.getEchipa2().getNume().equals(nume)) {meci.setEchipa2(echipaUpdated);}
             }
-            for(Contract contract : new ContractRepository().findAllContract()) {
+            for(Contract contract : new ContractDao().findAllContract()) {
                 if(contract.getTeam().getNume().equals(nume)) {contract.setTeam(echipaUpdated);}
             }
             if (echipa.getNume().equals(nume)) {
@@ -46,17 +46,17 @@ public class EchipaRepository {
     public void deleteEchipa(String nume) {
         echipe.removeIf(echipa -> echipa.getNume().equals(nume));
 
-        MeciRepository meciRepository = new MeciRepository();
-        for(Meci meci : meciRepository.findAllMeci()) {
+        MeciDao meciDao = new MeciDao();
+        for(Meci meci : meciDao.findAllMeci()) {
             if(meci.getEchipa1().getNume().equals(nume) || meci.getEchipa2().getNume().equals(nume)) {
-                meciRepository.deleteMeci(meci);
+                meciDao.deleteMeci(meci);
             }
         }
 
-        ContractRepository contractRepository = new ContractRepository();
-        for(Contract contract : contractRepository.findAllContract()) {
+        ContractDao contractDao = new ContractDao();
+        for(Contract contract : contractDao.findAllContract()) {
             if(contract.getTeam().getNume().equals(nume)) {
-                contractRepository.deleteContract(contract.getTeam().getNume(), contract.getSponsor().getName());
+                contractDao.deleteContract(contract.getTeam().getNume(), contract.getSponsor().getName());
             }
         }
     }

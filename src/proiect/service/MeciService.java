@@ -1,6 +1,6 @@
 package proiect.service;
 
-import proiect.dao.*;
+import proiect.daoservices.*;
 import proiect.model.Meci;
 import proiect.model.Echipa;
 import proiect.model.Stadion;
@@ -8,20 +8,20 @@ import proiect.model.Stadion;
 import java.util.Scanner;
 
 public class MeciService {
-    private MeciDAOService meciDAOService;
-    private EchipaDAOService echipaDAOService;
-    private StadionDAOService stadionDAOService;
+    private MeciRepositoryService meciRepositoryService;
+    private EchipaRepositoryService echipaRepositoryService;
+    private StadionRepositoryService stadionRepositoryService;
 
     public MeciService() {
-        this.meciDAOService = new MeciDAOService();
-        this.echipaDAOService = new EchipaDAOService();
-        this.stadionDAOService = new StadionDAOService();
+        this.meciRepositoryService = new MeciRepositoryService();
+        this.echipaRepositoryService = new EchipaRepositoryService();
+        this.stadionRepositoryService = new StadionRepositoryService();
     }
 
     private Echipa getTeamByName(Scanner scanner, String teamType) {
         System.out.print("Enter " + teamType + " team name: ");
         String teamName = scanner.nextLine();
-        Echipa team = echipaDAOService.getEchipaByName(teamName);
+        Echipa team = echipaRepositoryService.getEchipaByName(teamName);
         if (team == null) {
             System.out.println(teamType + " team not found.");
         }
@@ -31,7 +31,7 @@ public class MeciService {
     private Stadion getStadiumByName(Scanner scanner) {
         System.out.print("Enter stadium name: ");
         String stadiumName = scanner.nextLine();
-        Stadion stadium = stadionDAOService.getStadionByName(stadiumName);
+        Stadion stadium = stadionRepositoryService.getStadionByName(stadiumName);
         if (stadium == null) {
             System.out.println("Stadium not found.");
         }
@@ -53,7 +53,7 @@ public class MeciService {
         if (stadium == null) return;
 
         Meci meci = new Meci(0, homeTeam, awayTeam, date, 0, 0, stadium);
-        meciDAOService.addMeci(meci);
+        meciRepositoryService.addMeci(meci);
         System.out.println("Match created successfully.");
     }
 
@@ -65,7 +65,7 @@ public class MeciService {
         String awayTeamName = scanner.nextLine();
         System.out.print("Enter match date (dd/mm/yyyy): ");
         String date = scanner.nextLine();
-        Meci meci = meciDAOService.getMeci(homeTeamName, awayTeamName, date);
+        Meci meci = meciRepositoryService.getMeci(homeTeamName, awayTeamName, date);
         if (meci != null) {
             System.out.println(meci);
         } else {
@@ -81,7 +81,7 @@ public class MeciService {
         String awayTeamName = scanner.nextLine();
         System.out.print("Enter match date (dd/mm/yyyy): ");
         String date = scanner.nextLine();
-        Meci existingMeci = meciDAOService.getMeci(homeTeamName, awayTeamName, date);
+        Meci existingMeci = meciRepositoryService.getMeci(homeTeamName, awayTeamName, date);
         if (existingMeci == null) {
             System.out.println("Match not found.");
             return;
@@ -91,7 +91,7 @@ public class MeciService {
         System.out.print("Enter new score for away team: ");
         int scoreAway = scanner.nextInt();
         scanner.nextLine();
-        meciDAOService.updateMeci(homeTeamName, awayTeamName, date, scoreHome, scoreAway);
+        meciRepositoryService.updateMeci(homeTeamName, awayTeamName, date, scoreHome, scoreAway);
         System.out.println("Match updated successfully.");
     }
 
@@ -103,9 +103,9 @@ public class MeciService {
         String awayTeamName = scanner.nextLine();
         System.out.print("Enter match date (dd/mm/yyyy): ");
         String date = scanner.nextLine();
-        Meci meci = meciDAOService.getMeci(homeTeamName, awayTeamName, date);
+        Meci meci = meciRepositoryService.getMeci(homeTeamName, awayTeamName, date);
         if (meci != null) {
-            meciDAOService.removeMeci(meci);
+            meciRepositoryService.removeMeci(meci);
             System.out.println("Match deleted successfully.");
         } else {
             System.out.println("Match not found.");
