@@ -43,7 +43,7 @@ public class AngajatRepositoryService {
         }
     }
 
-    public void removeAngajat(Angajat angajat) {
+    public void  removeAngajat(Angajat angajat) {
         if (angajat instanceof Antrenor) {
             antrenorDao.deleteAntrenor((Antrenor) angajat);
         } else if (angajat instanceof Jucator) {

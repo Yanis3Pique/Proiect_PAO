@@ -14,15 +14,36 @@ public class SponsorService {
     public void createSponsor(Scanner scanner) {
         System.out.println("Creating a new Sponsor:");
 
-        System.out.print("Enter sponsor name: ");
-        String name = scanner.nextLine();
-
-        System.out.print("Enter sponsor country: ");
-        String country = scanner.nextLine();
+        String name = getSponsorName(scanner);
+        String country = getSponsorCountry(scanner);
 
         Sponsor sponsor = new Sponsor(0, name, country);
         sponsorRepositoryService.addSponsor(sponsor);
         System.out.println("Sponsor created successfully.");
+    }
+
+    private String getSponsorName(Scanner scanner) {
+        String name = "";
+        while (name.trim().isEmpty()) {
+            System.out.print("Enter sponsor name (cannot be empty): ");
+            name = scanner.nextLine();
+            if (name.trim().isEmpty()) {
+                System.out.println("Sponsor name cannot be empty. Please enter a valid name.");
+            }
+        }
+        return name;
+    }
+
+    private String getSponsorCountry(Scanner scanner) {
+        String country = "";
+        while (country.length() < 3) {
+            System.out.print("Enter sponsor country (>= 3 characters): ");
+            country = scanner.nextLine();
+            if (country.length() < 3) {
+                System.out.println("Sponsor country >= 3 characters. Please enter a valid country.");
+            }
+        }
+        return country;
     }
 
     public void viewSponsor(Scanner scanner) {
@@ -49,13 +70,24 @@ public class SponsorService {
             return;
         }
 
-        System.out.print("Enter new country for the sponsor: ");
-        String newCountry = scanner.nextLine();
+        String newCountry = getNewSponsorCountry(scanner);
 
         existingSponsor.setCountry(newCountry);
 
         sponsorRepositoryService.updateSponsor(name, existingSponsor);
         System.out.println("Sponsor updated successfully.");
+    }
+
+    private String getNewSponsorCountry(Scanner scanner) {
+        String newCountry = "";
+        while (newCountry.length() < 3) {
+            System.out.print("Enter new country for the sponsor (>= 3 characters): ");
+            newCountry = scanner.nextLine();
+            if (newCountry.length() < 3) {
+                System.out.println("Sponsor country >= 3 characters. Please enter a valid country.");
+            }
+        }
+        return newCountry;
     }
 
     public void deleteSponsor(Scanner scanner) {

@@ -21,12 +21,23 @@ public class EchipaService {
 
     public void createEchipa(Scanner scanner) {
         System.out.println("Creating a new Team:");
-        System.out.print("Enter team name: ");
-        String nume = scanner.nextLine();
+        String nume;
+        do {
+            System.out.print("Enter team name (length >= 3): ");
+            nume = scanner.nextLine();
+        } while (nume.length() < 3);
 
         System.out.print("Enter coach's first and last name: ");
-        String antrenorNume = scanner.nextLine();
-        Antrenor antrenor = (Antrenor) antrenorDAOService.getAngajatByName(antrenorNume.split(" ")[0], antrenorNume.split(" ")[1]);
+        Antrenor antrenor;
+        while(true) {
+            String antrenorNume = scanner.nextLine();
+            if (antrenorNume.split(" ").length == 2) {
+                antrenor = (Antrenor) antrenorDAOService.getAngajatByName(antrenorNume.split(" ")[0], antrenorNume.split(" ")[1]);
+                break;
+            } else {
+                System.out.println("Invalid input. Please make sure to include the first and a last name.");
+            }
+        }
 
         System.out.print("Enter stadium name: ");
         String stadionNume = scanner.nextLine();
@@ -49,20 +60,26 @@ public class EchipaService {
     }
 
     private void updateCoach(Scanner scanner, Echipa echipa) {
-        System.out.print("Enter new coach's first and last name (or press Enter to skip): ");
-        String antrenorNume = scanner.nextLine();
-        if (!antrenorNume.isEmpty()) {
-            String[] names = antrenorNume.split(" ");
-            if (names.length < 2) {
-                System.out.println("Please enter both first and last name.");
-                return;
-            }
-            Antrenor antrenor = (Antrenor) antrenorDAOService.getAngajatByName(names[0], names[1]);
-            if (antrenor != null) {
-                echipa.setAntrenor(antrenor);
+        String antrenorNume;
+        while (true) {
+            System.out.print("Enter new coach's first and last name (or press Enter to skip): ");
+            antrenorNume = scanner.nextLine();
+            if (antrenorNume.isEmpty()) {
+                break;
             } else {
-                System.out.println("Coach not found.");
-                throw new IllegalArgumentException("Coach not found.");
+                String[] names = antrenorNume.split(" ");
+                if (names.length == 2) {
+                    Antrenor antrenor = (Antrenor) antrenorDAOService.getAngajatByName(names[0], names[1]);
+                    if (antrenor != null) {
+                        echipa.setAntrenor(antrenor);
+                        break;
+                    } else {
+                        System.out.println("Coach not found.");
+                        throw new IllegalArgumentException("Stadium not found.");
+                    }
+                } else {
+                    System.out.println("Invalid input. Please enter both first and last name, separated by a space.");
+                }
             }
         }
     }
@@ -119,50 +136,47 @@ public class EchipaService {
         System.out.print("Enter the name of the team you want to add a player to: ");
         String nume = scanner.nextLine();
         Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
-        if (echipa == null) {
-            System.out.println("Team not found.");
-            return;
-        }
+        if (echipa == null) {System.out.println("Team not found."); return;}
         System.out.print("Enter player's first and last name: ");
-        String jucatorNume = scanner.nextLine();
-        String[] names = jucatorNume.split(" ");
-        if (names.length < 2) {
-            System.out.println("Please enter both first and last name.");
-            return;
+        String jucatorNume;
+        String[] names;
+        while (true) {
+            System.out.println("Please enter the full name of the player (First Last):");
+            jucatorNume = scanner.nextLine();
+            names = jucatorNume.split(" ");
+            if (names.length >= 2) {break;}
+            else {System.out.println("Invalid input. Please enter both first and last name, separated by a space.");}
         }
         Jucator jucator = (Jucator) antrenorDAOService.getAngajatByName(names[0], names[1]);
         if (jucator != null) {
             echipa.getJucatori().add(jucator);
             echipaRepositoryService.updateEchipa(nume, echipa);
             System.out.println("Player added successfully.");
-        } else {
-            System.out.println("Player not found.");
-        }
+        } else {System.out.println("Player not found.");}
     }
 
     public void removeJucator(Scanner scanner) {
         System.out.print("Enter the name of the team you want to remove a player from: ");
         String nume = scanner.nextLine();
         Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
-        if (echipa == null) {
-            System.out.println("Team not found.");
-            return;
-        }
+        if (echipa == null) {System.out.println("Team not found."); return;}
         System.out.print("Enter player's first and last name: ");
-        String jucatorNume = scanner.nextLine();
-        String[] names = jucatorNume.split(" ");
-        if (names.length < 2) {
-            System.out.println("Please enter both first and last name.");
-            return;
+        System.out.print("Enter player's first and last name: ");
+        String jucatorNume;
+        String[] names;
+        while (true) {
+            System.out.println("Please enter the full name of the player (First Last):");
+            jucatorNume = scanner.nextLine();
+            names = jucatorNume.split(" ");
+            if (names.length >= 2) {break;}
+            else {System.out.println("Invalid input. Please enter both first and last name, separated by a space.");}
         }
         Jucator jucator = (Jucator) antrenorDAOService.getAngajatByName(jucatorNume.split(" ")[0], jucatorNume.split(" ")[1]);
         if (jucator != null) {
             echipa.getJucatori().remove(jucator);
             echipaRepositoryService.updateEchipa(nume, echipa);
             System.out.println("Player removed successfully.");
-        } else {
-            System.out.println("Player not found.");
-        }
+        } else {System.out.println("Player not found.");}
     }
 
     public void viewJucatori(Scanner scanner) {
