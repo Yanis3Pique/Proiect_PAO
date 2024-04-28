@@ -1,11 +1,19 @@
 CLASE:
+
 Angajat - clasă abstractă
+
 Antrenor - moștenește Angajat
+
 Contract - leagă o echipă de un sponsor
+
 Echipa - conține un Antrenor, o listă de Jucători și un Stadion
+
 Jucator - moștenește Angajat
+
 Meci - conține două Echipe
+
 Sponsor
+
 Stadion
 
 FUNCȚIONALITĂȚI:
