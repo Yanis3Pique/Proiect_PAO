@@ -10,12 +10,12 @@ import java.util.Scanner;
 
 public class EchipaService {
     private EchipaRepositoryService echipaRepositoryService;
-    private AngajatRepositoryService antrenorDAOService;
+    private AngajatRepositoryService antrenorRepositoryService;
     private StadionRepositoryService stadionRepositoryService;
 
     public EchipaService() {
         this.echipaRepositoryService = new EchipaRepositoryService();
-        this.antrenorDAOService = new AngajatRepositoryService();
+        this.antrenorRepositoryService = new AngajatRepositoryService();
         this.stadionRepositoryService = new StadionRepositoryService();
     }
 
@@ -32,7 +32,7 @@ public class EchipaService {
         while(true) {
             String antrenorNume = scanner.nextLine();
             if (antrenorNume.split(" ").length == 2) {
-                antrenor = (Antrenor) antrenorDAOService.getAngajatByName(antrenorNume.split(" ")[0], antrenorNume.split(" ")[1]);
+                antrenor = (Antrenor) antrenorRepositoryService.getAngajatByName(antrenorNume.split(" ")[0], antrenorNume.split(" ")[1]);
                 break;
             } else {
                 System.out.println("Invalid input. Please make sure to include the first and a last name.");
@@ -69,7 +69,7 @@ public class EchipaService {
             } else {
                 String[] names = antrenorNume.split(" ");
                 if (names.length == 2) {
-                    Antrenor antrenor = (Antrenor) antrenorDAOService.getAngajatByName(names[0], names[1]);
+                    Antrenor antrenor = (Antrenor) antrenorRepositoryService.getAngajatByName(names[0], names[1]);
                     if (antrenor != null) {
                         echipa.setAntrenor(antrenor);
                         break;
@@ -147,7 +147,7 @@ public class EchipaService {
             if (names.length >= 2) {break;}
             else {System.out.println("Invalid input. Please enter both first and last name, separated by a space.");}
         }
-        Jucator jucator = (Jucator) antrenorDAOService.getAngajatByName(names[0], names[1]);
+        Jucator jucator = (Jucator) antrenorRepositoryService.getAngajatByName(names[0], names[1]);
         if (jucator != null) {
             echipa.getJucatori().add(jucator);
             echipaRepositoryService.updateEchipa(nume, echipa);
@@ -171,7 +171,7 @@ public class EchipaService {
             if (names.length >= 2) {break;}
             else {System.out.println("Invalid input. Please enter both first and last name, separated by a space.");}
         }
-        Jucator jucator = (Jucator) antrenorDAOService.getAngajatByName(jucatorNume.split(" ")[0], jucatorNume.split(" ")[1]);
+        Jucator jucator = (Jucator) antrenorRepositoryService.getAngajatByName(jucatorNume.split(" ")[0], jucatorNume.split(" ")[1]);
         if (jucator != null) {
             echipa.getJucatori().remove(jucator);
             echipaRepositoryService.updateEchipa(nume, echipa);

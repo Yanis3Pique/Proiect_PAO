@@ -32,6 +32,7 @@ public class AngajatRepositoryService {
             return jucator;
         }
 
+        System.out.println("Employee has not been found!");
         return null;
     }
 

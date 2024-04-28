@@ -13,7 +13,15 @@ public class StadionRepositoryService {
     }
 
     public Stadion getStadionByName(String name) {
-        return stadionDao.read(name);
+        Stadion stadion = stadionDao.read(name);
+
+        if (stadion != null) {
+            return stadion;
+        } else {
+            System.out.println("Stadium has not been found!");
+        }
+
+        return null;
     }
 
     public void updateStadion(String name, Stadion updatedStadion) {
