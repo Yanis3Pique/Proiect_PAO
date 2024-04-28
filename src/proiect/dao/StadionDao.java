@@ -54,7 +54,7 @@ public class StadionDao {
         echipaDao.removeStadionFromEchipa(stadion);
     }
 
-    public List<Stadion> findAllStadion() {
+    public List<Stadion> findAll() {
         return new ArrayList<>(stadions);
     }
 }

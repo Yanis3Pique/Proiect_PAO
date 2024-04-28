@@ -33,6 +33,6 @@ public class StadionRepositoryService {
     }
 
     public List<Stadion> getAllStadions() {
-        return stadionDao.findAllStadion();
+        return stadionDao.findAll();
     }
 }
