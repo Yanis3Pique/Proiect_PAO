@@ -6,16 +6,18 @@ import proiect.model.Sponsor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SponsorDao {
+public class SponsorDao implements DaoInterface<Sponsor> {
     private static int nextId = 1;
     private static List<Sponsor> sponsors = new ArrayList<>();
 
-    public void createSponsor(Sponsor sponsor) {
+    @Override
+    public void create(Sponsor sponsor) {
         sponsor.setId(nextId++);
         sponsors.add(sponsor);
     }
 
-    public Sponsor readSponsor(String name) {
+    @Override
+    public Sponsor read(String name) {
         for (Sponsor sponsor : sponsors) {
             if (sponsor.getName().equalsIgnoreCase(name)) {
                 return sponsor;
@@ -24,7 +26,8 @@ public class SponsorDao {
         return null;
     }
 
-    public void updateSponsor(String name, Sponsor sponsorUpdated) {
+    @Override
+    public void update(String name, Sponsor sponsorUpdated) {
         for(Sponsor sponsor : sponsors) {
             if(sponsor.getName().equalsIgnoreCase(name)) {
                 for(Contract contract : new ContractDao().findAllContract()) {
@@ -40,12 +43,13 @@ public class SponsorDao {
         }
     }
 
-    public void deleteSponsor(Sponsor sponsor) {
+    @Override
+    public void delete(Sponsor sponsor) {
         sponsors.remove(sponsor);
         ContractDao contractDao = new ContractDao();
         for(Contract contract : contractDao.findAllContract()) {
             if(contract.getSponsor().equals(sponsor)) {
-                contractDao.deleteContract(contract.getTeam().getNume(), contract.getSponsor().getName());
+                contractDao.delete(contract);
             }
         }
     }

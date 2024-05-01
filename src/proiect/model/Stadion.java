@@ -8,6 +8,8 @@ public class Stadion {
     private int capacitate;
     private String locatie;
 
+    public Stadion() {}
+
     public Stadion(int id, String nume, int capacitate, String locatie) {
         this.id = id;
         this.nume = nume;

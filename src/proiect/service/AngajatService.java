@@ -4,22 +4,23 @@ import proiect.daoservices.AngajatRepositoryService;
 import proiect.model.Angajat;
 import proiect.model.Antrenor;
 import proiect.model.Jucator;
+import proiect.utils.FileManagement;
 
+import java.io.File;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class AngajatService {
-    private AngajatRepositoryService angajatRepositoryService;
+    private AngajatRepositoryService databaseService;
 
-    public AngajatService() {
-        this.angajatRepositoryService = new AngajatRepositoryService();
+    public AngajatService() throws SQLException {
+        this.databaseService = new AngajatRepositoryService();
     }
 
     public void createAngajat(Scanner scanner) {
-        System.out.println("Enter type of employee [antrenor/jucator]:");
+        System.out.println("Enter type of employee [coach/player]:");
         String typeOfAngajat = scanner.nextLine().toLowerCase();
-        if (!typeOfAngajatValidation(typeOfAngajat)) {
-            return;
-        }
+        if (!typeOfAngajatValidation(typeOfAngajat)) { return; }
         angajatInit(scanner, typeOfAngajat);
     }
 
@@ -28,22 +29,25 @@ public class AngajatService {
         String firstName = scanner.nextLine();
         System.out.println("Enter last name:");
         String lastName = scanner.nextLine();
-        Angajat angajat = angajatRepositoryService.getAngajatByName(firstName, lastName);
-        if (angajat != null) {
-            System.out.println(angajat);
-        } else {
-            System.out.println("Employee not found.");
+        try {
+            Angajat angajat = databaseService.getAngajatByName(firstName, lastName);
+            FileManagement.scriereFisierChar("audit.txt", "citire angajat " + firstName + " " + lastName);
+            if (angajat != null) {
+                System.out.println(angajat);
+            }
+        } catch (SQLException e) {
+            System.out.println("Employee not found " + e.getSQLState() + " " + e.getMessage());
         }
     }
 
-    private Angajat fetchAngajatDetails(Scanner scanner) {
+    private Angajat fetchAngajatDetails(Scanner scanner) throws SQLException {
         System.out.println("Updating an employee:");
         System.out.println("Enter first name:");
         String firstName = scanner.nextLine();
         System.out.println("Enter last name:");
         String lastName = scanner.nextLine();
 
-        Angajat angajat = angajatRepositoryService.getAngajatByName(firstName, lastName);
+        Angajat angajat = databaseService.getAngajatByName(firstName, lastName);
         if (angajat == null) {
             System.out.println("Employee not found.");
         }
@@ -87,34 +91,39 @@ public class AngajatService {
         }
     }
 
-    public void updateAngajat(Scanner scanner) {
+    public void updateAngajat(Scanner scanner) throws SQLException {
         Angajat angajat = fetchAngajatDetails(scanner);
         if (angajat == null) return;
 
         updateGeneralAttributes(angajat, scanner);
         updateSpecificAttributes(angajat, scanner);
 
-        angajatRepositoryService.updateAngajat(angajat);
-        System.out.println("Employee updated successfully.");
+        try {
+            databaseService.updateAngajat(angajat);
+            System.out.println("Employee updated successfully.");
+        } catch (SQLException e) {
+            System.out.println("Employee could not be updated " + e.getSQLState() + " " + e.getMessage());
+        }
     }
 
-    public void deleteAngajat(Scanner scanner) {
+    public void deleteAngajat(Scanner scanner) throws SQLException {
         System.out.println("Deleting an employee:");
         System.out.println("Enter first name:");
         String firstName = scanner.nextLine();
         System.out.println("Enter last name:");
         String lastName = scanner.nextLine();
-        Angajat angajat = angajatRepositoryService.getAngajatByName(firstName, lastName);
-        if (angajat != null) {
-            angajatRepositoryService.removeAngajat(angajat);
+        Angajat angajat = databaseService.getAngajatByName(firstName, lastName);
+        try {
+            databaseService.removeAngajat(angajat);
+            FileManagement.scriereFisierChar("audit.txt", "stergere angajat " + firstName + " " + lastName);
             System.out.println("Employee deleted successfully.");
-        } else {
-            System.out.println("Employee not found.");
+        } catch (SQLException e) {
+            System.out.println("Employee could not be deleted " + e.getSQLState() + " " + e.getMessage());
         }
     }
 
     private boolean typeOfAngajatValidation(String typeOfAngajat) {
-        if (!typeOfAngajat.equals("antrenor") && !typeOfAngajat.equals("jucator")) {
+        if (!typeOfAngajat.equals("coach") && !typeOfAngajat.equals("player")) {
             System.out.println("Invalid type of employee.");
             return false;
         }
@@ -134,13 +143,18 @@ public class AngajatService {
         double salary = scanner.nextDouble();
         scanner.nextLine();
 
-        if (typeOfAngajat.equals("antrenor")) {
+        if (typeOfAngajat.equals("coach")) {
             System.out.println("Enter years of experience:");
             int years = scanner.nextInt();
             scanner.nextLine();
             Antrenor antrenor = new Antrenor(0, firstName, lastName, nationality, age, salary, years);
-            angajatRepositoryService.addAngajat(antrenor);
-        } else if (typeOfAngajat.equals("jucator")) {
+            try {
+                databaseService.addAngajat(antrenor);
+                FileManagement.scriereFisierChar("audit.txt", "adaugare antrenor " + firstName + " " + lastName);
+            } catch (SQLException e) {
+                System.out.println("Coach could not be created " + e.getSQLState() + " " + e.getMessage());
+            }
+        } else if (typeOfAngajat.equals("player")) {
             System.out.println("Enter player number:");
             int number = scanner.nextInt();
             scanner.nextLine();
@@ -148,7 +162,12 @@ public class AngajatService {
             String position = scanner.nextLine();
             Jucator jucator = new Jucator(0, firstName, lastName, nationality, age, salary, number);
             jucator.setPozitie(position);
-            angajatRepositoryService.addAngajat(jucator);
+            try {
+                databaseService.addAngajat(jucator);
+                FileManagement.scriereFisierChar("audit.txt", "adaugare jucator " + firstName + " " + lastName);
+            } catch (SQLException e) {
+                System.out.println("Player could not be created " + e.getSQLState() + " " + e.getMessage());
+            }
         }
         System.out.println("Employee created successfully.");
     }

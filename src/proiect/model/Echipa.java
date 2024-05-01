@@ -10,6 +10,8 @@ public class Echipa {
     private ArrayList<Jucator> jucatori;
     private Stadion stadion;
 
+    public Echipa() {}
+
     public Echipa(int id, String nume, Antrenor antrenor, Stadion stadion) {
         this.id = id;
         this.nume = nume;

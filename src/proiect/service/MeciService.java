@@ -91,7 +91,9 @@ public class MeciService {
         System.out.print("Enter new score for away team: ");
         int scoreAway = scanner.nextInt();
         scanner.nextLine();
-        meciRepositoryService.updateMeci(homeTeamName, awayTeamName, date, scoreHome, scoreAway);
+        Meci newMeci = new Meci(existingMeci.getId(), existingMeci.getEchipa1(), existingMeci.getEchipa2(),
+                                existingMeci.getData(), scoreHome, scoreAway, existingMeci.getStadion());
+        meciRepositoryService.updateMeci(homeTeamName, awayTeamName, date, newMeci);
         System.out.println("Match updated successfully.");
     }
 

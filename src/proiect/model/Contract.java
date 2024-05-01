@@ -9,6 +9,8 @@ public class Contract {
     private int durationYears;
     private double sumMoney;
 
+    public Contract() {}
+
     public Contract(int id, Echipa team, Sponsor sponsor, int durationYears, double sumMoney) {
         this.id = id;
         this.team = team;

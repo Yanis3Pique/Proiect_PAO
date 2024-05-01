@@ -2,12 +2,13 @@ package proiect;
 
 import proiect.service.*;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import static proiect.service.CampionatService.*;
 
 public class Application {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         AngajatService angajatService = new AngajatService();
         EchipaService echipaService = new EchipaService();
@@ -16,6 +17,7 @@ public class Application {
         StadionService stadionService = new StadionService();
         CampionatService campionatService = new CampionatService();
         ContractService contractService = new ContractService();
+        System.out.println("\nWelcome to Yanis3Pique's Championship Management System\n");
 
         while (true) {
             generalMenu();

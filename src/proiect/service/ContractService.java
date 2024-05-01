@@ -5,6 +5,7 @@ import proiect.model.Contract;
 import proiect.model.Echipa;
 import proiect.model.Sponsor;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ContractService {
@@ -12,7 +13,7 @@ public class ContractService {
     private EchipaRepositoryService echipaRepositoryService;
     private SponsorRepositoryService sponsorRepositoryService;
 
-    public ContractService() {
+    public ContractService() throws SQLException {
         this.contractRepositoryService = new ContractRepositoryService();
         this.echipaRepositoryService = new EchipaRepositoryService();
         this.sponsorRepositoryService = new SponsorRepositoryService();
@@ -39,8 +40,12 @@ public class ContractService {
         double sumMoney = getValidContractSum(scanner);
 
         Contract contract = new Contract(0, team, sponsor, duration, sumMoney);
-        contractRepositoryService.addContract(contract);
-        System.out.println("Contract created successfully.");
+        try {
+            contractRepositoryService.addContract(contract);
+            System.out.println("Contract created successfully.");
+        } catch (SQLException e) {
+            System.out.println("Contract could not be created: " + e.getSQLState() + " " + e.getMessage());
+        }
     }
 
     private String getValidTeamName(Scanner scanner) {
@@ -104,15 +109,19 @@ public class ContractService {
         System.out.print("Enter sponsor name: ");
         String sponsorName = scanner.nextLine();
 
-        Contract contract = contractRepositoryService.getContractByTeamAndSponsor(teamName, sponsorName);
-        if (contract != null) {
-            System.out.println(contract);
-        } else {
-            System.out.println("Contract not found.");
+        try {
+            Contract contract = contractRepositoryService.getContractByTeamAndSponsor(teamName, sponsorName);
+            if (contract == null) {
+                System.out.println("Contract not found.");
+            } else {
+                System.out.println(contract);
+            }
+        } catch (SQLException e) {
+            System.out.println("Could not retrieve contract: " + e.getSQLState() + " " + e.getMessage());
         }
     }
 
-    public void updateContract(Scanner scanner) {
+    public void updateContract(Scanner scanner) throws SQLException {
         System.out.println("Update a Contract:");
         System.out.print("Enter team name: ");
         String teamName = scanner.nextLine();
@@ -127,8 +136,13 @@ public class ContractService {
         double newSumMoney = getNewValidContractSum(scanner);
         existingContract.setDurationYears(newDuration);
         existingContract.setSumMoney(newSumMoney);
-        contractRepositoryService.updateContract(teamName, sponsorName, existingContract);
-        System.out.println("Contract updated successfully.");
+
+        try {
+            contractRepositoryService.updateContract(teamName, sponsorName, existingContract);
+            System.out.println("Contract updated successfully.");
+        } catch (SQLException e) {
+            System.out.println("Contract could not be updated: " + e.getSQLState() + " " + e.getMessage());
+        }
     }
 
     private int getNewValidContractDuration(Scanner scanner) {
@@ -172,7 +186,17 @@ public class ContractService {
         String teamName = scanner.nextLine();
         System.out.print("Enter sponsor name: ");
         String sponsorName = scanner.nextLine();
-        contractRepositoryService.removeContract(teamName, sponsorName);
-        System.out.println("Contract deleted successfully.");
+
+        try {
+            Contract contract = contractRepositoryService.getContractByTeamAndSponsor(teamName, sponsorName);
+            if (contract == null) {
+                System.out.println("Contract not found.");
+            } else {
+                contractRepositoryService.removeContract(teamName, sponsorName);
+                System.out.println("Contract deleted successfully.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Could not delete contract: " + e.getSQLState() + " " + e.getMessage());
+        }
     }
 }

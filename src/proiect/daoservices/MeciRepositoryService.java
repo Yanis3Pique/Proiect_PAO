@@ -9,19 +9,19 @@ public class MeciRepositoryService {
     private final MeciDao meciDao = new MeciDao();
 
     public void addMeci(Meci meci) {
-        meciDao.createMeci(meci);
+        meciDao.create(meci);
     }
 
     public Meci getMeci(String numeEchipa1, String numeEchipa2, String data) {
-        return meciDao.readMeci(numeEchipa1, numeEchipa2, data);
+        return meciDao.read(numeEchipa1 + "_" + numeEchipa2 + "_" + data);
     }
 
-    public void updateMeci(String numeEchipa1, String numeEchipa2, String data, int scor1, int scor2) {
-        meciDao.updateMeci(numeEchipa1, numeEchipa2, data, scor1, scor2);
+    public void updateMeci(String numeEchipa1, String numeEchipa2, String data, Meci newMeci) {
+        meciDao.update(numeEchipa1 + "_" + numeEchipa2 + "_" + data, newMeci);
     }
 
     public void removeMeci(Meci meci) {
-        meciDao.deleteMeci(meci);
+        meciDao.delete(meci);
     }
 
     public List<Meci> getAllMeciuri() {

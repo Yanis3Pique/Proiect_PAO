@@ -11,6 +11,8 @@ public class Meci {
     private int scor2;
     private Stadion stadion;
 
+    public Meci() {}
+
     public Meci(int id, Echipa echipa1, Echipa echipa2, String data, int scor1, int scor2, Stadion stadion) {
         this.id = id;
         this.echipa1 = echipa1;

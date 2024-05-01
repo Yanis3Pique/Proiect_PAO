@@ -6,28 +6,29 @@ import proiect.model.Jucator;
 import proiect.dao.AntrenorDao;
 import proiect.dao.JucatorDao;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 
 public class AngajatRepositoryService {
-    private final AntrenorDao antrenorDao = new AntrenorDao();
-    private final JucatorDao jucatorDao = new JucatorDao();
+    private AntrenorDao antrenorDao = AntrenorDao.getInstance();
+    private JucatorDao jucatorDao = JucatorDao.getInstance();
 
-    public void addAngajat(Angajat angajat) {
+    public AngajatRepositoryService() throws SQLException {}
+
+    public void addAngajat(Angajat angajat) throws SQLException {
         if (angajat instanceof Antrenor) {
-            antrenorDao.createAntrenor((Antrenor) angajat);
+            antrenorDao.create((Antrenor) angajat);
         } else if (angajat instanceof Jucator) {
-            jucatorDao.createJucator((Jucator) angajat);
+            jucatorDao.create((Jucator) angajat);
         }
     }
 
-    public Angajat getAngajatByName(String nume, String prenume) {
-        Antrenor antrenor = antrenorDao.readAntrenor(nume, prenume);
+    public Angajat getAngajatByName(String nume, String prenume) throws SQLException {
+        Antrenor antrenor = antrenorDao.read(nume + "_" + prenume);
         if (antrenor != null) {
             return antrenor;
         }
 
-        Jucator jucator = jucatorDao.readJucator(nume, prenume);
+        Jucator jucator = jucatorDao.read(nume + "_" + prenume);
         if (jucator != null) {
             return jucator;
         }
@@ -36,26 +37,19 @@ public class AngajatRepositoryService {
         return null;
     }
 
-    public void updateAngajat(Angajat angajat) {
+    public void updateAngajat(Angajat angajat) throws SQLException {
         if (angajat instanceof Antrenor antrenor) {
-            antrenorDao.updateAntrenor(antrenor.getNume(), antrenor.getPrenume(), antrenor);
+            antrenorDao.update(antrenor.getNume() + "_" + antrenor.getPrenume(), antrenor);
         } else if (angajat instanceof Jucator jucator) {
-            jucatorDao.updateJucator(jucator.getNume(), jucator.getPrenume(), jucator);
+            jucatorDao.update(jucator.getNume() + "_" + jucator.getPrenume(), jucator);
         }
     }
 
-    public void  removeAngajat(Angajat angajat) {
+    public void removeAngajat(Angajat angajat) throws SQLException {
         if (angajat instanceof Antrenor) {
-            antrenorDao.deleteAntrenor((Antrenor) angajat);
+            antrenorDao.delete((Antrenor) angajat);
         } else if (angajat instanceof Jucator) {
-            jucatorDao.deleteJucator((Jucator) angajat);
+            jucatorDao.delete((Jucator) angajat);
         }
-    }
-
-    public List<Angajat> getAllAngajati() {
-        List<Angajat> angajati = new ArrayList<>();
-        angajati.addAll(antrenorDao.findAllAntrenori());
-        angajati.addAll(jucatorDao.findAllJucator());
-        return angajati;
     }
 }

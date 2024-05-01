@@ -9,19 +9,20 @@ public class EchipaRepositoryService {
     private final EchipaDao echipaDao = new EchipaDao();
 
     public void addEchipa(Echipa echipa) {
-        echipaDao.createEchipa(echipa);
+        echipaDao.create(echipa);
     }
 
     public Echipa getEchipaByName(String nume) {
-        return echipaDao.readEchipa(nume);
+        return echipaDao.read(nume);
     }
 
     public void updateEchipa(String nume, Echipa echipaUpdated) {
-        echipaDao.updateEchipa(nume, echipaUpdated);
+        echipaDao.update(nume, echipaUpdated);
     }
 
     public void removeEchipa(String nume) {
-        echipaDao.deleteEchipa(nume);
+        Echipa echipa = echipaDao.read(nume);
+        echipaDao.delete(echipa);
     }
 
     public List<Echipa> getAllEchipe() {

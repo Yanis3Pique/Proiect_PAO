@@ -10,6 +10,8 @@ public abstract class Angajat {
     private int varsta;
     private double salariu;
 
+    public Angajat() {}
+
     public Angajat(int id, String nume, String prenume, String nationalitate, int varsta, double salariu) {
         this.id = id;
         this.nume = nume;

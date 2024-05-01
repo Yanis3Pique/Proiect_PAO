@@ -176,7 +176,7 @@ public class EchipaService {
             echipa.getJucatori().remove(jucator);
             echipaRepositoryService.updateEchipa(nume, echipa);
             System.out.println("Player removed successfully.");
-        } else {System.out.println("Player not found.");}
+        }
     }
 
     public void viewJucatori(Scanner scanner) {

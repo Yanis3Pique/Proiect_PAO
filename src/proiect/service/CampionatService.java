@@ -5,6 +5,7 @@ import proiect.model.Meci;
 import proiect.dao.EchipaDao;
 import proiect.dao.MeciDao;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -113,7 +114,7 @@ public class CampionatService {
         System.out.print("Enter choice: ");
     }
 
-    public static void manageEmployees(Scanner scanner, AngajatService angajatService) {
+    public static void manageEmployees(Scanner scanner, AngajatService angajatService) throws SQLException {
         manageEmployeesMenu();
 
         String employeeChoice = scanner.nextLine();
@@ -194,7 +195,7 @@ public class CampionatService {
         System.out.print("Enter choice: ");
     }
 
-    public static void manageContracts(Scanner scanner, ContractService contractService, EchipaService echipaService, SponsorService sponsorService) {
+    public static void manageContracts(Scanner scanner, ContractService contractService, EchipaService echipaService, SponsorService sponsorService) throws SQLException {
         manageContractsMenu();
 
         String contractChoice = scanner.nextLine();

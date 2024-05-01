@@ -5,6 +5,10 @@ import java.util.Objects;
 public class Antrenor extends Angajat {
     private int aniExperienta;
 
+    public Antrenor() {
+        super();
+    }
+
     public Antrenor(int id, String nume, String prenume, String nationalitate, int varsta, double salariu, int aniExperienta) {
         super(id, nume, prenume, nationalitate, varsta, salariu);
         this.aniExperienta = aniExperienta;

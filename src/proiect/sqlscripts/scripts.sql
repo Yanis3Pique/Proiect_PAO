@@ -1,74 +1,78 @@
--- Abstract, will be used as a base for Jucator and Antrenor
+-- Table creation for 'Angajat'
 CREATE TABLE Angajat (
-            id INT PRIMARY KEY,
-            nume VARCHAR(255),
-            prenume VARCHAR(255),
-            nationalitate VARCHAR(255),
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nume VARCHAR(100),
+            prenume VARCHAR(100),
+            nationalitate VARCHAR(100),
             varsta INT,
             salariu DOUBLE
 );
 
-
+-- Table creation for 'Antrenor'
 CREATE TABLE Antrenor (
-            id INT PRIMARY KEY,
+            id INT AUTO_INCREMENT PRIMARY KEY,
             aniExperienta INT,
             FOREIGN KEY (id) REFERENCES Angajat(id)
 );
 
-
+-- Table creation for 'Jucator'
 CREATE TABLE Jucator (
-            id INT PRIMARY KEY,
-            pozitie VARCHAR(255),
-            numarTricou INT,
-            FOREIGN KEY (id) REFERENCES Angajat(id)
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            numar INT,
+            pozitie VARCHAR(100),
+            echipaId INT,
+            FOREIGN KEY (id) REFERENCES Angajat(id),
+            FOREIGN KEY (echipaId) REFERENCES Echipa(id)
 );
 
-
-CREATE TABLE Sponsor (
-            id INT PRIMARY KEY,
-            name VARCHAR(255),
-            country VARCHAR(255)
-);
-
-
-CREATE TABLE Stadion (
-            id INT PRIMARY KEY,
-            nume VARCHAR(255),
-            capacitate INT,
-            locatie VARCHAR(255)
-);
-
-
-CREATE TABLE Echipa (
-            id INT PRIMARY KEY,
-            nume VARCHAR(255),
-            antrenor_id INT,
-            stadion_id INT,
-            FOREIGN KEY (antrenor_id) REFERENCES Antrenor(id),
-            FOREIGN KEY (stadion_id) REFERENCES Stadion(id)
-);
-
-
+-- Table creation for 'Contract'
 CREATE TABLE Contract (
-            id INT PRIMARY KEY,
-            team_id INT,
-            sponsor_id INT,
-            durationYears INT,
-            sumMoney DOUBLE,
-            FOREIGN KEY (team_id) REFERENCES Echipa(id),
-            FOREIGN KEY (sponsor_id) REFERENCES Sponsor(id)
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            dataInceput DATE,
+            dataSfarsit DATE,
+            valoare DOUBLE,
+            echipaId INT,
+            sponsorId INT,
+            FOREIGN KEY (echipaId) REFERENCES Echipa(id),
+            FOREIGN KEY (sponsorId) REFERENCES Sponsor(id)
 );
 
+-- Table creation for 'Echipa'
+CREATE TABLE Echipa (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nume VARCHAR(100),
+            oras VARCHAR(100),
+            antrenorId INT,
+            stadionId INT,
+            FOREIGN KEY (antrenorId) REFERENCES Antrenor(id),
+            FOREIGN KEY (stadionId) REFERENCES Stadion(id)
+);
 
+-- Table creation for 'Meci'
 CREATE TABLE Meci (
-            id INT PRIMARY KEY,
-            echipa1_id INT,
-            echipa2_id INT,
-            data VARCHAR(255),
-            scor1 INT,
-            scor2 INT,
-            stadion_id INT,
-            FOREIGN KEY (echipa1_id) REFERENCES Echipa(id),
-            FOREIGN KEY (echipa2_id) REFERENCES Echipa(id),
-            FOREIGN KEY (stadion_id) REFERENCES Stadion(id)
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            data DATE,
+            echipa1 INT,
+            echipa2 INT,
+            stadionId INT,
+            scorEchipa1 INT,
+            scorEchipa2 INT,
+            FOREIGN KEY (echipa1) REFERENCES Echipa(id),
+            FOREIGN KEY (echipa2) REFERENCES Echipa(id),
+            FOREIGN KEY (stadionId) REFERENCES Stadion(id)
+);
+
+-- Table creation for 'Sponsor'
+CREATE TABLE IF NOT EXISTS Sponsor (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nume VARCHAR(100),
+            tara VARCHAR(100)
+);
+
+-- Table creation for 'Stadion'
+CREATE TABLE IF NOT EXISTS Stadion (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nume VARCHAR(100),
+            capacitate INT,
+            locatie VARCHAR(100)
 );

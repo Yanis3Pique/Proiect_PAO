@@ -5,16 +5,18 @@ import proiect.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EchipaDao {
+public class EchipaDao implements DaoInterface<Echipa> {
     private static int nextId = 1;
     private static List<Echipa> echipe = new ArrayList<>();
 
-    public void createEchipa(Echipa echipa) {
+    @Override
+    public void create(Echipa echipa) {
         echipa.setId(nextId++);
         echipe.add(echipa);
     }
 
-    public Echipa readEchipa(String nume) {
+    @Override
+    public Echipa read(String nume) {
         for (Echipa echipa : echipe) {
             if (echipa.getNume().equals(nume)) {
                 return echipa;
@@ -23,7 +25,8 @@ public class EchipaDao {
         return null;
     }
 
-    public void updateEchipa(String nume, Echipa echipaUpdated) {
+    @Override
+    public void update(String nume, Echipa echipaUpdated) {
         for (Echipa echipa : echipe) {
             for(Meci meci : new MeciDao().findAllMeci()) {
                 if(meci.getEchipa1().getNume().equals(nume)) {meci.setEchipa1(echipaUpdated);}
@@ -43,20 +46,21 @@ public class EchipaDao {
         }
     }
 
-    public void deleteEchipa(String nume) {
-        echipe.removeIf(echipa -> echipa.getNume().equals(nume));
+    @Override
+    public void delete(Echipa echipa) {
+        echipe.remove(echipa);
 
         MeciDao meciDao = new MeciDao();
         for(Meci meci : meciDao.findAllMeci()) {
-            if(meci.getEchipa1().getNume().equals(nume) || meci.getEchipa2().getNume().equals(nume)) {
-                meciDao.deleteMeci(meci);
+            if(meci.getEchipa1().getNume().equals(echipa.getNume()) || meci.getEchipa2().getNume().equals(echipa.getNume())) {
+                meciDao.delete(meci);
             }
         }
 
         ContractDao contractDao = new ContractDao();
         for(Contract contract : contractDao.findAllContract()) {
-            if(contract.getTeam().getNume().equals(nume)) {
-                contractDao.deleteContract(contract.getTeam().getNume(), contract.getSponsor().getName());
+            if(contract.getTeam().getNume().equals(echipa.getNume())) {
+                contractDao.delete(contract);
             }
         }
     }
@@ -67,10 +71,6 @@ public class EchipaDao {
                 echipa.setAntrenor(null);
             }
         }
-    }
-
-    public List<Echipa> findAllEchipa() {
-        return new ArrayList<>(echipe);
     }
 
     public void removeJucatorFromEchipa(Jucator jucator) {
@@ -87,5 +87,9 @@ public class EchipaDao {
                 echipa.setStadion(null);
             }
         }
+    }
+
+    public List<Echipa> findAllEchipa() {
+        return new ArrayList<>(echipe);
     }
 }

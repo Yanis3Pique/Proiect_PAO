@@ -7,6 +7,8 @@ public class Sponsor {
     private String name;
     private String country;
 
+    public Sponsor() {}
+
     public Sponsor(int id, String name, String country) {
         this.id = id;
         this.name = name;

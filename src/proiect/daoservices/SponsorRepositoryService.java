@@ -9,19 +9,19 @@ public class SponsorRepositoryService {
     private final SponsorDao sponsorDao = new SponsorDao();
 
     public void addSponsor(Sponsor sponsor) {
-        sponsorDao.createSponsor(sponsor);
+        sponsorDao.create(sponsor);
     }
 
     public Sponsor getSponsorByName(String name) {
-        return sponsorDao.readSponsor(name);
+        return sponsorDao.read(name);
     }
 
     public void updateSponsor(String name, Sponsor sponsor) {
-        sponsorDao.updateSponsor(name, sponsor);
+        sponsorDao.update(name, sponsor);
     }
 
     public void removeSponsor(Sponsor sponsor) {
-        sponsorDao.deleteSponsor(sponsor);
+        sponsorDao.delete(sponsor);
     }
 
     public List<Sponsor> getAllSponsors() {

@@ -6,6 +6,10 @@ public class Jucator extends Angajat {
     private String pozitie;
     private int numarTricou;
 
+    public Jucator() {
+        super();
+    }
+
     public Jucator(int id, String nume, String prenume, String nationalitate, int varsta, double salariu, int numarTricou) {
         super(id, nume, prenume, nationalitate, varsta, salariu);
         this.numarTricou = numarTricou;

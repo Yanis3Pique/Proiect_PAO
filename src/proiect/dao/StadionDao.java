@@ -5,15 +5,17 @@ import proiect.model.Stadion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StadionDao {
+public class StadionDao implements DaoInterface<Stadion> {
     private static int nextId = 1;
     private static List<Stadion> stadions = new ArrayList<>();
 
+    @Override
     public void create(Stadion stadion) {
         stadion.setId(nextId++);
         stadions.add(stadion);
     }
 
+    @Override
     public Stadion read(String nume) {
         for (Stadion stadion : stadions) {
             if (stadion.getNume().equals(nume)) {
@@ -23,6 +25,7 @@ public class StadionDao {
         return null;
     }
 
+    @Override
     public void update(String nume, Stadion updatedStadion) {
         for (Stadion stadion : stadions) {
             updateEchipaBasedOnStadion(nume, updatedStadion);
@@ -39,7 +42,7 @@ public class StadionDao {
     private void updateEchipaBasedOnStadion(String nume, Stadion updatedStadion) {
         EchipaDao echipaDao = new EchipaDao();
         for(Echipa echipa : echipaDao.findAllEchipa()){
-            if(echipa.getStadion().getNume().equals(nume)){
+            if(echipa.getStadion() != null && echipa.getStadion().getNume().equals(nume)){
                 echipa.getStadion().setNume(updatedStadion.getNume());
                 echipa.getStadion().setCapacitate(updatedStadion.getCapacitate());
                 echipa.getStadion().setLocatie(updatedStadion.getLocatie());
@@ -47,6 +50,7 @@ public class StadionDao {
         }
     }
 
+    @Override
     public void delete(Stadion stadion) {
         stadions.remove(stadion);
 
@@ -54,7 +58,7 @@ public class StadionDao {
         echipaDao.removeStadionFromEchipa(stadion);
     }
 
-    public List<Stadion> findAll() {
+    public List<Stadion> findAllStadion() {
         return new ArrayList<>(stadions);
     }
 }
