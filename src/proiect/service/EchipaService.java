@@ -6,6 +6,7 @@ import proiect.model.Echipa;
 import proiect.model.Jucator;
 import proiect.model.Stadion;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class EchipaService {
@@ -13,13 +14,13 @@ public class EchipaService {
     private AngajatRepositoryService antrenorRepositoryService;
     private StadionRepositoryService stadionRepositoryService;
 
-    public EchipaService() {
+    public EchipaService() throws SQLException {
         this.echipaRepositoryService = new EchipaRepositoryService();
         this.antrenorRepositoryService = new AngajatRepositoryService();
         this.stadionRepositoryService = new StadionRepositoryService();
     }
 
-    public void createEchipa(Scanner scanner) {
+    public void createEchipa(Scanner scanner) throws SQLException {
         System.out.println("Creating a new Team:");
         String nume;
         do {
@@ -59,7 +60,7 @@ public class EchipaService {
         }
     }
 
-    private void updateCoach(Scanner scanner, Echipa echipa) {
+    private void updateCoach(Scanner scanner, Echipa echipa) throws SQLException {
         String antrenorNume;
         while (true) {
             System.out.print("Enter new coach's first and last name (or press Enter to skip): ");
@@ -114,6 +115,8 @@ public class EchipaService {
             System.out.println("Team updated successfully.");
         } catch (IllegalArgumentException e) {
             System.out.println("Team not updated.");
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.getMessage());
         }
     }
 
@@ -132,7 +135,7 @@ public class EchipaService {
     }
 
 
-    public void addJucator(Scanner scanner) {
+    public void addJucator(Scanner scanner) throws SQLException {
         System.out.print("Enter the name of the team you want to add a player to: ");
         String nume = scanner.nextLine();
         Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
@@ -155,7 +158,7 @@ public class EchipaService {
         } else {System.out.println("Player not found.");}
     }
 
-    public void removeJucator(Scanner scanner) {
+    public void removeJucator(Scanner scanner) throws SQLException {
         System.out.print("Enter the name of the team you want to remove a player from: ");
         String nume = scanner.nextLine();
         Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
