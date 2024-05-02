@@ -54,7 +54,7 @@ public class CampionatService {
         }
     }
 
-    public static void manageTeams(Scanner scanner, EchipaService echipaService) {
+    public static void manageTeams(Scanner scanner, EchipaService echipaService) throws SQLException {
         manageTeamsMenu();
 
         String teamChoice = scanner.nextLine();
@@ -87,7 +87,7 @@ public class CampionatService {
         System.out.print("Enter choice: ");
     }
 
-    public static void manageMatches(Scanner scanner, MeciService meciService) {
+    public static void manageMatches(Scanner scanner, MeciService meciService) throws SQLException {
         manageMatchesMenu();
 
         String matchChoice = scanner.nextLine();
@@ -141,14 +141,14 @@ public class CampionatService {
         System.out.print("Enter choice: ");
     }
 
-    public static void manageStadiums(Scanner scanner, StadionService stadionService) {
+    public static void manageStadiums(Scanner scanner, StadionService stadionService) throws SQLException {
         manageStadiumsMenu();
 
         String stadiumChoice = scanner.nextLine();
 
         switch (stadiumChoice) {
             case "1" -> stadionService.createStadion(scanner);
-            case "2" -> stadionService.viewStadion(scanner);
+            case "2" -> stadionService.readStadion(scanner);
             case "3" -> stadionService.updateStadion(scanner);
             case "4" -> stadionService.deleteStadion(scanner);
             case "0" -> {
@@ -168,14 +168,14 @@ public class CampionatService {
         System.out.print("Enter choice: ");
     }
 
-    public static void manageSponsors(Scanner scanner, SponsorService sponsorService) {
+    public static void manageSponsors(Scanner scanner, SponsorService sponsorService) throws SQLException {
         manageSponsorsMenu();
 
         String sponsorChoice = scanner.nextLine();
 
         switch (sponsorChoice) {
             case "1" -> sponsorService.createSponsor(scanner);
-            case "2" -> sponsorService.viewSponsor(scanner);
+            case "2" -> sponsorService.readSponsor(scanner);
             case "3" -> sponsorService.updateSponsor(scanner        );
             case "4" -> sponsorService.deleteSponsor(scanner);
             case "0" -> {

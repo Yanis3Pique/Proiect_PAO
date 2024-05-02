@@ -2,24 +2,29 @@ package proiect.service;
 
 import proiect.daoservices.SponsorRepositoryService;
 import proiect.model.Sponsor;
+import proiect.utils.InvalidDataException;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class SponsorService {
-    private SponsorRepositoryService sponsorRepositoryService;
+    private SponsorRepositoryService databaseService;
 
-    public SponsorService() {
-        this.sponsorRepositoryService = new SponsorRepositoryService();
+    public SponsorService() throws SQLException {
+        this.databaseService = new SponsorRepositoryService();
     }
 
     public void createSponsor(Scanner scanner) {
         System.out.println("Creating a new Sponsor:");
-
         String name = getSponsorName(scanner);
         String country = getSponsorCountry(scanner);
-
         Sponsor sponsor = new Sponsor(0, name, country);
-        sponsorRepositoryService.addSponsor(sponsor);
-        System.out.println("Sponsor created successfully.");
+
+        try {
+            databaseService.addSponsor(sponsor);
+        } catch (InvalidDataException e) {
+            System.out.println("Creation failed: " + e.getMessage());
+        }
     }
 
     private String getSponsorName(Scanner scanner) {
@@ -46,36 +51,55 @@ public class SponsorService {
         return country;
     }
 
-    public void viewSponsor(Scanner scanner) {
-        System.out.print("Enter sponsor name to view details: ");
-        String name = scanner.nextLine();
-
-        Sponsor sponsor = sponsorRepositoryService.getSponsorByName(name);
-        if (sponsor != null) {
-            System.out.println(sponsor);
-        } else {
-            System.out.println("Sponsor not found.");
+    public Sponsor searchSponsor(Scanner scanner) throws SQLException {
+        System.out.println("How do you want to search the Sponsor? [name/id]");
+        String option = scanner.nextLine().toLowerCase();
+        System.out.println("Enter:");
+        switch (option) {
+            case "name":
+                String name = scanner.nextLine();
+                return databaseService.getSponsorByName(name);
+            case "id":
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                return databaseService.getSponsorById(id);
+            default:
+                System.out.println("wrong option");
+                return null;
         }
     }
 
-    public void updateSponsor(Scanner scanner) {
+    public void readSponsor(Scanner scanner) throws SQLException {
+        Sponsor sponsor = searchSponsor(scanner);
+        if (sponsor != null) {
+            System.out.println(sponsor);
+        } else {
+            System.out.println("Stadium not found.");
+        }
+    }
+
+    public void viewAllSponsors() throws SQLException {
+        System.out.println("SPONSORS:");
+        databaseService.printAllSponsors();
+        System.out.println();
+    }
+
+    public void updateSponsor(Scanner scanner) throws SQLException {
         System.out.println("Updating a Sponsor:");
-
-        System.out.print("Enter sponsor name: ");
-        String name = scanner.nextLine();
-
-        Sponsor existingSponsor = sponsorRepositoryService.getSponsorByName(name);
+        Sponsor existingSponsor = searchSponsor(scanner);
         if (existingSponsor == null) {
             System.out.println("Sponsor not found.");
             return;
         }
-
         String newCountry = getNewSponsorCountry(scanner);
-
         existingSponsor.setCountry(newCountry);
 
-        sponsorRepositoryService.updateSponsor(name, existingSponsor);
-        System.out.println("Sponsor updated successfully.");
+        try {
+            databaseService.updateSponsor(existingSponsor.getName(), existingSponsor);
+            System.out.println("Sponsor updated successfully.");
+        } catch (InvalidDataException e) {
+            System.out.println("Update failed: " + e.getMessage());
+        }
     }
 
     private String getNewSponsorCountry(Scanner scanner) {
@@ -90,15 +114,11 @@ public class SponsorService {
         return newCountry;
     }
 
-    public void deleteSponsor(Scanner scanner) {
+    public void deleteSponsor(Scanner scanner) throws SQLException {
         System.out.println("Deleting a Sponsor:");
-
-        System.out.print("Enter sponsor name: ");
-        String name = scanner.nextLine();
-
-        Sponsor sponsor = sponsorRepositoryService.getSponsorByName(name);
+        Sponsor sponsor = searchSponsor(scanner);
         if (sponsor != null) {
-            sponsorRepositoryService.removeSponsor(sponsor);
+            databaseService.removeSponsor(sponsor);
             System.out.println("Sponsor deleted successfully.");
         } else {
             System.out.println("Sponsor not found.");

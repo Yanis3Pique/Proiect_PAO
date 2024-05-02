@@ -42,21 +42,9 @@ public class Sponsor {
     @Override
     public String toString() {
         return "Sponsor:" + '\n' +
+                "ID: " + id + '\n' +
                 "Name: " + getName() + '\n' +
                 "Country: " + getCountry() + '\n';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Sponsor sponsor = (Sponsor) o;
-        return Objects.equals(name, sponsor.name) && Objects.equals(country, sponsor.country);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, country);
     }
 }
 

@@ -4,57 +4,60 @@ import proiect.daoservices.*;
 import proiect.model.Meci;
 import proiect.model.Echipa;
 import proiect.model.Stadion;
+import proiect.utils.InvalidDataException;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MeciService {
-    private MeciRepositoryService meciRepositoryService;
-    private EchipaRepositoryService echipaRepositoryService;
-    private StadionRepositoryService stadionRepositoryService;
+    private MeciRepositoryService databaseService;
+    private StadionService stadionService;
+    private EchipaService echipaService;
 
-    public MeciService() {
-        this.meciRepositoryService = new MeciRepositoryService();
-        this.echipaRepositoryService = new EchipaRepositoryService();
-        this.stadionRepositoryService = new StadionRepositoryService();
+    public MeciService() throws SQLException {
+        this.databaseService = new MeciRepositoryService();
+        this.stadionService = new StadionService();
+        this.echipaService = new EchipaService();
     }
 
     private Echipa getTeamByName(Scanner scanner, String teamType) {
         System.out.print("Enter " + teamType + " team name: ");
         String teamName = scanner.nextLine();
-        Echipa team = echipaRepositoryService.getEchipaByName(teamName);
+        Echipa team = databaseService.getTeamByName(teamName);
         if (team == null) {
             System.out.println(teamType + " team not found.");
         }
         return team;
     }
 
-    private Stadion getStadiumByName(Scanner scanner) {
+    private Stadion getStadiumByName(Scanner scanner) throws SQLException {
         System.out.print("Enter stadium name: ");
         String stadiumName = scanner.nextLine();
-        Stadion stadium = stadionRepositoryService.getStadionByName(stadiumName);
+        Stadion stadium = databaseService.getStadionByName(stadiumName);
         if (stadium == null) {
             System.out.println("Stadium not found.");
         }
         return stadium;
     }
 
-    public void createMeci(Scanner scanner) {
+    public void createMeci(Scanner scanner) throws SQLException {
         System.out.println("Creating a new Match:");
         Echipa homeTeam = getTeamByName(scanner, "home");
         if (homeTeam == null) return;
-
         Echipa awayTeam = getTeamByName(scanner, "away");
         if (awayTeam == null) return;
-
         System.out.print("Enter match date (dd/mm/yyyy): ");
         String date = scanner.nextLine();
-
-        Stadion stadium = getStadiumByName(scanner);
+        Stadion stadium = stadionService.seachStadion(scanner);
         if (stadium == null) return;
-
         Meci meci = new Meci(0, homeTeam, awayTeam, date, 0, 0, stadium);
-        meciRepositoryService.addMeci(meci);
-        System.out.println("Match created successfully.");
+
+        try {
+            databaseService.addMeci(meci);
+            System.out.println("Match created successfully.");
+        } catch (InvalidDataException e) {
+            System.out.println("Creation failed: " + e.getMessage());
+        }
     }
 
 

@@ -2,13 +2,16 @@ package proiect.service;
 
 import proiect.daoservices.StadionRepositoryService;
 import proiect.model.Stadion;
+import proiect.utils.InvalidDataException;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class StadionService {
-    private StadionRepositoryService stadionRepositoryService;
+    private StadionRepositoryService databaseService;
 
-    public StadionService() {
-        this.stadionRepositoryService = new StadionRepositoryService();
+    public StadionService() throws SQLException {
+        this.databaseService = new StadionRepositoryService();
     }
 
     public void createStadion(Scanner scanner) {
@@ -17,8 +20,13 @@ public class StadionService {
         int capacity = getStadiumCapacity(scanner);
         String location = getStadiumLocation(scanner);
         Stadion stadion = new Stadion(0, name, capacity, location);
-        stadionRepositoryService.addStadion(stadion);
-        System.out.println("Stadium created successfully.");
+
+        try {
+            databaseService.addStadion(stadion);
+            System.out.println("Stadium created successfully.");
+        } catch (InvalidDataException e) {
+            System.out.println("Creation failed: " + e.getMessage());
+        }
     }
 
     private String getStadiumName(Scanner scanner) {
@@ -63,10 +71,26 @@ public class StadionService {
         return location;
     }
 
-    public void viewStadion(Scanner scanner) {
-        System.out.print("Enter stadium name to view details: ");
-        String name = scanner.nextLine();
-        Stadion stadion = stadionRepositoryService.getStadionByName(name);
+    public Stadion seachStadion(Scanner scanner) throws SQLException {
+        System.out.println("How do you want to search the stadium? [name/id]");
+        String option = scanner.nextLine().toLowerCase();
+        System.out.println("Enter:");
+        switch (option) {
+            case "name":
+                String name = scanner.nextLine();
+                return databaseService.getStadionByName(name);
+            case "id":
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                return databaseService.getStadionById(id);
+            default:
+                System.out.println("Wrong option");
+                return null;
+        }
+    }
+
+    public void readStadion(Scanner scanner) throws SQLException {
+        Stadion stadion = seachStadion(scanner);
         if (stadion != null) {
             System.out.println(stadion);
         } else {
@@ -74,9 +98,15 @@ public class StadionService {
         }
     }
 
-    public void updateStadion(Scanner scanner) {
+    public void viewAllStadiums() throws SQLException {
+        System.out.println("STADIUMS:");
+        databaseService.printAllStadiums();
+        System.out.println();
+    }
+
+    public void updateStadion(Scanner scanner) throws SQLException {
         System.out.println("Updating a Stadium:");
-        Stadion existingStadion = getStadiumByName(scanner);
+        Stadion existingStadion = seachStadion(scanner);
         if (existingStadion == null) {
             System.out.println("Stadium not found.");
             return;
@@ -85,14 +115,13 @@ public class StadionService {
         String newLocation = getNewStadiumLocation(scanner);
         existingStadion.setCapacitate(newCapacity);
         existingStadion.setLocatie(newLocation);
-        stadionRepositoryService.updateStadion(existingStadion.getNume(), existingStadion);
-        System.out.println("Stadium updated successfully.");
-    }
 
-    private Stadion getStadiumByName(Scanner scanner) {
-        System.out.print("Enter stadium name: ");
-        String name = scanner.nextLine();
-        return stadionRepositoryService.getStadionByName(name);
+        try {
+            databaseService.updateStadion(existingStadion.getNume(), existingStadion);
+            System.out.println("Stadium updated successfully.");
+        } catch (InvalidDataException e) {
+            System.out.println("Update failed: " + e.getMessage());
+        }
     }
 
     private int getNewStadiumCapacity(Scanner scanner) {
@@ -125,13 +154,11 @@ public class StadionService {
         return newLocation;
     }
 
-    public void deleteStadion(Scanner scanner) {
+    public void deleteStadion(Scanner scanner) throws SQLException {
         System.out.println("Deleting a Stadium:");
-        System.out.print("Enter stadium name: ");
-        String name = scanner.nextLine();
-        Stadion stadion = stadionRepositoryService.getStadionByName(name);
+        Stadion stadion = seachStadion(scanner);
         if (stadion != null) {
-            stadionRepositoryService.removeStadion(stadion);
+            databaseService.removeStadion(stadion);
             System.out.println("Stadium deleted successfully.");
         } else {
             System.out.println("Stadium not found.");

@@ -78,17 +78,4 @@ public abstract class Angajat {
                 "Age: " + getVarsta() + '\n' +
                 "Salary: " + getSalariu() + '\n';
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Angajat angajat = (Angajat) o;
-        return varsta == angajat.varsta && Double.compare(salariu, angajat.salariu) == 0 && Objects.equals(nume, angajat.nume) && Objects.equals(prenume, angajat.prenume) && Objects.equals(nationalitate, angajat.nationalitate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nume, prenume, nationalitate, varsta, salariu);
-    }
 }

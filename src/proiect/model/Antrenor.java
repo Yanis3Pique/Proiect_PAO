@@ -1,7 +1,5 @@
 package proiect.model;
 
-import java.util.Objects;
-
 public class Antrenor extends Angajat {
     private int aniExperienta;
 
@@ -31,19 +29,5 @@ public class Antrenor extends Angajat {
                 "Age: " + getVarsta() + '\n' +
                 "Salary: " + getSalariu() + "$" + '\n' +
                 "Experience(years): " + getAniExperienta() + '\n';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Antrenor antrenor = (Antrenor) o;
-        return aniExperienta == antrenor.aniExperienta;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), aniExperienta);
     }
 }

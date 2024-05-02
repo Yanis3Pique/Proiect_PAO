@@ -7,7 +7,6 @@ public class Echipa {
     int id;
     private String nume;
     private Antrenor antrenor;
-    private ArrayList<Jucator> jucatori;
     private Stadion stadion;
 
     public Echipa() {}
@@ -17,7 +16,6 @@ public class Echipa {
         this.nume = nume;
         this.antrenor = antrenor;
         this.stadion = stadion;
-        this.jucatori = new ArrayList<>();
     }
 
     public String getNume() {
@@ -34,14 +32,6 @@ public class Echipa {
 
     public void setAntrenor(Antrenor antrenor) {
         this.antrenor = antrenor;
-    }
-
-    public ArrayList<Jucator> getJucatori() {
-        return jucatori;
-    }
-
-    public void setJucatori(ArrayList<Jucator> jucatori) {
-        this.jucatori = jucatori;
     }
 
     public Stadion getStadion() {
@@ -62,35 +52,10 @@ public class Echipa {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Team:").append('\n');
-        sb.append("Name: ").append(nume).append('\n');
-        if (antrenor != null) {
-            sb.append("Coach: ").append(antrenor.getNume()).append(' ').append(antrenor.getPrenume()).append('\n');
-        } else {sb.append("Coach: ").append("N/A").append('\n');}
-        sb.append("Players:\n");
-        if (!jucatori.isEmpty()) {
-            for (Jucator jucator : jucatori) {
-                sb.append(jucator.getNume()).append(' ').append(jucator.getPrenume()).append('\n');
-            }
-        }
-        else {sb.append("No players\n");}
-        if (stadion != null) {sb.append("Stadium: ").append(stadion.getNume()).append('\n');}
-        else {sb.append("Stadium: ").append("N/A").append('\n');}
-
-        return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Echipa echipa = (Echipa) o;
-        return Objects.equals(nume, echipa.nume) && Objects.equals(antrenor, echipa.antrenor) && Objects.equals(jucatori, echipa.jucatori) && Objects.equals(stadion, echipa.stadion);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nume, antrenor, jucatori, stadion);
+        return "Team:" + '\n' +
+                "ID: " + getId() + '\n' +
+                "Name: " + getNume() + '\n' +
+                "Coach: " + getAntrenor().getNume() + '\n' +
+                "Stadium: " + getStadion().getNume() + '\n';
     }
 }

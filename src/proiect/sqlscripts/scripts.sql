@@ -1,3 +1,4 @@
+
 -- Table creation for 'Angajat'
 CREATE TABLE Angajat (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -15,6 +16,25 @@ CREATE TABLE Antrenor (
             FOREIGN KEY (id) REFERENCES Angajat(id)
 );
 
+-- Table creation for 'Stadion'
+CREATE TABLE Stadion (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nume VARCHAR(100),
+            capacitate INT,
+            locatie VARCHAR(100)
+);
+
+-- Table creation for 'Echipa'
+CREATE TABLE Echipa (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nume VARCHAR(100),
+            oras VARCHAR(100),
+            antrenorId INT,
+            stadionId INT,
+            FOREIGN KEY (antrenorId) REFERENCES Antrenor(id),
+            FOREIGN KEY (stadionId) REFERENCES Stadion(id)
+);
+
 -- Table creation for 'Jucator'
 CREATE TABLE Jucator (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -23,6 +43,13 @@ CREATE TABLE Jucator (
             echipaId INT,
             FOREIGN KEY (id) REFERENCES Angajat(id),
             FOREIGN KEY (echipaId) REFERENCES Echipa(id)
+);
+
+-- Table creation for 'Sponsor'
+CREATE TABLE IF NOT EXISTS Sponsor (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nume VARCHAR(100),
+            tara VARCHAR(100)
 );
 
 -- Table creation for 'Contract'
@@ -37,17 +64,6 @@ CREATE TABLE Contract (
             FOREIGN KEY (sponsorId) REFERENCES Sponsor(id)
 );
 
--- Table creation for 'Echipa'
-CREATE TABLE Echipa (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            nume VARCHAR(100),
-            oras VARCHAR(100),
-            antrenorId INT,
-            stadionId INT,
-            FOREIGN KEY (antrenorId) REFERENCES Antrenor(id),
-            FOREIGN KEY (stadionId) REFERENCES Stadion(id)
-);
-
 -- Table creation for 'Meci'
 CREATE TABLE Meci (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -60,19 +76,4 @@ CREATE TABLE Meci (
             FOREIGN KEY (echipa1) REFERENCES Echipa(id),
             FOREIGN KEY (echipa2) REFERENCES Echipa(id),
             FOREIGN KEY (stadionId) REFERENCES Stadion(id)
-);
-
--- Table creation for 'Sponsor'
-CREATE TABLE IF NOT EXISTS Sponsor (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            nume VARCHAR(100),
-            tara VARCHAR(100)
-);
-
--- Table creation for 'Stadion'
-CREATE TABLE IF NOT EXISTS Stadion (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            nume VARCHAR(100),
-            capacitate INT,
-            locatie VARCHAR(100)
 );
