@@ -1,7 +1,5 @@
 package proiect.model;
 
-import java.util.Objects;
-
 public class Meci {
     int id;
     private Echipa echipa1;

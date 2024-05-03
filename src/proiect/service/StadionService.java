@@ -2,8 +2,10 @@ package proiect.service;
 
 import proiect.daoservices.StadionRepositoryService;
 import proiect.model.Stadion;
+import proiect.utils.FileManagement;
 import proiect.utils.InvalidDataException;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -23,6 +25,7 @@ public class StadionService {
 
         try {
             databaseService.addStadion(stadion);
+            FileManagement.scriereFisierChar("audit.txt", "creare stadion " + name);
             System.out.println("Stadium created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
@@ -159,6 +162,7 @@ public class StadionService {
         Stadion stadion = seachStadion(scanner);
         if (stadion != null) {
             databaseService.removeStadion(stadion);
+            FileManagement.scriereFisierChar("audit.txt", "stergere stadion " + stadion.getNume());
             System.out.println("Stadium deleted successfully.");
         } else {
             System.out.println("Stadium not found.");

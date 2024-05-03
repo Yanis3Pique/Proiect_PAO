@@ -85,7 +85,7 @@ public class SponsorRepositoryService {
         try {
             if(sponsor != null){
                 if(!sponsorDao.checkUniqueName(name))
-                    throw new InvalidDataException("Sponsor does not exist!");
+                    throw new InvalidDataException("Sponsor already exists!");
 
                 sponsorDao.update(name, sponsor);
                 System.out.println("Sponsor updated successfully!");
@@ -99,10 +99,13 @@ public class SponsorRepositoryService {
         try {
             if (sponsor == null) return;
 
-            List<Contract> contractList = sponsor.getContracts();
+            List<Contract> contractList = new ContractRepositoryService().getAllContracts();
             if (contractList != null) {
                 for (Contract c : contractList) {
-                    c.setSponsor(null);
+                    if (c.getSponsor().getId() == sponsor.getId()) {
+                        ContractRepositoryService contractRepositoryService = new ContractRepositoryService();
+                        contractRepositoryService.removeContract(c.getTeam().getNume(), c.getSponsor().getName());
+                    }
                 }
             }
 

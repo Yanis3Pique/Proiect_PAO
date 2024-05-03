@@ -1,8 +1,5 @@
 package proiect.model;
 
-import java.util.ArrayList;
-import java.util.Objects;
-
 public class Echipa {
     int id;
     private String nume;

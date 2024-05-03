@@ -107,10 +107,12 @@ public class AngajatRepositoryService {
             if(angajat == null) return;
 
             if(angajat instanceof Antrenor antrenor) {
-                List<Echipa> echipe = angajat.getEchipe();
+                List<Echipa> echipe = new EchipaRepositoryService().getAllEchipe();
                 if(echipe != null) {
                     for(Echipa e : echipe) {
-                        e.setAntrenor(null);
+                        if(e.getAntrenor().getId() == antrenor.getId()) {
+                            e.setAntrenor(null);
+                        }
                     }
                 }
                 antrenorDao.delete(antrenor);

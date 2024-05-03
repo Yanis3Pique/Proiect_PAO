@@ -13,12 +13,12 @@ public class CampionatService {
     private EchipaDao echipaDao;
     private MeciDao meciDao;
 
-    public CampionatService() {
+    public CampionatService() throws SQLException {
         this.echipaDao = new EchipaDao();
         this.meciDao = new MeciDao();
     }
 
-    public Map<Echipa, Integer> vizualizeazaClasament() {
+    public Map<Echipa, Integer> vizualizeazaClasament() throws SQLException {
         List<Echipa> echipe = echipaDao.findAllEchipa();
         List<Meci> meciuri = meciDao.findAllMeci();
 
@@ -61,12 +61,10 @@ public class CampionatService {
 
         switch (teamChoice) {
             case "1" -> echipaService.createEchipa(scanner);
-            case "2" -> echipaService.viewEchipa(scanner);
+            case "2" -> echipaService.readEchipa(scanner);
             case "3" -> echipaService.updateEchipa(scanner);
             case "4" -> echipaService.deleteEchipa(scanner);
-            case "5" -> echipaService.addJucator(scanner);
-            case "6" -> echipaService.removeJucator(scanner);
-            case "7" -> echipaService.viewJucatori(scanner);
+            case "5" -> echipaService.viewJucatori(scanner);
             case "0" -> {
                 return;
             }
@@ -94,7 +92,7 @@ public class CampionatService {
 
         switch (matchChoice) {
             case "1" -> meciService.createMeci(scanner);
-            case "2" -> meciService.viewMeci(scanner);
+            case "2" -> meciService.readMeci(scanner);
             case "3" -> meciService.updateMeci(scanner);
             case "4" -> meciService.deleteMeci(scanner);
             case "0" -> {
@@ -202,7 +200,7 @@ public class CampionatService {
 
         switch (contractChoice) {
             case "1" -> contractService.createContract(scanner);
-            case "2" -> contractService.viewContract(scanner);
+            case "2" -> contractService.readContract(scanner);
             case "3" -> contractService.updateContract(scanner);
             case "4" -> contractService.deleteContract(scanner);
             case "0" -> {
@@ -222,7 +220,7 @@ public class CampionatService {
         System.out.print("Enter choice: ");
     }
 
-    public static void viewChampionshipStandings(CampionatService campionatService) {
+    public static void viewChampionshipStandings(CampionatService campionatService) throws SQLException {
         System.out.println("\nChampionship Standings");
         Map<Echipa, Integer> clasament = campionatService.vizualizeazaClasament();
         if (clasament.isEmpty()) {

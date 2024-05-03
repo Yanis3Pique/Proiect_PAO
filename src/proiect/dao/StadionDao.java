@@ -98,19 +98,13 @@ public class StadionDao implements DaoInterface<Stadion> {
             statement.setString(3, updatedStadion.getLocatie());
             statement.setString(4, nume);
             statement.executeUpdate();
-
-            updateEchipaBasedOnStadion(nume, updatedStadion);
         }
-    }
 
-    private void updateEchipaBasedOnStadion(String nume, Stadion updatedStadion) {
-        EchipaDao echipaDao = new EchipaDao();
-        for(Echipa echipa : echipaDao.findAllEchipa()){
-            if(echipa.getStadion() != null && echipa.getStadion().getNume().equals(nume)){
-                echipa.getStadion().setNume(updatedStadion.getNume());
-                echipa.getStadion().setCapacitate(updatedStadion.getCapacitate());
-                echipa.getStadion().setLocatie(updatedStadion.getLocatie());
-            }
+        String sql_updateEchipa = "UPDATE proiectpao.echipa set stadion_id = ? where stadion_id = ?";
+        try(PreparedStatement statement = connection.prepareStatement(sql_updateEchipa);) {
+            statement.setInt(1, updatedStadion.getId());
+            statement.setInt(2, read(nume).getId());
+            statement.executeUpdate();
         }
     }
 
@@ -145,7 +139,7 @@ public class StadionDao implements DaoInterface<Stadion> {
         return stadions;
     }
 
-    public boolean checkUniqueName(String name) throws SQLException, InvalidDataException {
+    public boolean checkUniqueName(String name) throws SQLException {
         String sql = "SELECT * FROM proiectpao.stadion s WHERE s.nume = ?";
         ResultSet rs = null;
 

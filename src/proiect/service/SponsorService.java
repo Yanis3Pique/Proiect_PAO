@@ -2,8 +2,10 @@ package proiect.service;
 
 import proiect.daoservices.SponsorRepositoryService;
 import proiect.model.Sponsor;
+import proiect.utils.FileManagement;
 import proiect.utils.InvalidDataException;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -22,6 +24,8 @@ public class SponsorService {
 
         try {
             databaseService.addSponsor(sponsor);
+            FileManagement.scriereFisierChar("audit.txt", "creare sponsor " + name);
+            System.out.println("Sponsor created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
         }
@@ -119,6 +123,7 @@ public class SponsorService {
         Sponsor sponsor = searchSponsor(scanner);
         if (sponsor != null) {
             databaseService.removeSponsor(sponsor);
+            FileManagement.scriereFisierChar("audit.txt", "stergere sponsor " + sponsor.getName());
             System.out.println("Sponsor deleted successfully.");
         } else {
             System.out.println("Sponsor not found.");

@@ -5,17 +5,19 @@ import proiect.model.Antrenor;
 import proiect.model.Echipa;
 import proiect.model.Jucator;
 import proiect.model.Stadion;
+import proiect.utils.FileManagement;
+import proiect.utils.InvalidDataException;
 
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class EchipaService {
-    private EchipaRepositoryService echipaRepositoryService;
+    private EchipaRepositoryService databaseService;
     private AngajatRepositoryService antrenorRepositoryService;
     private StadionRepositoryService stadionRepositoryService;
 
     public EchipaService() throws SQLException {
-        this.echipaRepositoryService = new EchipaRepositoryService();
+        this.databaseService = new EchipaRepositoryService();
         this.antrenorRepositoryService = new AngajatRepositoryService();
         this.stadionRepositoryService = new StadionRepositoryService();
     }
@@ -45,17 +47,40 @@ public class EchipaService {
         Stadion stadion = stadionRepositoryService.getStadionByName(stadionNume);
 
         Echipa echipa = new Echipa(0, nume, antrenor, stadion);
-        echipaRepositoryService.addEchipa(echipa);
-        System.out.println("Team created successfully.");
+
+        try {
+            databaseService.addEchipa(echipa);
+            FileManagement.scriereFisierChar("audit.txt", "create team " + nume);
+            System.out.println("Team created successfully.");
+        } catch (InvalidDataException e) {
+            System.out.println("Team not created.");
+        }
     }
 
-    public void viewEchipa(Scanner scanner) {
-        System.out.print("Enter team name to view details: ");
-        String nume = scanner.nextLine();
-        Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
+    public Echipa searchEchipa(Scanner scanner) throws SQLException {
+        System.out.println("How do you want to search the team? [name/id]");
+        String option = scanner.nextLine().toLowerCase();
+        System.out.println("Enter:");
+        switch (option) {
+            case "name":
+                String nume = scanner.nextLine();
+                return databaseService.getEchipaByName(nume);
+            case "id":
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                return databaseService.getEchipaById(id);
+            default:
+                System.out.println("Invalid option.");
+                return null;
+        }
+    }
+
+    public void readEchipa(Scanner scanner) throws SQLException {
+        Echipa echipa = searchEchipa(scanner);
         if (echipa != null) {
             System.out.println(echipa);
-        } else {
+        }
+        else {
             System.out.println("Team not found.");
         }
     }
@@ -76,7 +101,7 @@ public class EchipaService {
                         break;
                     } else {
                         System.out.println("Coach not found.");
-                        throw new IllegalArgumentException("Stadium not found.");
+                        throw new IllegalArgumentException("Coach not found.");
                     }
                 } else {
                     System.out.println("Invalid input. Please enter both first and last name, separated by a space.");
@@ -85,7 +110,7 @@ public class EchipaService {
         }
     }
 
-    private void updateStadium(Scanner scanner, Echipa echipa) {
+    private void updateStadium(Scanner scanner, Echipa echipa) throws SQLException {
         System.out.print("Enter new stadium name (or press Enter to skip): ");
         String stadionNume = scanner.nextLine();
         if (!stadionNume.isEmpty()) {
@@ -99,10 +124,10 @@ public class EchipaService {
         }
     }
 
-    public void updateEchipa(Scanner scanner) {
+    public void updateEchipa(Scanner scanner) throws SQLException {
         System.out.print("Enter the name of the team you want to update: ");
         String nume = scanner.nextLine();
-        Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
+        Echipa echipa = databaseService.getEchipaByName(nume);
         if (echipa == null) {
             System.out.println("Team not found.");
             return;
@@ -111,91 +136,34 @@ public class EchipaService {
         try {
             updateCoach(scanner, echipa);
             updateStadium(scanner, echipa);
-            echipaRepositoryService.updateEchipa(nume, echipa);
+            databaseService.updateEchipa(nume, echipa);
             System.out.println("Team updated successfully.");
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidDataException e) {
             System.out.println("Team not updated.");
-        } catch (SQLException e) {
-            System.out.println("SQL Exception: " + e.getMessage());
         }
     }
 
-    public void deleteEchipa(Scanner scanner) {
+    public void deleteEchipa(Scanner scanner) throws SQLException {
         System.out.print("Enter the name of the team you want to delete: ");
         String nume = scanner.nextLine();
 
-        Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
+        Echipa echipa = searchEchipa(scanner);
         if (echipa == null) {
             System.out.println("Team not found.");
             return;
         }
 
-        echipaRepositoryService.removeEchipa(nume);
+        databaseService.removeEchipa(nume);
+        FileManagement.scriereFisierChar("audit.txt", "delete team " + nume);
         System.out.println("Team deleted successfully.");
     }
 
-
-    public void addJucator(Scanner scanner) throws SQLException {
-        System.out.print("Enter the name of the team you want to add a player to: ");
-        String nume = scanner.nextLine();
-        Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
-        if (echipa == null) {System.out.println("Team not found."); return;}
-        System.out.print("Enter player's first and last name: ");
-        String jucatorNume;
-        String[] names;
-        while (true) {
-            System.out.println("Please enter the full name of the player (First Last):");
-            jucatorNume = scanner.nextLine();
-            names = jucatorNume.split(" ");
-            if (names.length >= 2) {break;}
-            else {System.out.println("Invalid input. Please enter both first and last name, separated by a space.");}
-        }
-        Jucator jucator = (Jucator) antrenorRepositoryService.getAngajatByName(names[0], names[1]);
-        if (jucator != null) {
-            echipa.getJucatori().add(jucator);
-            echipaRepositoryService.updateEchipa(nume, echipa);
-            System.out.println("Player added successfully.");
-        } else {System.out.println("Player not found.");}
-    }
-
-    public void removeJucator(Scanner scanner) throws SQLException {
-        System.out.print("Enter the name of the team you want to remove a player from: ");
-        String nume = scanner.nextLine();
-        Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
-        if (echipa == null) {System.out.println("Team not found."); return;}
-        System.out.print("Enter player's first and last name: ");
-        System.out.print("Enter player's first and last name: ");
-        String jucatorNume;
-        String[] names;
-        while (true) {
-            System.out.println("Please enter the full name of the player (First Last):");
-            jucatorNume = scanner.nextLine();
-            names = jucatorNume.split(" ");
-            if (names.length >= 2) {break;}
-            else {System.out.println("Invalid input. Please enter both first and last name, separated by a space.");}
-        }
-        Jucator jucator = (Jucator) antrenorRepositoryService.getAngajatByName(jucatorNume.split(" ")[0], jucatorNume.split(" ")[1]);
-        if (jucator != null) {
-            echipa.getJucatori().remove(jucator);
-            echipaRepositoryService.updateEchipa(nume, echipa);
-            System.out.println("Player removed successfully.");
-        }
-    }
-
-    public void viewJucatori(Scanner scanner) {
-        System.out.print("Enter the name of the team you want to view players for: ");
-        String nume = scanner.nextLine();
-        Echipa echipa = echipaRepositoryService.getEchipaByName(nume);
+    public void viewJucatori(Scanner scanner) throws SQLException {
+        Echipa echipa = searchEchipa(scanner);
         if (echipa == null) {
             System.out.println("Team not found.");
             return;
         }
-        if (!echipa.getJucatori().isEmpty()) {
-            for (Jucator jucator : echipa.getJucatori()) {
-                System.out.println(jucator);
-            }
-        } else {
-            System.out.println("No players found.");
-        }
+        databaseService.getJucatori(echipa);
     }
 }

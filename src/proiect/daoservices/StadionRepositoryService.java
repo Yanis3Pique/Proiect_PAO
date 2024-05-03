@@ -1,5 +1,6 @@
 package proiect.daoservices;
 
+import proiect.dao.EchipaDao;
 import proiect.model.Echipa;
 import proiect.model.Stadion;
 import proiect.dao.StadionDao;
@@ -14,9 +15,9 @@ public class StadionRepositoryService {
     public StadionRepositoryService() throws SQLException {}
 
     public void printAllStadiums() throws SQLException {
-        List<Stadion> categories = stadionDao.findAllStadion();
-        if(categories != null){
-            categories.forEach(System.out:: println);
+        List<Stadion> stadions = stadionDao.findAllStadion();
+        if(stadions != null){
+            stadions.forEach(System.out:: println);
         } else {
             System.out.println("There is no category.");
         }
@@ -70,7 +71,7 @@ public class StadionRepositoryService {
         try {
             Stadion stadion = stadionDao.read(name);
             if (stadion != null) {
-                if(!stadionDao.checkUniqueName(stadion.getNume()))
+                if(!stadionDao.checkUniqueName(updatedStadion.getNume()))
                     throw new InvalidDataException("We already have a stadium with this name!");
             }
 
@@ -85,10 +86,12 @@ public class StadionRepositoryService {
         try {
             if (stadion == null) return;
 
-            List<Echipa> echipe = stadion.getEchipe();
+            List<Echipa> echipe = new EchipaRepositoryService().getAllEchipe();
             if(echipe != null) {
                 for(Echipa e : echipe) {
-                    e.setStadion(null);
+                    if(e.getStadion().getId() == stadion.getId()) {
+                        e.setStadion(null);
+                    }
                 }
             }
             stadionDao.delete(stadion);

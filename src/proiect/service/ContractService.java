@@ -4,22 +4,24 @@ import proiect.daoservices.*;
 import proiect.model.Contract;
 import proiect.model.Echipa;
 import proiect.model.Sponsor;
+import proiect.utils.FileManagement;
+import proiect.utils.InvalidDataException;
 
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ContractService {
-    private ContractRepositoryService contractRepositoryService;
+    private ContractRepositoryService databaseService;
     private EchipaRepositoryService echipaRepositoryService;
     private SponsorRepositoryService sponsorRepositoryService;
 
     public ContractService() throws SQLException {
-        this.contractRepositoryService = new ContractRepositoryService();
+        this.databaseService = new ContractRepositoryService();
         this.echipaRepositoryService = new EchipaRepositoryService();
         this.sponsorRepositoryService = new SponsorRepositoryService();
     }
 
-    public void createContract(Scanner scanner) {
+    public void createContract(Scanner scanner) throws SQLException {
         System.out.println("Creating a new Contract:");
 
         String teamName = getValidTeamName(scanner);
@@ -41,10 +43,11 @@ public class ContractService {
 
         Contract contract = new Contract(0, team, sponsor, duration, sumMoney);
         try {
-            contractRepositoryService.addContract(contract);
+            databaseService.addContract(contract);
+            FileManagement.scriereFisierChar("audit.txt", "Contract creat cu succes intre echipa " + teamName + " si sponsorul " + sponsorName + ".\n");
             System.out.println("Contract created successfully.");
-        } catch (SQLException e) {
-            System.out.println("Contract could not be created: " + e.getSQLState() + " " + e.getMessage());
+        } catch (InvalidDataException e) {
+            System.out.println("Contract could not be created: " + e.getMessage());
         }
     }
 
@@ -102,23 +105,51 @@ public class ContractService {
         return sumMoney;
     }
 
-    public void viewContract(Scanner scanner) {
-        System.out.print("Enter team name: ");
-        String teamName = scanner.nextLine();
-
-        System.out.print("Enter sponsor name: ");
-        String sponsorName = scanner.nextLine();
-
-        try {
-            Contract contract = contractRepositoryService.getContractByTeamAndSponsor(teamName, sponsorName);
-            if (contract == null) {
-                System.out.println("Contract not found.");
-            } else {
-                System.out.println(contract);
-            }
-        } catch (SQLException e) {
-            System.out.println("Could not retrieve contract: " + e.getSQLState() + " " + e.getMessage());
+    public Contract searchContract(Scanner scanner) {
+        System.out.println("How do you want to search the contract? [name/id]");
+        String option = scanner.nextLine().toLowerCase();
+        System.out.println("Enter:");
+        switch (option) {
+            case "name":
+                System.out.print("Enter team name: ");
+                String teamName = scanner.nextLine();
+                System.out.print("Enter sponsor name: ");
+                String sponsorName = scanner.nextLine();
+                try {
+                    return databaseService.getContractByTeamAndSponsor(teamName, sponsorName);
+                } catch (SQLException e) {
+                    System.out.println("Could not retrieve contract: " + e.getSQLState() + " " + e.getMessage());
+                    return null;
+                }
+            case "id":
+                System.out.print("Enter contract id: ");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                try {
+                    return databaseService.getContractById(id);
+                } catch (SQLException e) {
+                    System.out.println("Could not retrieve contract: " + e.getSQLState() + " " + e.getMessage());
+                    return null;
+                }
+            default:
+                System.out.println("Wrong option");
+                return null;
         }
+    }
+
+    public void readContract(Scanner scanner) {
+        Contract contract = searchContract(scanner);
+        if (contract != null) {
+            System.out.println(contract);
+        } else {
+            System.out.println("Contract not found.");
+        }
+    }
+
+    public void viewAllContracts() throws SQLException {
+        System.out.println("CONTRACTS:");
+        databaseService.printAllContracts();
+        System.out.println();
     }
 
     public void updateContract(Scanner scanner) throws SQLException {
@@ -127,7 +158,7 @@ public class ContractService {
         String teamName = scanner.nextLine();
         System.out.print("Enter sponsor name: ");
         String sponsorName = scanner.nextLine();
-        Contract existingContract = contractRepositoryService.getContractByTeamAndSponsor(teamName, sponsorName);
+        Contract existingContract = searchContract(scanner);
         if (existingContract == null) {
             System.out.println("Contract not found.");
             return;
@@ -138,10 +169,10 @@ public class ContractService {
         existingContract.setSumMoney(newSumMoney);
 
         try {
-            contractRepositoryService.updateContract(teamName, sponsorName, existingContract);
+            databaseService.updateContract(teamName, sponsorName, existingContract);
             System.out.println("Contract updated successfully.");
-        } catch (SQLException e) {
-            System.out.println("Contract could not be updated: " + e.getSQLState() + " " + e.getMessage());
+        } catch (InvalidDataException e) {
+            System.out.println("Contract could not be updated: " + e.getMessage());
         }
     }
 
@@ -180,23 +211,15 @@ public class ContractService {
     }
 
 
-    public void deleteContract(Scanner scanner) {
+    public void deleteContract(Scanner scanner) throws SQLException {
         System.out.println("Delete a Contract:");
-        System.out.print("Enter team name: ");
-        String teamName = scanner.nextLine();
-        System.out.print("Enter sponsor name: ");
-        String sponsorName = scanner.nextLine();
-
-        try {
-            Contract contract = contractRepositoryService.getContractByTeamAndSponsor(teamName, sponsorName);
-            if (contract == null) {
-                System.out.println("Contract not found.");
-            } else {
-                contractRepositoryService.removeContract(teamName, sponsorName);
-                System.out.println("Contract deleted successfully.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Could not delete contract: " + e.getSQLState() + " " + e.getMessage());
+        Contract contract = searchContract(scanner);
+        if (contract != null) {
+            databaseService.removeContract(contract.getTeam().getNume(), contract.getSponsor().getName());
+            FileManagement.scriereFisierChar("audit.txt", "Contract sters cu succes intre echipa " + contract.getTeam().getNume() + " si sponsorul " + contract.getSponsor().getName() + ".\n");
+            System.out.println("Contract deleted successfully.");
+        } else {
+            System.out.println("Contract not found.");
         }
     }
 }

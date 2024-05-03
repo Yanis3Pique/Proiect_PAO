@@ -4,6 +4,7 @@ import proiect.daoservices.*;
 import proiect.model.Meci;
 import proiect.model.Echipa;
 import proiect.model.Stadion;
+import proiect.utils.FileManagement;
 import proiect.utils.InvalidDataException;
 
 import java.sql.SQLException;
@@ -11,19 +12,19 @@ import java.util.Scanner;
 
 public class MeciService {
     private MeciRepositoryService databaseService;
-    private StadionService stadionService;
-    private EchipaService echipaService;
+    private StadionRepositoryService stadionRepositoryService;
+    private EchipaRepositoryService echipaRepositoryService;
 
     public MeciService() throws SQLException {
         this.databaseService = new MeciRepositoryService();
-        this.stadionService = new StadionService();
-        this.echipaService = new EchipaService();
+        this.stadionRepositoryService = new StadionRepositoryService();
+        this.echipaRepositoryService = new EchipaRepositoryService();
     }
 
-    private Echipa getTeamByName(Scanner scanner, String teamType) {
+    private Echipa getTeamByName(Scanner scanner, String teamType) throws SQLException {
         System.out.print("Enter " + teamType + " team name: ");
         String teamName = scanner.nextLine();
-        Echipa team = databaseService.getTeamByName(teamName);
+        Echipa team = echipaRepositoryService.getEchipaByName(teamName);
         if (team == null) {
             System.out.println(teamType + " team not found.");
         }
@@ -33,7 +34,7 @@ public class MeciService {
     private Stadion getStadiumByName(Scanner scanner) throws SQLException {
         System.out.print("Enter stadium name: ");
         String stadiumName = scanner.nextLine();
-        Stadion stadium = databaseService.getStadionByName(stadiumName);
+        Stadion stadium = stadionRepositoryService.getStadionByName(stadiumName);
         if (stadium == null) {
             System.out.println("Stadium not found.");
         }
@@ -48,27 +49,50 @@ public class MeciService {
         if (awayTeam == null) return;
         System.out.print("Enter match date (dd/mm/yyyy): ");
         String date = scanner.nextLine();
-        Stadion stadium = stadionService.seachStadion(scanner);
+        Stadion stadium = getStadiumByName(scanner);
         if (stadium == null) return;
-        Meci meci = new Meci(0, homeTeam, awayTeam, date, 0, 0, stadium);
+        System.out.println("Enter match score:");
+        System.out.print("Home team: ");
+        int scoreHome = scanner.nextInt();
+        System.out.print("Away team: ");
+        int scoreAway = scanner.nextInt();
+        scanner.nextLine();
+        Meci meci = new Meci(0, homeTeam, awayTeam, date, scoreHome, scoreAway, stadium);
 
         try {
             databaseService.addMeci(meci);
+            FileManagement.scriereFisierChar("audit.txt", "creare meci " + homeTeam.getNume() + " vs " + awayTeam.getNume());
             System.out.println("Match created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
         }
     }
 
+    public Meci searchMeci(Scanner scanner) throws SQLException {
+        System.out.println("How do you want to search the stadium? [names/id]");
+        String option = scanner.nextLine().toLowerCase();
+        System.out.println("Enter:");
+        switch (option) {
+            case "names":
+                System.out.print("Enter home team name: ");
+                String homeTeamName = scanner.nextLine();
+                System.out.print("Enter away team name: ");
+                String awayTeamName = scanner.nextLine();
+                System.out.print("Enter match date (dd/mm/yyyy): ");
+                String date = scanner.nextLine();
+                return databaseService.getMeci(homeTeamName, awayTeamName, date);
+            case "id":
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                return databaseService.getMeciById(id);
+            default:
+                System.out.println("Invalid option.");
+                return null;
+        }
+    }
 
-    public void viewMeci(Scanner scanner) {
-        System.out.print("Enter home team name: ");
-        String homeTeamName = scanner.nextLine();
-        System.out.print("Enter away team name: ");
-        String awayTeamName = scanner.nextLine();
-        System.out.print("Enter match date (dd/mm/yyyy): ");
-        String date = scanner.nextLine();
-        Meci meci = meciRepositoryService.getMeci(homeTeamName, awayTeamName, date);
+    public void readMeci(Scanner scanner) throws SQLException {
+        Meci meci = searchMeci(scanner);
         if (meci != null) {
             System.out.println(meci);
         } else {
@@ -76,15 +100,15 @@ public class MeciService {
         }
     }
 
-    public void updateMeci(Scanner scanner) {
+    public void viewAllMeci() throws SQLException {
+        System.out.println("MATChES:");
+        databaseService.printAllMatches();
+        System.out.println();
+    }
+
+    public void updateMeci(Scanner scanner) throws SQLException {
         System.out.println("Updating a Match:");
-        System.out.print("Enter home team name: ");
-        String homeTeamName = scanner.nextLine();
-        System.out.print("Enter away team name: ");
-        String awayTeamName = scanner.nextLine();
-        System.out.print("Enter match date (dd/mm/yyyy): ");
-        String date = scanner.nextLine();
-        Meci existingMeci = meciRepositoryService.getMeci(homeTeamName, awayTeamName, date);
+        Meci existingMeci = searchMeci(scanner);
         if (existingMeci == null) {
             System.out.println("Match not found.");
             return;
@@ -96,21 +120,20 @@ public class MeciService {
         scanner.nextLine();
         Meci newMeci = new Meci(existingMeci.getId(), existingMeci.getEchipa1(), existingMeci.getEchipa2(),
                                 existingMeci.getData(), scoreHome, scoreAway, existingMeci.getStadion());
-        meciRepositoryService.updateMeci(homeTeamName, awayTeamName, date, newMeci);
-        System.out.println("Match updated successfully.");
+
+        try {
+            databaseService.updateMeci(newMeci.getEchipa1().getNume(), newMeci.getEchipa2().getNume(), newMeci.getData(), newMeci);
+            System.out.println("Match updated successfully.");
+        } catch (InvalidDataException e) {
+            System.out.println("Update failed: " + e.getMessage());
+        }
     }
 
-    public void deleteMeci(Scanner scanner) {
-        System.out.println("Deleting a Match:");
-        System.out.print("Enter home team name: ");
-        String homeTeamName = scanner.nextLine();
-        System.out.print("Enter away team name: ");
-        String awayTeamName = scanner.nextLine();
-        System.out.print("Enter match date (dd/mm/yyyy): ");
-        String date = scanner.nextLine();
-        Meci meci = meciRepositoryService.getMeci(homeTeamName, awayTeamName, date);
+    public void deleteMeci(Scanner scanner) throws SQLException {
+        Meci meci = searchMeci(scanner);
         if (meci != null) {
-            meciRepositoryService.removeMeci(meci);
+            databaseService.removeMeci(meci);
+            FileManagement.scriereFisierChar("audit.txt", "stergere meci " + meci.getEchipa1().getNume() + " vs " + meci.getEchipa2().getNume());
             System.out.println("Match deleted successfully.");
         } else {
             System.out.println("Match not found.");

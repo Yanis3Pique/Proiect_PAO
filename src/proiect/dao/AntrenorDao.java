@@ -16,7 +16,7 @@ public class AntrenorDao implements DaoInterface<Antrenor> {
 
     private static AntrenorDao antrenorDao;
     private Connection connection = DatabaseConnection.getConnection();
-    private AntrenorDao() throws SQLException {}
+    public AntrenorDao() throws SQLException {}
 
     public static AntrenorDao getInstance() throws SQLException {
         if(antrenorDao == null){
