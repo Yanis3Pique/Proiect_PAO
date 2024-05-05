@@ -65,6 +65,7 @@ public class StadionDao implements DaoInterface<Stadion> {
         return null;
     }
 
+    @Override
     public Stadion readByID(int id) throws SQLException {
         String sql = "SELECT * FROM proiectpao.stadion s WHERE s.id = ?";
         ResultSet rs = null;

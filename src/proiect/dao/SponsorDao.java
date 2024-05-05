@@ -62,6 +62,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
         return null;
     }
 
+    @Override
     public Sponsor readByID(int id) throws SQLException {
         String sql = "SELECT * FROM proiectpao.sponsor s WHERE s.id = ?";
         ResultSet rs = null;

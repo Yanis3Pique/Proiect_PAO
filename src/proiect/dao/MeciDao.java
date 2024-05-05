@@ -72,6 +72,7 @@ public class MeciDao implements DaoInterface<Meci> {
         return null;
     }
 
+    @Override
     public Meci readByID(int id) throws SQLException {
         String sql = "SELECT * FROM proiectpao.meci m WHERE m.id = ?";
         ResultSet rs = null;

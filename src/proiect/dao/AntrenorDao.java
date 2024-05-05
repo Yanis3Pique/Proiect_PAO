@@ -73,6 +73,7 @@ public class AntrenorDao implements DaoInterface<Antrenor> {
         return null;
     }
 
+    @Override
     public Antrenor readByID(int id) throws SQLException {
         String sql = "SELECT * FROM proiectpao.antrenor s WHERE s.id = ?";
         ResultSet result = null;

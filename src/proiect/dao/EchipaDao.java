@@ -63,6 +63,7 @@ public class EchipaDao implements DaoInterface<Echipa> {
         return null;
     }
 
+    @Override
     public Echipa readByID(int id) throws SQLException {
         String sql = "SELECT * FROM proiectpao.echipa e WHERE e.id = ?";
         ResultSet rs = null;

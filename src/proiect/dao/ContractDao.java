@@ -63,6 +63,7 @@ public class ContractDao implements DaoInterface<Contract> {
         return null;
     }
 
+    @Override
     public Contract readByID(int id) throws SQLException {
         String sql = "SELECT * FROM proiectpao.contract c WHERE c.id = ?";
         ResultSet rs = null;

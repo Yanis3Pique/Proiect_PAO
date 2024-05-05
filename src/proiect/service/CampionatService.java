@@ -231,7 +231,6 @@ public class CampionatService {
     }
 
     public static void generalMenu() {
-        System.out.println("\nWelcome to Yanis3Pique's Championship Management System");
         System.out.println("1. Manage Teams");
         System.out.println("2. Manage Matches");
         System.out.println("3. Manage Employees");

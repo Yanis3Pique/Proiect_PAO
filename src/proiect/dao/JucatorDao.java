@@ -68,6 +68,7 @@ public class JucatorDao implements DaoInterface<Jucator> {
         return null;
     }
 
+    @Override
     public Jucator readByID(int id) throws SQLException {
         String sql = "SELECT * FROM proiectpao.jucator j WHERE j.id = ?";
         ResultSet rs = null;

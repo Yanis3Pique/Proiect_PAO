@@ -17,7 +17,7 @@ public class Application {
         StadionService stadionService = new StadionService();
         CampionatService campionatService = new CampionatService();
         ContractService contractService = new ContractService();
-        System.out.println("\nWelcome to Yanis3Pique's Championship Management System\n");
+        System.out.println("\nWelcome to Yanis3Pique's Championship Management System!\n");
 
         while (true) {
             generalMenu();
