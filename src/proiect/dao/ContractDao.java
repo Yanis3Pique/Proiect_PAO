@@ -26,11 +26,11 @@ public class ContractDao implements DaoInterface<Contract> {
 
     @Override
     public void create(Contract contract) throws SQLException {
-        String sql = "INSERT INTO proiectpao.contract VALUES (?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO yanis_football_championship.contract VALUES (?, ?, ?, ?, ?);";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, contract.getId());
-            statement.setString(2, contract.getTeam().getNume());
-            statement.setString(3, contract.getSponsor().getName());
+            statement.setInt(2, contract.getTeam().getId());
+            statement.setInt(3, contract.getSponsor().getId());
             statement.setInt(4, contract.getDurationYears());
             statement.setDouble(5, contract.getSumMoney());
             statement.executeUpdate();
@@ -39,18 +39,29 @@ public class ContractDao implements DaoInterface<Contract> {
 
     @Override
     public Contract read(String teamName_sponsorName) throws SQLException {
-        String teamName = teamName_sponsorName.split("_")[0];
-        String sponsorName = teamName_sponsorName.split("_")[1];
+        String[] parts = teamName_sponsorName.split("_");
+        String teamName = parts[0];
+        String sponsorName = parts[1];
 
-        String sql = "SELECT * FROM proiectpao.contract c WHERE c.teamName = ? AND c.sponsorName = ?";
+        // SQL query that joins the Contract table with the Echipa and Sponsor tables
+        String sql = "SELECT c.id, c.duration, c.sumMoney " +
+                "FROM yanis_football_championship.Contract c " +
+                "JOIN yanis_football_championship.Echipa e ON c.echipaId = e.id " +
+                "JOIN yanis_football_championship.Sponsor s ON c.sponsorId = s.id " +
+                "WHERE e.name = ? AND s.name = ?";
+
         ResultSet rs = null;
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, teamName);
             statement.setString(2, sponsorName);
             rs = statement.executeQuery();
+
             if (rs.next()) {
                 Contract contract = new Contract();
                 contract.setId(rs.getInt("id"));
+                contract.setTeam(EchipaDao.getInstance().readByID(rs.getInt("echipaId")));
+                contract.setSponsor(SponsorDao.getInstance().readByID(rs.getInt("sponsorId")));
                 contract.setDurationYears(rs.getInt("duration"));
                 contract.setSumMoney(rs.getDouble("sumMoney"));
                 return contract;
@@ -65,7 +76,7 @@ public class ContractDao implements DaoInterface<Contract> {
 
     @Override
     public Contract readByID(int id) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.contract c WHERE c.id = ?";
+        String sql = "SELECT * FROM yanis_football_championship.contract c WHERE c.id = ?";
         ResultSet rs = null;
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -73,6 +84,8 @@ public class ContractDao implements DaoInterface<Contract> {
             if (rs.next()) {
                 Contract contract = new Contract();
                 contract.setId(rs.getInt("id"));
+                contract.setTeam(EchipaDao.getInstance().readByID(rs.getInt("echipaId")));
+                contract.setSponsor(SponsorDao.getInstance().readByID(rs.getInt("sponsorId")));
                 contract.setDurationYears(rs.getInt("duration"));
                 contract.setSumMoney(rs.getDouble("sumMoney"));
                 return contract;
@@ -87,32 +100,64 @@ public class ContractDao implements DaoInterface<Contract> {
 
     @Override
     public void update(String teamName_sponsorName, Contract contractUpdated) throws SQLException {
-        String teamName = teamName_sponsorName.split("_")[0];
-        String sponsorName = teamName_sponsorName.split("_")[1];
+        String[] parts = teamName_sponsorName.split("_");
+        String teamName = parts[0];
+        String sponsorName = parts[1];
 
-        String sql = "UPDATE proiectpao.contract c SET c.duration = ?, c.sumMoney = ? WHERE c.teamName = ? AND c.sponsorName = ?";
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        // Find the Echipa ID
+        String findEchipaIdSql = "SELECT id FROM yanis_football_championship.Echipa WHERE name = ?";
+        int echipaId = -1;
+        try (PreparedStatement statement = connection.prepareStatement(findEchipaIdSql)) {
+            statement.setString(1, teamName);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                echipaId = rs.getInt("id");
+            } else {
+                throw new SQLException("No team found with the name: " + teamName);
+            }
+        }
+
+        // Find the Sponsor ID
+        String findSponsorIdSql = "SELECT id FROM yanis_football_championship.Sponsor WHERE name = ?";
+        int sponsorId = -1;
+        try (PreparedStatement statement = connection.prepareStatement(findSponsorIdSql)) {
+            statement.setString(1, sponsorName);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                sponsorId = rs.getInt("id");
+            } else {
+                throw new SQLException("No sponsor found with the name: " + sponsorName);
+            }
+        }
+
+        // Update the Contract
+        String updateSql = "UPDATE yanis_football_championship.Contract " +
+                "SET duration = ?, sumMoney = ? " +
+                "WHERE echipaId = ? AND sponsorId = ?";
+        try (PreparedStatement statement = connection.prepareStatement(updateSql)) {
             statement.setInt(1, contractUpdated.getDurationYears());
             statement.setDouble(2, contractUpdated.getSumMoney());
-            statement.setString(3, teamName);
-            statement.setString(4, sponsorName);
-            statement.executeUpdate();
+            statement.setInt(3, echipaId);
+            statement.setInt(4, sponsorId);
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Updating contract failed, no rows affected.");
+            }
         }
     }
 
     @Override
     public void delete(Contract contract) throws SQLException {
-        String sql = "DELETE FROM proiectpao.contract c WHERE c.teamName = ? AND c.sponsorName = ?";
+        String sql = "DELETE FROM yanis_football_championship.contract WHERE id = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, contract.getTeam().getNume());
-            statement.setString(2, contract.getSponsor().getName());
+            statement.setInt(1, contract.getId());
             statement.executeUpdate();
         }
     }
 
     public List<Contract> findAllContract() throws SQLException {
-        String sql = "SELECT * FROM proiectpao.contract";
+        String sql = "SELECT * FROM yanis_football_championship.contract";
         ResultSet rs = null;
         List<Contract> contracts = new ArrayList<>();
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -120,6 +165,8 @@ public class ContractDao implements DaoInterface<Contract> {
             while (rs.next()) {
                 Contract contract = new Contract();
                 contract.setId(rs.getInt("id"));
+                contract.setTeam(EchipaDao.getInstance().readByID(rs.getInt("echipaId")));
+                contract.setSponsor(SponsorDao.getInstance().readByID(rs.getInt("sponsorId")));
                 contract.setDurationYears(rs.getInt("duration"));
                 contract.setSumMoney(rs.getDouble("sumMoney"));
                 contracts.add(contract);
@@ -133,18 +180,18 @@ public class ContractDao implements DaoInterface<Contract> {
         return contracts;
     }
 
-    public boolean checkUniqueName(String name) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.contract c WHERE c.teamName = ? AND c.sponsorName = ?";
+    public boolean checkUniqueName(int echipaId, int sponsorId) throws SQLException {
+        String sql = "SELECT * FROM yanis_football_championship.contract WHERE echipaId = ? AND sponsorId = ?";
         ResultSet rs = null;
-
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, name.split("_")[0]);
-            statement.setString(2, name.split("_")[1]);
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, echipaId);
+            statement.setInt(2, sponsorId);
             rs = statement.executeQuery();
-            if(rs.getRow() == 0) {
-                return true;
+            return !rs.next();
+        } finally {
+            if (rs != null) {
+                rs.close();
             }
         }
-        return false;
     }
 }

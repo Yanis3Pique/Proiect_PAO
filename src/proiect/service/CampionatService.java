@@ -78,9 +78,7 @@ public class CampionatService {
         System.out.println("2. View a team");
         System.out.println("3. Update a team");
         System.out.println("4. Delete a team");
-        System.out.println("5. Add a player to a team");
-        System.out.println("6. Remove a player from a team");
-        System.out.println("7. View team players");
+        System.out.println("5. View team players");
         System.out.println("0. Back");
         System.out.print("Enter choice: ");
     }

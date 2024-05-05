@@ -27,7 +27,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
 
     @Override
     public void create(Sponsor sponsor) throws SQLException {
-        String sql = "INSERT INTO proiectpao.sponsor VALUES (?, ?, ?);";
+        String sql = "INSERT INTO yanis_football_championship.sponsor VALUES (?, ?, ?);";
 
         try(java.sql.PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setInt(1, sponsor.getId());
@@ -39,7 +39,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
 
     @Override
     public Sponsor read(String name) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.sponsor s WHERE s.name = ?";
+        String sql = "SELECT * FROM yanis_football_championship.sponsor s WHERE s.name = ?";
         ResultSet rs = null;
 
         try {
@@ -64,7 +64,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
 
     @Override
     public Sponsor readByID(int id) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.sponsor s WHERE s.id = ?";
+        String sql = "SELECT * FROM yanis_football_championship.sponsor s WHERE s.id = ?";
         ResultSet rs = null;
 
         try {
@@ -89,7 +89,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
 
     @Override
     public void update(String name, Sponsor sponsorUpdated) throws SQLException {
-        String sql = "UPDATE proiectpao.sponsor set name = ?, country = ? where name = ?";
+        String sql = "UPDATE yanis_football_championship.sponsor set name = ?, country = ? where name = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setString(1, sponsorUpdated.getName());
             statement.setString(2, sponsorUpdated.getCountry());
@@ -100,7 +100,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
 
     @Override
     public void delete(Sponsor sponsor) throws SQLException {
-        String sql = "DELETE FROM proiectpao.sponsor s WHERE s.name = ?";
+        String sql = "DELETE FROM yanis_football_championship.sponsor s WHERE s.name = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setString(1, sponsor.getName());
@@ -109,7 +109,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
     }
 
     public List<Sponsor> findAllSponsor() throws SQLException {
-        String sql = "SELECT * FROM proiectpao.sponsor";
+        String sql = "SELECT * FROM yanis_football_championship.sponsor";
         ResultSet rs = null;
         List<Sponsor> sponsors = new ArrayList<>();
 

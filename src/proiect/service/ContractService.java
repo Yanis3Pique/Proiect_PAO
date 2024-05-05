@@ -154,10 +154,6 @@ public class ContractService {
 
     public void updateContract(Scanner scanner) throws SQLException {
         System.out.println("Update a Contract:");
-        System.out.print("Enter team name: ");
-        String teamName = scanner.nextLine();
-        System.out.print("Enter sponsor name: ");
-        String sponsorName = scanner.nextLine();
         Contract existingContract = searchContract(scanner);
         if (existingContract == null) {
             System.out.println("Contract not found.");
@@ -169,7 +165,7 @@ public class ContractService {
         existingContract.setSumMoney(newSumMoney);
 
         try {
-            databaseService.updateContract(teamName, sponsorName, existingContract);
+            databaseService.updateContract(existingContract.getTeam().getNume(), existingContract.getSponsor().getName(), existingContract);
             System.out.println("Contract updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Contract could not be updated: " + e.getMessage());

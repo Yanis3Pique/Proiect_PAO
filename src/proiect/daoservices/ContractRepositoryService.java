@@ -28,8 +28,8 @@ public class ContractRepositoryService {
     public void addContract(Contract contract) throws InvalidDataException {
         try {
             if(contract != null){
-                if(contractDao.read(String.valueOf(contract.getId())) != null)
-                    throw new InvalidDataException("We already have a contract with this ID!");
+//                if(contractDao.readByID(contract.getId()) != null)
+//                    throw new InvalidDataException("We already have a contract with this ID!");
                 if(contractDao.read(contract.getTeam().getNume() + "_" + contract.getSponsor().getName()) != null)
                     throw new InvalidDataException("We already have a contract with this team and sponsor!");
 
@@ -68,7 +68,7 @@ public class ContractRepositoryService {
         try {
             Contract existingContract = contractDao.read(teamName + "_" + sponsorName);
             if (existingContract != null) {
-                if (!contractDao.checkUniqueName(contract.getTeam().getNume() + "_" + contract.getSponsor().getName()))
+                if (!contractDao.checkUniqueName(contract.getTeam().getId(), contract.getSponsor().getId()))
                     throw new InvalidDataException("We already have a contract with this team and sponsor!");
             }
 

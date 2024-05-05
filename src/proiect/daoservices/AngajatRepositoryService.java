@@ -112,6 +112,7 @@ public class AngajatRepositoryService {
                     for(Echipa e : echipe) {
                         if(e.getAntrenor().getId() == antrenor.getId()) {
                             e.setAntrenor(null);
+                            new EchipaRepositoryService().updateEchipa(e.getNume(), e);
                         }
                     }
                 }
@@ -120,6 +121,8 @@ public class AngajatRepositoryService {
                 jucatorDao.delete(jucator);
             }
         } catch (SQLException e) {
+            System.out.println("Deletion failed: " + e.getMessage());
+        } catch (InvalidDataException e) {
             System.out.println("Deletion failed: " + e.getMessage());
         }
     }

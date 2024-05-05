@@ -1,4 +1,3 @@
-
 -- Table creation for 'Angajat'
 CREATE TABLE Angajat (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -12,8 +11,9 @@ CREATE TABLE Angajat (
 -- Table creation for 'Antrenor'
 CREATE TABLE Antrenor (
             id INT AUTO_INCREMENT PRIMARY KEY,
+            angajatId INT NOT NULL,
             aniExperienta INT,
-            FOREIGN KEY (id) REFERENCES Angajat(id)
+            FOREIGN KEY (angajatId) REFERENCES Angajat(id)
 );
 
 -- Table creation for 'Stadion'
@@ -28,7 +28,6 @@ CREATE TABLE Stadion (
 CREATE TABLE Echipa (
             id INT AUTO_INCREMENT PRIMARY KEY,
             nume VARCHAR(100),
-            oras VARCHAR(100),
             antrenorId INT,
             stadionId INT,
             FOREIGN KEY (antrenorId) REFERENCES Antrenor(id),
@@ -38,15 +37,17 @@ CREATE TABLE Echipa (
 -- Table creation for 'Jucator'
 CREATE TABLE Jucator (
             id INT AUTO_INCREMENT PRIMARY KEY,
+            angajatId INT NOT NULL,
             numar INT,
             pozitie VARCHAR(100),
             echipaId INT,
-            FOREIGN KEY (id) REFERENCES Angajat(id),
+            FOREIGN KEY (angajatId) REFERENCES Angajat(id),
             FOREIGN KEY (echipaId) REFERENCES Echipa(id)
 );
 
+
 -- Table creation for 'Sponsor'
-CREATE TABLE IF NOT EXISTS Sponsor (
+CREATE TABLE Sponsor (
             id INT AUTO_INCREMENT PRIMARY KEY,
             nume VARCHAR(100),
             tara VARCHAR(100)
@@ -55,14 +56,14 @@ CREATE TABLE IF NOT EXISTS Sponsor (
 -- Table creation for 'Contract'
 CREATE TABLE Contract (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            dataInceput DATE,
-            dataSfarsit DATE,
-            valoare DOUBLE,
             echipaId INT,
             sponsorId INT,
+            duration INT,
+            valoare DOUBLE,
             FOREIGN KEY (echipaId) REFERENCES Echipa(id),
             FOREIGN KEY (sponsorId) REFERENCES Sponsor(id)
 );
+
 
 -- Table creation for 'Meci'
 CREATE TABLE Meci (
@@ -77,3 +78,5 @@ CREATE TABLE Meci (
             FOREIGN KEY (echipa2) REFERENCES Echipa(id),
             FOREIGN KEY (stadionId) REFERENCES Stadion(id)
 );
+
+DROP TABLE MECI, CONTRACT, SPONSOR, JUCATOR, ECHIPA, STADION, ANTRENOR, ANGAJAT;

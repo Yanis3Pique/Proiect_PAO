@@ -30,8 +30,8 @@ public class StadionRepositoryService {
     public void addStadion(Stadion stadion) throws InvalidDataException {
         try {
             if(stadion != null){
-                if(stadionDao.read(String.valueOf(stadion.getId())) != null)
-                    throw new InvalidDataException("We already have a stadium with this ID!");
+//                if(stadionDao.readByID(stadion.getId()) != null)
+//                    throw new InvalidDataException("We already have a stadium with this ID!");
                 if(stadionDao.read(stadion.getNume()) != null)
                     throw new InvalidDataException("We already have a stadium with this name!");
 
@@ -91,6 +91,7 @@ public class StadionRepositoryService {
                 for(Echipa e : echipe) {
                     if(e.getStadion().getId() == stadion.getId()) {
                         e.setStadion(null);
+                        new EchipaRepositoryService().updateEchipa(e.getNume(), e);
                     }
                 }
             }
@@ -98,6 +99,8 @@ public class StadionRepositoryService {
 
         } catch (SQLException e) {
             System.out.println("SQLException " + e.getSQLState() + " " + e.getMessage());
+        } catch (InvalidDataException e) {
+            System.out.println("InvalidDataException " + e.getMessage());
         }
     }
 }

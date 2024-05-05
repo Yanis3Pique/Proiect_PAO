@@ -147,7 +147,7 @@ public class AngajatService {
             System.out.println("Enter years of experience:");
             int years = scanner.nextInt();
             scanner.nextLine();
-            Antrenor antrenor = new Antrenor(0, firstName, lastName, nationality, age, salary, years);
+            Antrenor antrenor = new Antrenor(0, 0, firstName, lastName, nationality, age, salary, years);
             try {
                 databaseService.addAngajat(antrenor);
                 FileManagement.scriereFisierChar("audit.txt", "adaugare antrenor " + firstName + " " + lastName);
@@ -162,7 +162,8 @@ public class AngajatService {
             String position = scanner.nextLine();
             System.out.println("Enter team id:");
             int id_echipa = scanner.nextInt();
-            Jucator jucator = new Jucator(0, firstName, lastName, nationality, age, salary, id_echipa, position, number);
+            scanner.nextLine();
+            Jucator jucator = new Jucator(0, 0, firstName, lastName, nationality, age, salary, id_echipa, position, number);
             jucator.setPozitie(position);
             try {
                 databaseService.addAngajat(jucator);
@@ -170,7 +171,6 @@ public class AngajatService {
             } catch (InvalidDataException e) {
                 System.out.println("Player could not be created " + e.getMessage());
             }
-            System.out.println("Employee created successfully.");
         }
     }
 }

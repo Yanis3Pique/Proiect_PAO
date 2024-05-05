@@ -1,5 +1,6 @@
 package proiect.daoservices;
 
+import proiect.model.Contract;
 import proiect.model.Echipa;
 import proiect.dao.EchipaDao;
 import proiect.model.Jucator;
@@ -78,9 +79,21 @@ public class EchipaRepositoryService {
             List<Jucator> jucatori = echipaDao.getJucatoriByEchipa(echipa);
             if(jucatori != null) {
                 for(Jucator j : jucatori) {
-                    j.setId_echipa(0);
+                    j.setId_echipa(-1);
+//                    echipaDao.updateJucator(j);
                 }
             }
+
+            List<Contract> contractList = new ContractRepositoryService().getAllContracts();
+            if (contractList != null) {
+                for (Contract c : contractList) {
+                    if (c.getSponsor().getId() == echipa.getId()) {
+                        ContractRepositoryService contractRepositoryService = new ContractRepositoryService();
+                        contractRepositoryService.removeContract(c.getTeam().getNume(), c.getSponsor().getName());
+                    }
+                }
+            }
+
             echipaDao.delete(echipa);
 
         } catch (SQLException e) {

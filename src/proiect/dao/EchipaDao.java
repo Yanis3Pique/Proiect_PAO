@@ -26,7 +26,7 @@ public class EchipaDao implements DaoInterface<Echipa> {
 
     @Override
     public void create(Echipa echipa) throws SQLException {
-        String sql = "INSERT INTO proiectpao.echipa VALUES (?, ?, ?, ?);";
+        String sql = "INSERT INTO yanis_football_championship.echipa VALUES (?, ?, ?, ?);";
 
         try (var statement = connection.prepareStatement(sql)) {
             statement.setInt(1, echipa.getId());
@@ -39,7 +39,7 @@ public class EchipaDao implements DaoInterface<Echipa> {
 
     @Override
     public Echipa read(String nume) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.echipa e WHERE e.nume = ?";
+        String sql = "SELECT * FROM yanis_football_championship.echipa e WHERE e.nume = ?";
         ResultSet rs = null;
 
         try {
@@ -51,8 +51,8 @@ public class EchipaDao implements DaoInterface<Echipa> {
                 Echipa echipa = new Echipa();
                 echipa.setId(rs.getInt("id"));
                 echipa.setNume(rs.getString("nume"));
-                echipa.setAntrenor(new AntrenorDao().readByID(rs.getInt("antrenor_id")));
-                echipa.setStadion(new StadionDao().readByID(rs.getInt("stadion_id")));
+                echipa.setAntrenor(AntrenorDao.getInstance().readByID(rs.getInt("antrenorId")));
+                echipa.setStadion(StadionDao.getInstance().readByID(rs.getInt("stadionId")));
                 return echipa;
             }
         } finally {
@@ -65,7 +65,7 @@ public class EchipaDao implements DaoInterface<Echipa> {
 
     @Override
     public Echipa readByID(int id) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.echipa e WHERE e.id = ?";
+        String sql = "SELECT * FROM yanis_football_championship.echipa e WHERE e.id = ?";
         ResultSet rs = null;
 
         try {
@@ -77,8 +77,8 @@ public class EchipaDao implements DaoInterface<Echipa> {
                 Echipa echipa = new Echipa();
                 echipa.setId(rs.getInt("id"));
                 echipa.setNume(rs.getString("nume"));
-                echipa.setAntrenor(new AntrenorDao().readByID(rs.getInt("antrenor_id")));
-                echipa.setStadion(new StadionDao().readByID(rs.getInt("stadion_id")));
+                echipa.setAntrenor(new AntrenorDao().readByID(rs.getInt("antrenorId")));
+                echipa.setStadion(new StadionDao().readByID(rs.getInt("stadionId")));
                 return echipa;
             }
         } finally {
@@ -91,7 +91,7 @@ public class EchipaDao implements DaoInterface<Echipa> {
 
     @Override
     public void update(String nume, Echipa echipaUpdated) throws SQLException {
-        String sql = "UPDATE proiectpao.echipa SET nume = ?, antrenor_id = ?, stadion_id = ? WHERE nume = ?";
+        String sql = "UPDATE yanis_football_championship.echipa SET nume = ?, antrenorId = ?, stadionId = ? WHERE nume = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, echipaUpdated.getNume());
             statement.setInt(2, echipaUpdated.getAntrenor().getId());
@@ -103,14 +103,14 @@ public class EchipaDao implements DaoInterface<Echipa> {
 
     @Override
     public void delete(Echipa echipa) throws SQLException {
-        String sql = "DELETE FROM proiectpao.echipa WHERE id = ?";
+        String sql = "DELETE FROM yanis_football_championship.echipa WHERE id = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, echipa.getId());
             statement.executeUpdate();
         }
 
-        String sql_meci = "DELETE FROM proiectpao.meci WHERE echipa1_id = ? OR echipa2_id = ?";
+        String sql_meci = "DELETE FROM yanis_football_championship.meci WHERE echipa1 = ? OR echipa2 = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql_meci)) {
             statement.setInt(1, echipa.getId());
@@ -118,7 +118,7 @@ public class EchipaDao implements DaoInterface<Echipa> {
             statement.executeUpdate();
         }
 
-        String sql_contract = "DELETE FROM proiectpao.contract WHERE echipa_id = ?";
+        String sql_contract = "DELETE FROM yanis_football_championship.contract WHERE echipaId = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql_contract)) {
             statement.setInt(1, echipa.getId());
@@ -127,7 +127,7 @@ public class EchipaDao implements DaoInterface<Echipa> {
     }
 
     public List<Echipa> findAllEchipa() {
-        String sql = "SELECT * FROM proiectpao.echipa";
+        String sql = "SELECT * FROM yanis_football_championship.echipa";
         ResultSet rs = null;
         List<Echipa> echipe = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -136,8 +136,8 @@ public class EchipaDao implements DaoInterface<Echipa> {
                 Echipa echipa = new Echipa();
                 echipa.setId(rs.getInt("id"));
                 echipa.setNume(rs.getString("nume"));
-                echipa.setAntrenor(new AntrenorDao().readByID(rs.getInt("antrenor_id")));
-                echipa.setStadion(new StadionDao().readByID(rs.getInt("stadion_id")));
+                echipa.setAntrenor(new AntrenorDao().readByID(rs.getInt("antrenorId")));
+                echipa.setStadion(new StadionDao().readByID(rs.getInt("stadionId")));
                 echipe.add(echipa);
             }
         } catch (SQLException e) {
@@ -148,7 +148,7 @@ public class EchipaDao implements DaoInterface<Echipa> {
     }
 
     public boolean checkUniqueName(String nume) {
-        String sql = "SELECT * FROM proiectpao.echipa e WHERE e.nume = ?";
+        String sql = "SELECT * FROM yanis_football_championship.echipa e WHERE e.nume = ?";
         ResultSet rs = null;
 
         try {
@@ -164,27 +164,31 @@ public class EchipaDao implements DaoInterface<Echipa> {
     }
 
     public List<Jucator> getJucatoriByEchipa(Echipa echipa) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.jucator j WHERE j.echipa_id = ?";
-        ResultSet rs = null;
+        // SQL to join Jucator and Angajat tables
+        String sql = "SELECT j.id, a.nume, a.prenume, a.nationalitate, a.varsta, a.salariu, j.numar, j.pozitie, j.echipaId " +
+                "FROM yanis_football_championship.Jucator j " +
+                "JOIN yanis_football_championship.Angajat a ON j.id = a.id " +
+                "WHERE j.echipaId = ?";
+
         List<Jucator> jucatori = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, echipa.getId());
-            rs = statement.executeQuery();
-            while (rs.next()) {
-                Jucator jucator = new Jucator();
-                jucator.setId(rs.getInt("id"));
-                jucator.setNume(rs.getString("nume"));
-                jucator.setPrenume(rs.getString("prenume"));
-                jucator.setNationalitate(rs.getString("nationalitate"));
-                jucator.setVarsta(rs.getInt("varsta"));
-                jucator.setSalariu(rs.getDouble("salariu"));
-                jucator.setId_echipa(rs.getInt("echipa_id"));
-                jucator.setPozitie(rs.getString("pozitie"));
-                jucator.setNumarTricou(rs.getInt("numar_tricou"));
-                jucatori.add(jucator);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    Jucator jucator = new Jucator();
+                    jucator.setId(rs.getInt("id"));
+                    jucator.setNume(rs.getString("nume"));
+                    jucator.setPrenume(rs.getString("prenume"));
+                    jucator.setNationalitate(rs.getString("nationalitate"));
+                    jucator.setVarsta(rs.getInt("varsta"));
+                    jucator.setSalariu(rs.getDouble("salariu"));
+                    jucator.setId_echipa(rs.getInt("echipaId"));
+                    jucator.setPozitie(rs.getString("pozitie"));
+                    jucator.setNumarTricou(rs.getInt("numar"));
+                    jucatori.add(jucator);
+                }
             }
         }
-
         return jucatori;
     }
 }

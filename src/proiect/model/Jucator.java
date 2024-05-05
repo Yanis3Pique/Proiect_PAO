@@ -3,6 +3,7 @@ package proiect.model;
 import java.util.Objects;
 
 public class Jucator extends Angajat {
+    private int angajatId;
     private int id_echipa;
     private String pozitie;
     private int numarTricou;
@@ -11,11 +12,20 @@ public class Jucator extends Angajat {
         super();
     }
 
-    public Jucator(int id, String nume, String prenume, String nationalitate, int varsta, double salariu, int id_echipa, String pozitie, int numarTricou) {
+    public Jucator(int id, int angajatId, String nume, String prenume, String nationalitate, int varsta, double salariu, int id_echipa, String pozitie, int numarTricou) {
         super(id, nume, prenume, nationalitate, varsta, salariu);
+        this.angajatId = angajatId;
         this.id_echipa = id_echipa;
         this.pozitie = pozitie;
         this.numarTricou = numarTricou;
+    }
+
+    public int getAngajatId() {
+        return angajatId;
+    }
+
+    public void setAngajatId(int angajatId) {
+        this.angajatId = angajatId;
     }
 
     public int getId_echipa() {
@@ -53,5 +63,19 @@ public class Jucator extends Angajat {
                 "Salary: " + getSalariu() + "$" + '\n' +
                 "Position: " + getPozitie() + '\n' +
                 "Shirt no.: " + getNumarTricou() + '\n';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Jucator jucator = (Jucator) o;
+        return id_echipa == jucator.id_echipa && numarTricou == jucator.numarTricou && Objects.equals(pozitie, jucator.pozitie);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id_echipa, pozitie, numarTricou);
     }
 }

@@ -26,20 +26,8 @@ public class SponsorRepositoryService {
         }
     }
 
-    public List<Sponsor> getAllSponsors() {
-        List<Sponsor> sponsors = null;
-
-        try {
-            sponsors = sponsorDao.findAllSponsor();
-            if(sponsors == null){
-                System.out.println("There is no sponsor.");
-            }
-
-        } catch (Exception e) {
-            System.out.println("Exception " + e.getMessage());
-        }
-
-        return sponsors;
+    public List<Sponsor> getAllSponsors() throws SQLException {
+        return sponsorDao.findAllSponsor();
     }
 
     public Sponsor getSponsorByName(String name) throws SQLException {
@@ -69,10 +57,11 @@ public class SponsorRepositoryService {
     public void addSponsor(Sponsor sponsor) throws InvalidDataException {
         try {
             if(sponsor != null){
+//                if(sponsorDao.readByID(sponsor.getId()) != null)
+//                    throw new InvalidDataException("Sponsor already exists!");
                 if(sponsorDao.read(sponsor.getName()) != null)
                     throw new InvalidDataException("Sponsor already exists!");
-                if(sponsorDao.readByID(sponsor.getId()) != null)
-                    throw new InvalidDataException("Sponsor already exists!");
+
                 sponsorDao.create(sponsor);
                 System.out.println("Sponsor added successfully!");
             }
@@ -84,7 +73,7 @@ public class SponsorRepositoryService {
     public void updateSponsor(String name, Sponsor sponsor) throws InvalidDataException {
         try {
             if(sponsor != null){
-                if(!sponsorDao.checkUniqueName(name))
+                if(!sponsorDao.checkUniqueName(sponsor.getName()))
                     throw new InvalidDataException("Sponsor already exists!");
 
                 sponsorDao.update(name, sponsor);

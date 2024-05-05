@@ -1,5 +1,7 @@
 package proiect.model;
 
+import java.util.Objects;
+
 public class Meci {
     int id;
     private Echipa echipa1;
@@ -85,5 +87,18 @@ public class Meci {
                 "Date: " + getData() + '\n' +
                 "Result: " + getScor1() + " - " + getScor2() + '\n' +
                 "Stadium: " + getStadion().getNume() + '\n';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Meci meci = (Meci) o;
+        return id == meci.id && scor1 == meci.scor1 && scor2 == meci.scor2 && Objects.equals(echipa1, meci.echipa1) && Objects.equals(echipa2, meci.echipa2) && Objects.equals(data, meci.data) && Objects.equals(stadion, meci.stadion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, echipa1, echipa2, data, scor1, scor2, stadion);
     }
 }

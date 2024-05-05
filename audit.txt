@@ -1,0 +1,20 @@
+creare stadion Camp Nou;2024-05-05T22:27:53.308943500
+adaugare antrenor Xavi Hernandez;2024-05-05T22:28:18.173516100
+create team FC Barcelona;2024-05-05T22:28:38.348420200
+adaugare antrenor Carlo Ancelotti;2024-05-05T22:34:17.730011500
+creare stadion Santiago Bernabeu;2024-05-05T22:34:39.949857
+create team Real Madrid;2024-05-05T22:37:27.386778400
+creare meci FC Barcelona vs Real Madrid;2024-05-05T22:38:12.152526
+creare meci FC Barcelona vs Real Madrid;2024-05-05T22:39:57.153056700
+creare meci FC Barcelona vs Real Madrid;2024-05-05T22:40:45.452759600
+creare meci Real Madrid vs FC Barcelona;2024-05-05T22:43:07.838193700
+adaugare jucator Lionel Messi;2024-05-05T22:51:05.033367300
+adaugare jucator Lionel Messi;2024-05-05T22:53:57.273334800
+adaugare jucator Lionel Messi;2024-05-05T22:55:30.742115200
+adaugare jucator Luis Suarez;2024-05-05T23:09:59.307727400
+adaugare jucator Yanis Popescu;2024-05-05T23:11:54.966191300
+adaugare antrenor Xavi Hernandez;2024-05-06T00:03:48.588181500
+adaugare jucator Lionel Messi;2024-05-06T00:04:15.966727
+creare stadion Camp Nou;2024-05-06T00:04:40.459617600
+create team FC Barcelona;2024-05-06T00:05:23.534602800
+adaugare jucator Lionel Messi;2024-05-06T00:05:50.445313600

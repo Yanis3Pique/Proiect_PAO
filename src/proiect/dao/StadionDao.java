@@ -28,7 +28,7 @@ public class StadionDao implements DaoInterface<Stadion> {
 
     @Override
     public void create(Stadion stadion) throws SQLException {
-        String sql = "INSERT INTO proiectpao.stadion VALUES (?, ?, ?, ?);";
+        String sql = "INSERT INTO yanis_football_championship.stadion VALUES (?, ?, ?, ?);";
 
         try(PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setInt(1, stadion.getId());
@@ -41,7 +41,7 @@ public class StadionDao implements DaoInterface<Stadion> {
 
     @Override
     public Stadion read(String nume) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.stadion s WHERE s.nume = ?";
+        String sql = "SELECT * FROM yanis_football_championship.stadion s WHERE s.nume = ?";
         ResultSet rs = null;
 
         try {
@@ -67,7 +67,7 @@ public class StadionDao implements DaoInterface<Stadion> {
 
     @Override
     public Stadion readByID(int id) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.stadion s WHERE s.id = ?";
+        String sql = "SELECT * FROM yanis_football_championship.stadion s WHERE s.id = ?";
         ResultSet rs = null;
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -92,7 +92,7 @@ public class StadionDao implements DaoInterface<Stadion> {
 
     @Override
     public void update(String nume, Stadion updatedStadion) throws SQLException {
-        String sql = "UPDATE proiectpao.stadion set nume = ? , capacitate = ? , locatie = ? where nume = ?";
+        String sql = "UPDATE yanis_football_championship.stadion set nume = ? , capacitate = ? , locatie = ? where nume = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setString(1, updatedStadion.getNume());
             statement.setInt(2, updatedStadion.getCapacitate());
@@ -100,18 +100,11 @@ public class StadionDao implements DaoInterface<Stadion> {
             statement.setString(4, nume);
             statement.executeUpdate();
         }
-
-        String sql_updateEchipa = "UPDATE proiectpao.echipa set stadion_id = ? where stadion_id = ?";
-        try(PreparedStatement statement = connection.prepareStatement(sql_updateEchipa);) {
-            statement.setInt(1, updatedStadion.getId());
-            statement.setInt(2, read(nume).getId());
-            statement.executeUpdate();
-        }
     }
 
     @Override
     public void delete(Stadion stadion) throws SQLException {
-        String sql = "DELETE FROM proiectpao.stadion s WHERE s.nume = ?";
+        String sql = "DELETE FROM yanis_football_championship.stadion s WHERE s.nume = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setString(1, stadion.getNume());
@@ -120,7 +113,7 @@ public class StadionDao implements DaoInterface<Stadion> {
     }
 
     public List<Stadion> findAllStadion() throws SQLException {
-        String sql = "SELECT * FROM proiectpao.stadion";
+        String sql = "SELECT * FROM yanis_football_championship.stadion";
         ResultSet rs = null;
         List<Stadion> stadions = new ArrayList<>();
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -141,7 +134,7 @@ public class StadionDao implements DaoInterface<Stadion> {
     }
 
     public boolean checkUniqueName(String name) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.stadion s WHERE s.nume = ?";
+        String sql = "SELECT * FROM yanis_football_championship.stadion s WHERE s.nume = ?";
         ResultSet rs = null;
 
         try (PreparedStatement statement = connection.prepareStatement(sql)){

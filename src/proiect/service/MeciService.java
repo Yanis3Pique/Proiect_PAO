@@ -130,6 +130,7 @@ public class MeciService {
     }
 
     public void deleteMeci(Scanner scanner) throws SQLException {
+        System.out.println("Deleting a Match:");
         Meci meci = searchMeci(scanner);
         if (meci != null) {
             databaseService.removeMeci(meci);
