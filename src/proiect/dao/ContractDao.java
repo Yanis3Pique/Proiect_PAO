@@ -43,32 +43,26 @@ public class ContractDao implements DaoInterface<Contract> {
         String teamName = parts[0];
         String sponsorName = parts[1];
 
-        // SQL query that joins the Contract table with the Echipa and Sponsor tables
-        String sql = "SELECT c.id, c.duration, c.sumMoney " +
+        // Correct SQL query to join Contract with Echipa and Sponsor tables
+        String sql = "SELECT c.id, c.echipaId, c.sponsorId, c.duration, c.valoare, e.id as eId, s.id as sId " +
                 "FROM yanis_football_championship.Contract c " +
                 "JOIN yanis_football_championship.Echipa e ON c.echipaId = e.id " +
                 "JOIN yanis_football_championship.Sponsor s ON c.sponsorId = s.id " +
-                "WHERE e.name = ? AND s.name = ?";
-
-        ResultSet rs = null;
+                "WHERE e.nume = ? AND s.nume = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, teamName);
             statement.setString(2, sponsorName);
-            rs = statement.executeQuery();
-
-            if (rs.next()) {
-                Contract contract = new Contract();
-                contract.setId(rs.getInt("id"));
-                contract.setTeam(EchipaDao.getInstance().readByID(rs.getInt("echipaId")));
-                contract.setSponsor(SponsorDao.getInstance().readByID(rs.getInt("sponsorId")));
-                contract.setDurationYears(rs.getInt("duration"));
-                contract.setSumMoney(rs.getDouble("sumMoney"));
-                return contract;
-            }
-        } finally {
-            if (rs != null) {
-                rs.close();
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    Contract contract = new Contract();
+                    contract.setId(rs.getInt("id"));
+                    contract.setTeam(EchipaDao.getInstance().readByID(rs.getInt("eId")));
+                    contract.setSponsor(SponsorDao.getInstance().readByID(rs.getInt("sId")));
+                    contract.setDurationYears(rs.getInt("duration"));
+                    contract.setSumMoney(rs.getDouble("valoare"));
+                    return contract;
+                }
             }
         }
         return null;
@@ -87,7 +81,7 @@ public class ContractDao implements DaoInterface<Contract> {
                 contract.setTeam(EchipaDao.getInstance().readByID(rs.getInt("echipaId")));
                 contract.setSponsor(SponsorDao.getInstance().readByID(rs.getInt("sponsorId")));
                 contract.setDurationYears(rs.getInt("duration"));
-                contract.setSumMoney(rs.getDouble("sumMoney"));
+                contract.setSumMoney(rs.getDouble("valoare"));
                 return contract;
             }
         } finally {
@@ -105,7 +99,7 @@ public class ContractDao implements DaoInterface<Contract> {
         String sponsorName = parts[1];
 
         // Find the Echipa ID
-        String findEchipaIdSql = "SELECT id FROM yanis_football_championship.Echipa WHERE name = ?";
+        String findEchipaIdSql = "SELECT id FROM yanis_football_championship.Echipa WHERE nume = ?";
         int echipaId = -1;
         try (PreparedStatement statement = connection.prepareStatement(findEchipaIdSql)) {
             statement.setString(1, teamName);
@@ -118,7 +112,7 @@ public class ContractDao implements DaoInterface<Contract> {
         }
 
         // Find the Sponsor ID
-        String findSponsorIdSql = "SELECT id FROM yanis_football_championship.Sponsor WHERE name = ?";
+        String findSponsorIdSql = "SELECT id FROM yanis_football_championship.Sponsor WHERE nume = ?";
         int sponsorId = -1;
         try (PreparedStatement statement = connection.prepareStatement(findSponsorIdSql)) {
             statement.setString(1, sponsorName);
@@ -132,7 +126,7 @@ public class ContractDao implements DaoInterface<Contract> {
 
         // Update the Contract
         String updateSql = "UPDATE yanis_football_championship.Contract " +
-                "SET duration = ?, sumMoney = ? " +
+                "SET duration = ?, valoare = ? " +
                 "WHERE echipaId = ? AND sponsorId = ?";
         try (PreparedStatement statement = connection.prepareStatement(updateSql)) {
             statement.setInt(1, contractUpdated.getDurationYears());
@@ -168,7 +162,7 @@ public class ContractDao implements DaoInterface<Contract> {
                 contract.setTeam(EchipaDao.getInstance().readByID(rs.getInt("echipaId")));
                 contract.setSponsor(SponsorDao.getInstance().readByID(rs.getInt("sponsorId")));
                 contract.setDurationYears(rs.getInt("duration"));
-                contract.setSumMoney(rs.getDouble("sumMoney"));
+                contract.setSumMoney(rs.getDouble("valoare"));
                 contracts.add(contract);
             }
         } finally {

@@ -34,7 +34,7 @@ public class ContractRepositoryService {
                     throw new InvalidDataException("We already have a contract with this team and sponsor!");
 
                 contractDao.create(contract);
-                System.out.println("Contract added!");
+//                System.out.println("Contract added!");
             }
         } catch (SQLException e) {
             System.out.println("Creation failed: " + e.getMessage());
@@ -46,8 +46,6 @@ public class ContractRepositoryService {
 
         if (contract != null) {
             return contract;
-        } else {
-            System.out.println("Contract has not been found!");
         }
 
         return null;
@@ -58,8 +56,6 @@ public class ContractRepositoryService {
 
         if (contract != null) {
             return contract;
-        } else {
-            System.out.println("Contract has not been found!");
         }
         return null;
     }
@@ -67,13 +63,12 @@ public class ContractRepositoryService {
     public void updateContract(String teamName, String sponsorName, Contract contract) throws InvalidDataException {
         try {
             Contract existingContract = contractDao.read(teamName + "_" + sponsorName);
-            if (existingContract != null) {
-                if (!contractDao.checkUniqueName(contract.getTeam().getId(), contract.getSponsor().getId()))
-                    throw new InvalidDataException("We already have a contract with this team and sponsor!");
+            if (existingContract == null) {
+                throw new InvalidDataException("Contract does not exist!");
             }
 
             contractDao.update(teamName + "_" + sponsorName, contract);
-            System.out.println("Contract updated!");
+//            System.out.println("Contract updated!");
         } catch (SQLException e) {
             System.out.println("Update failed: " + e.getMessage());
         }

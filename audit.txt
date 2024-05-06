@@ -18,3 +18,61 @@ adaugare jucator Lionel Messi;2024-05-06T00:04:15.966727
 creare stadion Camp Nou;2024-05-06T00:04:40.459617600
 create team FC Barcelona;2024-05-06T00:05:23.534602800
 adaugare jucator Lionel Messi;2024-05-06T00:05:50.445313600
+adaugare antrenor Xavi Hernandez;2024-05-06T22:22:02.223066
+adaugare jucator Lionel Messi;2024-05-06T22:22:27.861092700
+adaugare antrenor Carlo Ancelotti;2024-05-06T22:23:00.463014300
+creare stadion Camp Nou;2024-05-06T22:23:22.340582200
+creare stadion Santiago Bernabeu;2024-05-06T22:24:58.787076300
+creare stadion Boaba;2024-05-06T22:27:36.753434500
+stergere stadion Boaba;2024-05-06T22:27:45.526567300
+adaugare antrenor Yanis Popescu;2024-05-06T22:29:33.349167900
+creare stadion Nicolae Dobrin;2024-05-06T22:37:49.932469500
+create team FC Barcelona;2024-05-06T22:38:10.577230500
+create team Real Madrid;2024-05-06T22:39:08.075547300
+create team FC Arges;2024-05-06T22:39:23.021944
+create team FC Arges;2024-05-06T22:41:21.140722300
+create team FC Arges;2024-05-06T22:47:41.809376200
+adaugare antrenor Xavi Hernandez;2024-05-06T22:51:37.462541600
+adaugare antrenor Carlo Ancelotti;2024-05-06T22:51:56.105976900
+adaugare antrenor Yanis Popescu;2024-05-06T22:52:13.249689200
+creare stadion Camp Nou;2024-05-06T22:52:25.505239500
+creare stadion Santiago Bernabeu;2024-05-06T22:52:37.543783
+creare stadion Nicolae Dobrin;2024-05-06T22:52:55.768353300
+create team FC Barcelona;2024-05-06T22:53:10.768401600
+create team Real Madrid;2024-05-06T22:54:33.381605900
+create team FC Arges;2024-05-06T22:55:19.653698
+adaugare antrenor Bobita Mirel;2024-05-06T22:55:47.069533
+creare stadion Gloria Buzau;2024-05-06T22:56:04.663460800
+create team Gloria Buzau;2024-05-06T22:56:23.877569200
+adaugare jucator Victor Iacob;2024-05-06T23:02:07.514028100
+delete team Gloria Buzau;2024-05-06T23:04:43.132642800
+creare meci FC Barcelona vs Gloria Buzau;2024-05-06T23:06:17.852356300
+creare meci Real Madrid vs FC Arges;2024-05-06T23:14:32.907195
+creare meci FC Barcelona vs Real Madrid;2024-05-06T23:15:28.286816500
+creare meci Gloria Buzau vs FC Arges;2024-05-06T23:16:09.390880500
+creare sponsor Nike;2024-05-06T23:16:53.130042300
+creare sponsor Nike;2024-05-06T23:19:38.715533300
+creare sponsor Nike;2024-05-06T23:20:13.318705500
+creare sponsor Nike;2024-05-06T23:23:19.521481
+Contract creat cu succes intre echipa Gloria Buzau si sponsorul Nike.
+;2024-05-06T23:24:00.228316
+creare sponsor Abibas;2024-05-06T23:24:34.689047300
+stergere sponsor Abibas;2024-05-06T23:26:04.182816100
+Contract creat cu succes intre echipa Gloria Buzau si sponsorul Nike.
+;2024-05-06T23:26:50.564028400
+creare sponsor Umbro;2024-05-06T23:29:09.460694800
+Contract creat cu succes intre echipa FC Barcelona si sponsorul Nike.
+;2024-05-06T23:31:02.235800100
+Contract creat cu succes intre echipa FC Barcelona si sponsorul Nike.
+;2024-05-06T23:32:35.332423800
+Contract creat cu succes intre echipa FC Arges si sponsorul Umbro.
+;2024-05-06T23:35:30.020635
+Contract sters cu succes intre echipa FC Arges si sponsorul Umbro.
+;2024-05-07T00:01:32.375277
+Contract creat cu succes intre echipa Gloria Buzau si sponsorul Umbro.
+;2024-05-07T00:06:46.252965
+creare sponsor Test;2024-05-07T00:06:58.862786400
+Contract creat cu succes intre echipa Real Madrid si sponsorul Test.
+;2024-05-07T00:11:01.542558400
+stergere sponsor Test;2024-05-07T00:11:17.248088400
+delete team Gloria Buzau;2024-05-07T00:26:13.846770900

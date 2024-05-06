@@ -26,7 +26,7 @@ public class StadionService {
         try {
             databaseService.addStadion(stadion);
             FileManagement.scriereFisierChar("audit.txt", "creare stadion " + name);
-            System.out.println("Stadium created successfully.");
+//            System.out.println("Stadium created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
         }
@@ -96,8 +96,6 @@ public class StadionService {
         Stadion stadion = seachStadion(scanner);
         if (stadion != null) {
             System.out.println(stadion);
-        } else {
-            System.out.println("Stadium not found.");
         }
     }
 
@@ -111,7 +109,7 @@ public class StadionService {
         System.out.println("Updating a Stadium:");
         Stadion existingStadion = seachStadion(scanner);
         if (existingStadion == null) {
-            System.out.println("Stadium not found.");
+//            System.out.println("Stadium not found.");
             return;
         }
         int newCapacity = getNewStadiumCapacity(scanner);
@@ -121,7 +119,7 @@ public class StadionService {
 
         try {
             databaseService.updateStadion(existingStadion.getNume(), existingStadion);
-            System.out.println("Stadium updated successfully.");
+//            System.out.println("Stadium updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Update failed: " + e.getMessage());
         }

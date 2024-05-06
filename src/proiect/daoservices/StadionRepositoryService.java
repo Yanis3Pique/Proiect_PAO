@@ -86,21 +86,10 @@ public class StadionRepositoryService {
         try {
             if (stadion == null) return;
 
-            List<Echipa> echipe = new EchipaRepositoryService().getAllEchipe();
-            if(echipe != null) {
-                for(Echipa e : echipe) {
-                    if(e.getStadion().getId() == stadion.getId()) {
-                        e.setStadion(null);
-                        new EchipaRepositoryService().updateEchipa(e.getNume(), e);
-                    }
-                }
-            }
             stadionDao.delete(stadion);
 
         } catch (SQLException e) {
             System.out.println("SQLException " + e.getSQLState() + " " + e.getMessage());
-        } catch (InvalidDataException e) {
-            System.out.println("InvalidDataException " + e.getMessage());
         }
     }
 }

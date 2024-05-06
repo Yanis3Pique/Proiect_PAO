@@ -25,7 +25,7 @@ public class EchipaRepositoryService {
                     throw new InvalidDataException("We already have a team with this name!");
 
                 echipaDao.create(echipa);
-                System.out.println("Team added!");
+//                System.out.println("Team added!");
             }
         } catch (SQLException e) {
             System.out.println("Creation failed: " + e.getMessage());
@@ -37,8 +37,6 @@ public class EchipaRepositoryService {
 
         if (echipa != null) {
             return echipa;
-        } else {
-            System.out.println("Team has not been found!");
         }
 
         return null;
@@ -49,8 +47,6 @@ public class EchipaRepositoryService {
 
         if (echipa != null) {
             return echipa;
-        } else {
-            System.out.println("Team has not been found!");
         }
 
         return null;
@@ -59,13 +55,12 @@ public class EchipaRepositoryService {
     public void updateEchipa(String nume, Echipa echipaUpdated) throws InvalidDataException {
         try {
             Echipa echipa = echipaDao.read(nume);
-            if (echipa != null) {
-                if(!echipaDao.checkUniqueName(echipaUpdated.getNume()))
-                    throw new InvalidDataException("We already have a team with this name!");
+            if (echipa == null) {
+                throw new InvalidDataException("Team not found!");
             }
 
             echipaDao.update(nume, echipaUpdated);
-            System.out.println("Team updated!");
+//            System.out.println("Team updated!");
         } catch (SQLException e) {
             System.out.println("Update failed: " + e.getMessage());
         }
@@ -75,24 +70,6 @@ public class EchipaRepositoryService {
         Echipa echipa = echipaDao.read(nume);
         try {
             if (echipa == null) return;
-
-            List<Jucator> jucatori = echipaDao.getJucatoriByEchipa(echipa);
-            if(jucatori != null) {
-                for(Jucator j : jucatori) {
-                    j.setId_echipa(-1);
-//                    echipaDao.updateJucator(j);
-                }
-            }
-
-            List<Contract> contractList = new ContractRepositoryService().getAllContracts();
-            if (contractList != null) {
-                for (Contract c : contractList) {
-                    if (c.getSponsor().getId() == echipa.getId()) {
-                        ContractRepositoryService contractRepositoryService = new ContractRepositoryService();
-                        contractRepositoryService.removeContract(c.getTeam().getNume(), c.getSponsor().getName());
-                    }
-                }
-            }
 
             echipaDao.delete(echipa);
 

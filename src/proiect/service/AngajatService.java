@@ -30,8 +30,10 @@ public class AngajatService {
         System.out.println("Enter:");
         switch (option) {
             case "name":
-                String name = scanner.nextLine();
-                String surname = scanner.nextLine();
+                String line = scanner.nextLine();
+                String[] parts = line.split(" ");
+                String name = parts[0];
+                String surname = parts[1];
                 return databaseService.getAngajatByName(name, surname);
             case "id":
                 int id = scanner.nextInt();

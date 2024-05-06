@@ -35,8 +35,6 @@ public class SponsorRepositoryService {
 
         if (sponsor != null) {
             return sponsor;
-        } else {
-            System.out.println("Sponsor has not been found!");
         }
 
         return sponsor;
@@ -47,8 +45,6 @@ public class SponsorRepositoryService {
 
         if (sponsor != null) {
             return sponsor;
-        } else {
-            System.out.println("Sponsor has not been found!");
         }
 
         return sponsor;
@@ -77,7 +73,7 @@ public class SponsorRepositoryService {
                     throw new InvalidDataException("Sponsor already exists!");
 
                 sponsorDao.update(name, sponsor);
-                System.out.println("Sponsor updated successfully!");
+//                System.out.println("Sponsor updated successfully!");
             }
         } catch (SQLException e) {
             System.out.println("SQLException " + e.getSQLState() + " " + e.getMessage());
@@ -87,16 +83,6 @@ public class SponsorRepositoryService {
     public void removeSponsor(Sponsor sponsor) {
         try {
             if (sponsor == null) return;
-
-            List<Contract> contractList = new ContractRepositoryService().getAllContracts();
-            if (contractList != null) {
-                for (Contract c : contractList) {
-                    if (c.getSponsor().getId() == sponsor.getId()) {
-                        ContractRepositoryService contractRepositoryService = new ContractRepositoryService();
-                        contractRepositoryService.removeContract(c.getTeam().getNume(), c.getSponsor().getName());
-                    }
-                }
-            }
 
             sponsorDao.delete(sponsor);
         } catch (SQLException e) {

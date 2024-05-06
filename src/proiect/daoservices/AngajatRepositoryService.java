@@ -107,22 +107,11 @@ public class AngajatRepositoryService {
             if(angajat == null) return;
 
             if(angajat instanceof Antrenor antrenor) {
-                List<Echipa> echipe = new EchipaRepositoryService().getAllEchipe();
-                if(echipe != null) {
-                    for(Echipa e : echipe) {
-                        if(e.getAntrenor().getId() == antrenor.getId()) {
-                            e.setAntrenor(null);
-                            new EchipaRepositoryService().updateEchipa(e.getNume(), e);
-                        }
-                    }
-                }
                 antrenorDao.delete(antrenor);
             } else if(angajat instanceof Jucator jucator) {
                 jucatorDao.delete(jucator);
             }
         } catch (SQLException e) {
-            System.out.println("Deletion failed: " + e.getMessage());
-        } catch (InvalidDataException e) {
             System.out.println("Deletion failed: " + e.getMessage());
         }
     }

@@ -25,7 +25,7 @@ public class SponsorService {
         try {
             databaseService.addSponsor(sponsor);
             FileManagement.scriereFisierChar("audit.txt", "creare sponsor " + name);
-            System.out.println("Sponsor created successfully.");
+//            System.out.println("Sponsor created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
         }
@@ -77,8 +77,6 @@ public class SponsorService {
         Sponsor sponsor = searchSponsor(scanner);
         if (sponsor != null) {
             System.out.println(sponsor);
-        } else {
-            System.out.println("Stadium not found.");
         }
     }
 
@@ -92,7 +90,7 @@ public class SponsorService {
         System.out.println("Updating a Sponsor:");
         Sponsor existingSponsor = searchSponsor(scanner);
         if (existingSponsor == null) {
-            System.out.println("Sponsor not found.");
+//            System.out.println("Sponsor not found.");
             return;
         }
         String newCountry = getNewSponsorCountry(scanner);
@@ -100,7 +98,7 @@ public class SponsorService {
 
         try {
             databaseService.updateSponsor(existingSponsor.getName(), existingSponsor);
-            System.out.println("Sponsor updated successfully.");
+//            System.out.println("Sponsor updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Update failed: " + e.getMessage());
         }
@@ -124,7 +122,7 @@ public class SponsorService {
         if (sponsor != null) {
             databaseService.removeSponsor(sponsor);
             FileManagement.scriereFisierChar("audit.txt", "stergere sponsor " + sponsor.getName());
-            System.out.println("Sponsor deleted successfully.");
+//            System.out.println("Sponsor deleted successfully.");
         } else {
             System.out.println("Sponsor not found.");
         }

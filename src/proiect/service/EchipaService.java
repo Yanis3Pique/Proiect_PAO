@@ -51,7 +51,7 @@ public class EchipaService {
         try {
             databaseService.addEchipa(echipa);
             FileManagement.scriereFisierChar("audit.txt", "create team " + nume);
-            System.out.println("Team created successfully.");
+//            System.out.println("Team created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Team not created.");
         }
@@ -80,15 +80,12 @@ public class EchipaService {
         if (echipa != null) {
             System.out.println(echipa);
         }
-        else {
-            System.out.println("Team not found.");
-        }
     }
 
     private void updateCoach(Scanner scanner, Echipa echipa) throws SQLException {
         String antrenorNume;
         while (true) {
-            System.out.print("Enter new coach's first and last name (or press Enter to skip): ");
+            System.out.print("Enter new coach's first and last name: ");
             antrenorNume = scanner.nextLine();
             if (antrenorNume.isEmpty()) {
                 break;
@@ -111,7 +108,7 @@ public class EchipaService {
     }
 
     private void updateStadium(Scanner scanner, Echipa echipa) throws SQLException {
-        System.out.print("Enter new stadium name (or press Enter to skip): ");
+        System.out.print("Enter new stadium name: ");
         String stadionNume = scanner.nextLine();
         if (!stadionNume.isEmpty()) {
             Stadion stadion = stadionRepositoryService.getStadionByName(stadionNume);
@@ -137,7 +134,7 @@ public class EchipaService {
             updateCoach(scanner, echipa);
             updateStadium(scanner, echipa);
             databaseService.updateEchipa(nume, echipa);
-            System.out.println("Team updated successfully.");
+//            System.out.println("Team updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Team not updated.");
         }

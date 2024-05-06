@@ -103,13 +103,6 @@ public class EchipaDao implements DaoInterface<Echipa> {
 
     @Override
     public void delete(Echipa echipa) throws SQLException {
-        String sql = "DELETE FROM yanis_football_championship.echipa WHERE id = ?";
-
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, echipa.getId());
-            statement.executeUpdate();
-        }
-
         String sql_meci = "DELETE FROM yanis_football_championship.meci WHERE echipa1 = ? OR echipa2 = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql_meci)) {
@@ -121,6 +114,20 @@ public class EchipaDao implements DaoInterface<Echipa> {
         String sql_contract = "DELETE FROM yanis_football_championship.contract WHERE echipaId = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql_contract)) {
+            statement.setInt(1, echipa.getId());
+            statement.executeUpdate();
+        }
+
+        String sql_jucator = "UPDATE yanis_football_championship.jucator SET echipaId = NULL WHERE echipaId = ?";
+
+        try(PreparedStatement statement = connection.prepareStatement(sql_jucator)) {
+            statement.setInt(1, echipa.getId());
+            statement.executeUpdate();
+        }
+
+        String sql = "DELETE FROM yanis_football_championship.echipa WHERE id = ?";
+
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, echipa.getId());
             statement.executeUpdate();
         }
@@ -167,7 +174,7 @@ public class EchipaDao implements DaoInterface<Echipa> {
         // SQL to join Jucator and Angajat tables
         String sql = "SELECT j.id, a.nume, a.prenume, a.nationalitate, a.varsta, a.salariu, j.numar, j.pozitie, j.echipaId " +
                 "FROM yanis_football_championship.Jucator j " +
-                "JOIN yanis_football_championship.Angajat a ON j.id = a.id " +
+                "JOIN yanis_football_championship.Angajat a ON j.angajatId = a.id " +
                 "WHERE j.echipaId = ?";
 
         List<Jucator> jucatori = new ArrayList<>();

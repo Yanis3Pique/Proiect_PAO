@@ -39,7 +39,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
 
     @Override
     public Sponsor read(String name) throws SQLException {
-        String sql = "SELECT * FROM yanis_football_championship.sponsor s WHERE s.name = ?";
+        String sql = "SELECT * FROM yanis_football_championship.sponsor s WHERE s.nume = ?";
         ResultSet rs = null;
 
         try {
@@ -50,8 +50,8 @@ public class SponsorDao implements DaoInterface<Sponsor> {
             while (rs.next()){
                 Sponsor sponsor = new Sponsor();
                 sponsor.setId(rs.getInt("id"));
-                sponsor.setName(rs.getString("name"));
-                sponsor.setCountry(rs.getString("country"));
+                sponsor.setName(rs.getString("nume"));
+                sponsor.setCountry(rs.getString("tara"));
                 return  sponsor;
             }
         } finally {
@@ -75,8 +75,8 @@ public class SponsorDao implements DaoInterface<Sponsor> {
             while (rs.next()){
                 Sponsor sponsor = new Sponsor();
                 sponsor.setId(rs.getInt("id"));
-                sponsor.setName(rs.getString("name"));
-                sponsor.setCountry(rs.getString("country"));
+                sponsor.setName(rs.getString("nume"));
+                sponsor.setCountry(rs.getString("tara"));
                 return  sponsor;
             }
         } finally {
@@ -89,7 +89,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
 
     @Override
     public void update(String name, Sponsor sponsorUpdated) throws SQLException {
-        String sql = "UPDATE yanis_football_championship.sponsor set name = ?, country = ? where name = ?";
+        String sql = "UPDATE yanis_football_championship.sponsor set nume = ?, tara = ? where nume = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setString(1, sponsorUpdated.getName());
             statement.setString(2, sponsorUpdated.getCountry());
@@ -100,7 +100,14 @@ public class SponsorDao implements DaoInterface<Sponsor> {
 
     @Override
     public void delete(Sponsor sponsor) throws SQLException {
-        String sql = "DELETE FROM yanis_football_championship.sponsor s WHERE s.name = ?";
+        String sql_contract = "DELETE FROM yanis_football_championship.contract c WHERE c.sponsorId = ?";
+
+        try(PreparedStatement statement = connection.prepareStatement(sql_contract);) {
+            statement.setInt(1, sponsor.getId());
+            statement.executeUpdate();
+        }
+
+        String sql = "DELETE FROM yanis_football_championship.sponsor s WHERE s.nume = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setString(1, sponsor.getName());
@@ -116,7 +123,9 @@ public class SponsorDao implements DaoInterface<Sponsor> {
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             rs = statement.executeQuery();
             while(rs.next()) {
-                Sponsor sponsor = new Sponsor(rs.getInt("id"), rs.getString("name"), rs.getString("country"));
+                Sponsor sponsor = new Sponsor(rs.getInt("id"),
+                        rs.getString("nume"),
+                        rs.getString("tara"));
                 sponsors.add(sponsor);
             }
         } finally {
@@ -130,7 +139,7 @@ public class SponsorDao implements DaoInterface<Sponsor> {
     }
 
     public boolean checkUniqueName(String name) throws SQLException {
-        String sql = "SELECT * FROM proiectpao.sponsor WHERE name = ?";
+        String sql = "SELECT * FROM yanis_football_championship.sponsor WHERE nume = ?";
         ResultSet rs = null;
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
