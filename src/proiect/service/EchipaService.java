@@ -141,17 +141,14 @@ public class EchipaService {
     }
 
     public void deleteEchipa(Scanner scanner) throws SQLException {
-        System.out.print("Enter the name of the team you want to delete: ");
-        String nume = scanner.nextLine();
-
         Echipa echipa = searchEchipa(scanner);
         if (echipa == null) {
             System.out.println("Team not found.");
             return;
         }
 
-        databaseService.removeEchipa(nume);
-        FileManagement.scriereFisierChar("audit.txt", "delete team " + nume);
+        databaseService.removeEchipa(echipa.getNume());
+        FileManagement.scriereFisierChar("audit.txt", "delete team " + echipa.getNume());
         System.out.println("Team deleted successfully.");
     }
 

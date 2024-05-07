@@ -25,7 +25,7 @@ public class EchipaRepositoryService {
                     throw new InvalidDataException("We already have a team with this name!");
 
                 echipaDao.create(echipa);
-//                System.out.println("Team added!");
+                System.out.println("Team added!");
             }
         } catch (SQLException e) {
             System.out.println("Creation failed: " + e.getMessage());
@@ -60,7 +60,7 @@ public class EchipaRepositoryService {
             }
 
             echipaDao.update(nume, echipaUpdated);
-//            System.out.println("Team updated!");
+            System.out.println("Team updated!");
         } catch (SQLException e) {
             System.out.println("Update failed: " + e.getMessage());
         }
@@ -84,6 +84,9 @@ public class EchipaRepositoryService {
             for(Jucator jucator : jucatori) {
                 System.out.println(jucator);
             }
+        }
+        if(jucatori.isEmpty()) {
+            System.out.println("No players in this team!");
         }
     }
 }

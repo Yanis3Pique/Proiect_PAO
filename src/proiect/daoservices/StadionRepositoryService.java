@@ -30,8 +30,6 @@ public class StadionRepositoryService {
     public void addStadion(Stadion stadion) throws InvalidDataException {
         try {
             if(stadion != null){
-//                if(stadionDao.readByID(stadion.getId()) != null)
-//                    throw new InvalidDataException("We already have a stadium with this ID!");
                 if(stadionDao.read(stadion.getNume()) != null)
                     throw new InvalidDataException("We already have a stadium with this name!");
 
@@ -48,8 +46,6 @@ public class StadionRepositoryService {
 
         if (stadion != null) {
             return stadion;
-        } else {
-            System.out.println("Stadium has not been found!");
         }
 
         return null;
@@ -60,8 +56,6 @@ public class StadionRepositoryService {
 
         if (stadion != null) {
             return stadion;
-        } else {
-            System.out.println("Stadium has not been found!");
         }
 
         return null;

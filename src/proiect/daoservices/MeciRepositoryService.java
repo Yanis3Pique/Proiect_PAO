@@ -31,6 +31,8 @@ public class MeciRepositoryService {
                 // test if we already have a match between these two teams on this date
                 if(meciDao.read(meci.getEchipa1().getNume() + "_" + meci.getEchipa2().getNume() + "_" + meci.getData()) != null)
                     throw new InvalidDataException("We already have a match between these two teams on this date!");
+                if(meci.getEchipa1().equals(meci.getEchipa2()))
+                    throw new InvalidDataException("A team cannot play against itself!");
 
                 meciDao.create(meci);
                 System.out.println("Match added!");

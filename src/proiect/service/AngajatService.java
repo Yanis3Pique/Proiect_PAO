@@ -30,10 +30,10 @@ public class AngajatService {
         System.out.println("Enter:");
         switch (option) {
             case "name":
-                String line = scanner.nextLine();
-                String[] parts = line.split(" ");
-                String name = parts[0];
-                String surname = parts[1];
+                System.out.println("First name:");
+                String name = scanner.nextLine();
+                System.out.println("Last name:");
+                String surname = scanner.nextLine();
                 return databaseService.getAngajatByName(name, surname);
             case "id":
                 int id = scanner.nextInt();
@@ -90,8 +90,20 @@ public class AngajatService {
             System.out.println("Enter new player number:");
             int newNumber = scanner.nextInt();
             scanner.nextLine();
-            System.out.println("Enter new position:");
-            String newPosition = scanner.nextLine();
+            // position can only be GK, CB, LB, RB, LWB, RWB, CDM, CM, CAM, LM, RM, LW, RW, CF, ST
+            String newPosition;
+            while (true) {
+                System.out.println("Enter new position:");
+                newPosition = scanner.nextLine();
+                if (newPosition.equals("GK") || newPosition.equals("CB") || newPosition.equals("LB") || newPosition.equals("RB") ||
+                        newPosition.equals("LWB") || newPosition.equals("RWB") || newPosition.equals("CDM") || newPosition.equals("CM") ||
+                        newPosition.equals("CAM") || newPosition.equals("LM") || newPosition.equals("RM") || newPosition.equals("LW") ||
+                        newPosition.equals("RW") || newPosition.equals("CF") || newPosition.equals("ST")) {
+                    break;
+                } else {
+                    System.out.println("Invalid position.");
+                }
+            }
             jucator.setNumarTricou(newNumber);
             jucator.setPozitie(newPosition);
         }
@@ -160,8 +172,20 @@ public class AngajatService {
             System.out.println("Enter player number:");
             int number = scanner.nextInt();
             scanner.nextLine();
-            System.out.println("Enter position:");
-            String position = scanner.nextLine();
+            // position can only be GK, CB, LB, RB, LWB, RWB, CDM, CM, CAM, LM, RM, LW, RW, CF, ST
+            String position;
+            while (true) {
+                System.out.println("Enter position:");
+                position = scanner.nextLine();
+                if (position.equals("GK") || position.equals("CB") || position.equals("LB") || position.equals("RB") ||
+                        position.equals("LWB") || position.equals("RWB") || position.equals("CDM") || position.equals("CM") ||
+                        position.equals("CAM") || position.equals("LM") || position.equals("RM") || position.equals("LW") ||
+                        position.equals("RW") || position.equals("CF") || position.equals("ST")) {
+                    break;
+                } else {
+                    System.out.println("Invalid position.");
+                }
+            }
             System.out.println("Enter team id:");
             int id_echipa = scanner.nextInt();
             scanner.nextLine();
@@ -173,6 +197,29 @@ public class AngajatService {
             } catch (InvalidDataException e) {
                 System.out.println("Player could not be created " + e.getMessage());
             }
+        }
+    }
+
+    public void transferPlayerToNewTeam(Scanner scanner) throws SQLException {
+        System.out.println("Transfering a player to a new team:");
+
+        Angajat angajat = searchAngajat(scanner);
+        if (angajat instanceof Antrenor) {
+            System.out.println("You can't transfer a coach to a team.");
+            return;
+        }
+        Jucator jucator = (Jucator) angajat;
+
+        System.out.println("Enter new team id:");
+        int newTeamId = scanner.nextInt();
+        scanner.nextLine();
+
+        jucator.setId_echipa(newTeamId);
+        try {
+            databaseService.updateAngajat(jucator);
+            System.out.println("Player transferred successfully.");
+        } catch (InvalidDataException e) {
+            System.out.println("Player could not be transferred " + e.getMessage());
         }
     }
 }

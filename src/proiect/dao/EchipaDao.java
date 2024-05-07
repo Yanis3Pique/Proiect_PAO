@@ -26,15 +26,32 @@ public class EchipaDao implements DaoInterface<Echipa> {
 
     @Override
     public void create(Echipa echipa) throws SQLException {
-        String sql = "INSERT INTO yanis_football_championship.echipa VALUES (?, ?, ?, ?);";
+        int antrenorId = findAntrenorIdByAngajatId(echipa.getAntrenor().getId());
+        if (antrenorId == -1) {
+            throw new SQLException("No coach found with given employee ID");
+        }
 
-        try (var statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, echipa.getId());
-            statement.setString(2, echipa.getNume());
-            statement.setInt(3, echipa.getAntrenor().getId());
-            statement.setInt(4, echipa.getStadion().getId());
+        String sql = "INSERT INTO yanis_football_championship.echipa (nume, antrenorId, stadionId) VALUES (?, ?, ?);";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, echipa.getNume());
+            statement.setInt(2, antrenorId);
+            statement.setInt(3, echipa.getStadion().getId());
             statement.executeUpdate();
         }
+    }
+
+    private int findAntrenorIdByAngajatId(int angajatId) throws SQLException {
+        String sql = "SELECT id FROM yanis_football_championship.antrenor WHERE angajatId = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, angajatId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("id");
+                }
+            }
+        }
+        return -1;  // Return -1 if no Antrenor is found with the given Angajat ID
     }
 
     @Override

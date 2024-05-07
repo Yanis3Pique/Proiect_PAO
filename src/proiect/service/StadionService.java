@@ -26,7 +26,6 @@ public class StadionService {
         try {
             databaseService.addStadion(stadion);
             FileManagement.scriereFisierChar("audit.txt", "creare stadion " + name);
-//            System.out.println("Stadium created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
         }
@@ -119,7 +118,6 @@ public class StadionService {
 
         try {
             databaseService.updateStadion(existingStadion.getNume(), existingStadion);
-//            System.out.println("Stadium updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Update failed: " + e.getMessage());
         }

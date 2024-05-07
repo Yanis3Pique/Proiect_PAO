@@ -48,8 +48,8 @@ public class MeciDao implements DaoInterface<Meci> {
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, numeEchipa1);
-            statement.setString(2, numeEchipa2);
+            statement.setInt(1, EchipaDao.getInstance().read(numeEchipa1).getId());
+            statement.setInt(2, EchipaDao.getInstance().read(numeEchipa2).getId());
             statement.setString(3, data);
             rs = statement.executeQuery();
 
@@ -106,7 +106,7 @@ public class MeciDao implements DaoInterface<Meci> {
         String numeEchipa2 = numeEchipa1_numeEchipa2_date.split("_")[1];
         String date = numeEchipa1_numeEchipa2_date.split("_")[2];
 
-        String sql = "UPDATE yanis_football_championship.meci SET echipa1 = ?, echipa2 = ?, data = ?, scor1 = ?, scor2 = ?, stadion = ? WHERE echipa1 = ? AND echipa2 = ? AND data = ?";
+        String sql = "UPDATE yanis_football_championship.meci SET echipa1 = ?, echipa2 = ?, data = ?, scorEchipa1 = ?, scorEchipa2 = ?, stadionId = ? WHERE echipa1 = ? AND echipa2 = ? AND data = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setInt(1, newMeci.getEchipa1().getId());
@@ -115,8 +115,8 @@ public class MeciDao implements DaoInterface<Meci> {
             statement.setInt(4, newMeci.getScor1());
             statement.setInt(5, newMeci.getScor2());
             statement.setInt(6, newMeci.getStadion().getId());
-            statement.setString(7, numeEchipa1);
-            statement.setString(8, numeEchipa2);
+            statement.setInt(7, EchipaDao.getInstance().read(numeEchipa1).getId());
+            statement.setInt(8, EchipaDao.getInstance().read(numeEchipa2).getId());
             statement.setString(9, date);
             statement.executeUpdate();
         }

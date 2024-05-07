@@ -47,7 +47,7 @@ public class MeciService {
         if (homeTeam == null) return;
         Echipa awayTeam = getTeamByName(scanner, "away");
         if (awayTeam == null) return;
-        System.out.print("Enter match date (dd/mm/yyyy): ");
+        System.out.print("Enter match date (YYYY-MM-DD): ");
         String date = scanner.nextLine();
         Stadion stadium = getStadiumByName(scanner);
         if (stadium == null) return;
@@ -62,7 +62,6 @@ public class MeciService {
         try {
             databaseService.addMeci(meci);
             FileManagement.scriereFisierChar("audit.txt", "creare meci " + homeTeam.getNume() + " vs " + awayTeam.getNume());
-            System.out.println("Match created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
         }
@@ -78,7 +77,7 @@ public class MeciService {
                 String homeTeamName = scanner.nextLine();
                 System.out.print("Enter away team name: ");
                 String awayTeamName = scanner.nextLine();
-                System.out.print("Enter match date (dd/mm/yyyy): ");
+                System.out.print("Enter match date (YYYY-MM-DD): ");
                 String date = scanner.nextLine();
                 return databaseService.getMeci(homeTeamName, awayTeamName, date);
             case "id":
@@ -95,8 +94,6 @@ public class MeciService {
         Meci meci = searchMeci(scanner);
         if (meci != null) {
             System.out.println(meci);
-        } else {
-            System.out.println("Match not found.");
         }
     }
 
@@ -123,7 +120,6 @@ public class MeciService {
 
         try {
             databaseService.updateMeci(newMeci.getEchipa1().getNume(), newMeci.getEchipa2().getNume(), newMeci.getData(), newMeci);
-            System.out.println("Match updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Update failed: " + e.getMessage());
         }
@@ -135,7 +131,6 @@ public class MeciService {
         if (meci != null) {
             databaseService.removeMeci(meci);
             FileManagement.scriereFisierChar("audit.txt", "stergere meci " + meci.getEchipa1().getNume() + " vs " + meci.getEchipa2().getNume());
-            System.out.println("Match deleted successfully.");
         } else {
             System.out.println("Match not found.");
         }

@@ -65,7 +65,6 @@ public class AngajatRepositoryService {
             return jucator;
         }
 
-        System.out.println("Employee has not been found!");
         return null;
     }
 
@@ -80,7 +79,6 @@ public class AngajatRepositoryService {
             return jucator;
         }
 
-        System.out.println("Employee has not been found!");
         return null;
     }
 
@@ -92,8 +90,8 @@ public class AngajatRepositoryService {
                         throw new InvalidDataException("We already have a coach with this name!");
                     antrenorDao.update(antrenor.getNume() + "_" + antrenor.getPrenume(), antrenor);
                 } else if(angajat instanceof Jucator jucator) {
-                    if(jucatorDao.read(jucator.getNume() + "_" + jucator.getPrenume()) != null)
-                        throw new InvalidDataException("We already have a player with this name!");
+                    if(jucatorDao.read(jucator.getNume() + "_" + jucator.getPrenume()) != null && jucatorDao.read(jucator.getNume() + "_" + jucator.getPrenume()).getId() != jucator.getId())
+                        throw new InvalidDataException("We already have a player with this name and Team ID!");
                     jucatorDao.update(jucator.getNume() + "_" + jucator.getPrenume(), jucator);
                 }
             }

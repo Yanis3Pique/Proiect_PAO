@@ -76,3 +76,24 @@ Contract creat cu succes intre echipa Real Madrid si sponsorul Test.
 ;2024-05-07T00:11:01.542558400
 stergere sponsor Test;2024-05-07T00:11:17.248088400
 delete team Gloria Buzau;2024-05-07T00:26:13.846770900
+create team FC Unirea;2024-05-07T14:14:39.140969400
+delete team FC Unirea;2024-05-07T14:22:57.742030600
+creare meci FC Barcelona vs Real Madrid;2024-05-07T14:23:26.393380
+creare meci FC Arges vs FC Barcelona;2024-05-07T15:37:59.697090700
+creare meci FC Arges vs FC Arges;2024-05-07T15:42:51.472781900
+stergere meci FC Arges vs FC Arges;2024-05-07T15:44:02.435118200
+adaugare antrenor Thomas Tuchel;2024-05-07T15:48:43.211712700
+creare stadion Allianz Arena;2024-05-07T15:49:06.812372500
+create team FC Bayern Munchen;2024-05-07T15:49:35.944819300
+create team FC Bayern Munchen;2024-05-07T16:09:39.889677500
+create team FC Bayern Munchen;2024-05-07T16:10:49.824023700
+create team FC Bayern Munchen;2024-05-07T16:11:47.026966400
+create team FC Bayern Munchen;2024-05-07T16:12:59.046879
+create team FC Bayern Munchen;2024-05-07T16:16:31.737439600
+create team Gloria Buzau;2024-05-07T16:20:13.637523300
+adaugare jucator Test Test;2024-05-07T16:58:43.671104200
+stergere angajat Test Test;2024-05-07T17:00:00.360841400
+adaugare jucator Lionel Messi;2024-05-07T17:06:18.947457400
+adaugare jucator Luis Suarez;2024-05-07T17:06:45.888086
+adaugare jucator Gerard Pique;2024-05-07T17:07:10.792267700
+adaugare jucator Marc-Andre Ter Stegen;2024-05-07T17:07:44.146003800
