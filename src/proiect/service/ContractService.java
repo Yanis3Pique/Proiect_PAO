@@ -46,7 +46,7 @@ public class ContractService {
         Contract contract = new Contract(0, team, sponsor, duration, sumMoney);
         try {
             databaseService.addContract(contract);
-            FileManagement.scriereFisierChar(AUDIT_FILE, "Contract creat cu succes intre echipa " + teamName + " si sponsorul " + sponsorName + ".\n");
+            FileManagement.scriereFisierChar(AUDIT_FILE, "Contract creat cu succes intre echipa " + teamName + " si sponsorul " + sponsorName);
             System.out.println("Contract created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Contract could not be created: " + e.getMessage());
@@ -168,7 +168,7 @@ public class ContractService {
 
         try {
             databaseService.updateContract(existingContract.getTeam().getNume(), existingContract.getSponsor().getName(), existingContract);
-            FileManagement.scriereFisierChar(AUDIT_FILE, "Contract actualizat cu succes intre echipa " + existingContract.getTeam().getNume() + " si sponsorul " + existingContract.getSponsor().getName() + ".\n");
+            FileManagement.scriereFisierChar(AUDIT_FILE, "Contract actualizat cu succes intre echipa " + existingContract.getTeam().getNume() + " si sponsorul " + existingContract.getSponsor().getName());
             System.out.println("Contract updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Contract could not be updated: " + e.getMessage());
@@ -215,7 +215,7 @@ public class ContractService {
         Contract contract = searchContract(scanner);
         if (contract != null) {
             databaseService.removeContract(contract.getTeam().getNume(), contract.getSponsor().getName());
-            FileManagement.scriereFisierChar(AUDIT_FILE, "Contract sters cu succes intre echipa " + contract.getTeam().getNume() + " si sponsorul " + contract.getSponsor().getName() + ".\n");
+            FileManagement.scriereFisierChar(AUDIT_FILE, "Contract sters cu succes intre echipa " + contract.getTeam().getNume() + " si sponsorul " + contract.getSponsor().getName());
             System.out.println("Contract deleted successfully.");
         } else {
             System.out.println("Contract not found.");
