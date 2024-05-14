@@ -28,13 +28,10 @@ public class ContractRepositoryService {
     public void addContract(Contract contract) throws InvalidDataException {
         try {
             if(contract != null){
-//                if(contractDao.readByID(contract.getId()) != null)
-//                    throw new InvalidDataException("We already have a contract with this ID!");
                 if(contractDao.read(contract.getTeam().getNume() + "_" + contract.getSponsor().getName()) != null)
                     throw new InvalidDataException("We already have a contract with this team and sponsor!");
 
                 contractDao.create(contract);
-//                System.out.println("Contract added!");
             }
         } catch (SQLException e) {
             System.out.println("Creation failed: " + e.getMessage());
@@ -68,7 +65,6 @@ public class ContractRepositoryService {
             }
 
             contractDao.update(teamName + "_" + sponsorName, contract);
-//            System.out.println("Contract updated!");
         } catch (SQLException e) {
             System.out.println("Update failed: " + e.getMessage());
         }

@@ -108,7 +108,6 @@ public class StadionService {
         System.out.println("Updating a Stadium:");
         Stadion existingStadion = seachStadion(scanner);
         if (existingStadion == null) {
-//            System.out.println("Stadium not found.");
             return;
         }
         int newCapacity = getNewStadiumCapacity(scanner);
@@ -118,6 +117,7 @@ public class StadionService {
 
         try {
             databaseService.updateStadion(existingStadion.getNume(), existingStadion);
+            FileManagement.scriereFisierChar("audit.txt", "modificare stadion " + existingStadion.getNume());
         } catch (InvalidDataException e) {
             System.out.println("Update failed: " + e.getMessage());
         }

@@ -53,8 +53,6 @@ public class SponsorRepositoryService {
     public void addSponsor(Sponsor sponsor) throws InvalidDataException {
         try {
             if(sponsor != null){
-//                if(sponsorDao.readByID(sponsor.getId()) != null)
-//                    throw new InvalidDataException("Sponsor already exists!");
                 if(sponsorDao.read(sponsor.getName()) != null)
                     throw new InvalidDataException("Sponsor already exists!");
 
@@ -73,7 +71,6 @@ public class SponsorRepositoryService {
                     throw new InvalidDataException("Sponsor already exists!");
 
                 sponsorDao.update(name, sponsor);
-//                System.out.println("Sponsor updated successfully!");
             }
         } catch (SQLException e) {
             System.out.println("SQLException " + e.getSQLState() + " " + e.getMessage());

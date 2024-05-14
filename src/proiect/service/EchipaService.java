@@ -51,7 +51,6 @@ public class EchipaService {
         try {
             databaseService.addEchipa(echipa);
             FileManagement.scriereFisierChar("audit.txt", "create team " + nume);
-//            System.out.println("Team created successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Team not created.");
         }
@@ -134,7 +133,7 @@ public class EchipaService {
             updateCoach(scanner, echipa);
             updateStadium(scanner, echipa);
             databaseService.updateEchipa(nume, echipa);
-//            System.out.println("Team updated successfully.");
+            FileManagement.scriereFisierChar("audit.txt", "update team " + nume);
         } catch (InvalidDataException e) {
             System.out.println("Team not updated.");
         }

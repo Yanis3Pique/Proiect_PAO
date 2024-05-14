@@ -166,6 +166,7 @@ public class ContractService {
 
         try {
             databaseService.updateContract(existingContract.getTeam().getNume(), existingContract.getSponsor().getName(), existingContract);
+            FileManagement.scriereFisierChar("audit.txt", "Contract actualizat cu succes intre echipa " + existingContract.getTeam().getNume() + " si sponsorul " + existingContract.getSponsor().getName() + ".\n");
             System.out.println("Contract updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Contract could not be updated: " + e.getMessage());

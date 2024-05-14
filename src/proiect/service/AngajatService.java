@@ -122,6 +122,7 @@ public class AngajatService {
 
         try {
             databaseService.updateAngajat(angajat);
+            FileManagement.scriereFisierChar("audit.txt", "modificare angajat " + angajat.getPrenume() + " " + angajat.getNume());
             System.out.println("Employee updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Employee could not be updated " + e.getMessage());

@@ -120,6 +120,7 @@ public class MeciService {
 
         try {
             databaseService.updateMeci(newMeci.getEchipa1().getNume(), newMeci.getEchipa2().getNume(), newMeci.getData(), newMeci);
+            FileManagement.scriereFisierChar("audit.txt", "actualizare meci " + newMeci.getEchipa1().getNume() + " vs " + newMeci.getEchipa2().getNume());
         } catch (InvalidDataException e) {
             System.out.println("Update failed: " + e.getMessage());
         }
