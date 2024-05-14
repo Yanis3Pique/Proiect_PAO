@@ -10,6 +10,8 @@ import proiect.utils.InvalidDataException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static proiect.utils.Constants.AUDIT_FILE;
+
 public class AngajatService {
     private AngajatRepositoryService databaseService;
 
@@ -122,7 +124,7 @@ public class AngajatService {
 
         try {
             databaseService.updateAngajat(angajat);
-            FileManagement.scriereFisierChar("audit.txt", "modificare angajat " + angajat.getPrenume() + " " + angajat.getNume());
+            FileManagement.scriereFisierChar(AUDIT_FILE, "modificare angajat " + angajat.getPrenume() + " " + angajat.getNume());
             System.out.println("Employee updated successfully.");
         } catch (InvalidDataException e) {
             System.out.println("Employee could not be updated " + e.getMessage());
@@ -133,7 +135,7 @@ public class AngajatService {
         System.out.println("Deleting an employee:");
         Angajat angajat = searchAngajat(scanner);
         databaseService.removeAngajat(angajat);
-        FileManagement.scriereFisierChar("audit.txt", "stergere angajat " + angajat.getPrenume() + " " + angajat.getNume());
+        FileManagement.scriereFisierChar(AUDIT_FILE, "stergere angajat " + angajat.getPrenume() + " " + angajat.getNume());
         System.out.println("Employee deleted successfully.");
     }
 
@@ -165,7 +167,7 @@ public class AngajatService {
             Antrenor antrenor = new Antrenor(0, 0, firstName, lastName, nationality, age, salary, years);
             try {
                 databaseService.addAngajat(antrenor);
-                FileManagement.scriereFisierChar("audit.txt", "adaugare antrenor " + firstName + " " + lastName);
+                FileManagement.scriereFisierChar(AUDIT_FILE, "adaugare antrenor " + firstName + " " + lastName);
             } catch (InvalidDataException e) {
                 System.out.println("Coach could not be created " + e.getMessage());
             }
@@ -194,7 +196,7 @@ public class AngajatService {
             jucator.setPozitie(position);
             try {
                 databaseService.addAngajat(jucator);
-                FileManagement.scriereFisierChar("audit.txt", "adaugare jucator " + firstName + " " + lastName);
+                FileManagement.scriereFisierChar(AUDIT_FILE, "adaugare jucator " + firstName + " " + lastName);
             } catch (InvalidDataException e) {
                 System.out.println("Player could not be created " + e.getMessage());
             }

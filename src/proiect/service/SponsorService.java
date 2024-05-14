@@ -9,6 +9,8 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static proiect.utils.Constants.AUDIT_FILE;
+
 public class SponsorService {
     private SponsorRepositoryService databaseService;
 
@@ -24,7 +26,7 @@ public class SponsorService {
 
         try {
             databaseService.addSponsor(sponsor);
-            FileManagement.scriereFisierChar("audit.txt", "creare sponsor " + name);
+            FileManagement.scriereFisierChar(AUDIT_FILE, "creare sponsor " + name);
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
         }
@@ -96,7 +98,7 @@ public class SponsorService {
 
         try {
             databaseService.updateSponsor(existingSponsor.getName(), existingSponsor);
-            FileManagement.scriereFisierChar("audit.txt", "update sponsor " + existingSponsor.getName());
+            FileManagement.scriereFisierChar(AUDIT_FILE, "update sponsor " + existingSponsor.getName());
         } catch (InvalidDataException e) {
             System.out.println("Update failed: " + e.getMessage());
         }
@@ -119,7 +121,7 @@ public class SponsorService {
         Sponsor sponsor = searchSponsor(scanner);
         if (sponsor != null) {
             databaseService.removeSponsor(sponsor);
-            FileManagement.scriereFisierChar("audit.txt", "stergere sponsor " + sponsor.getName());
+            FileManagement.scriereFisierChar(AUDIT_FILE, "stergere sponsor " + sponsor.getName());
         } else {
             System.out.println("Sponsor not found.");
         }

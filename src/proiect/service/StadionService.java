@@ -9,6 +9,8 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static proiect.utils.Constants.AUDIT_FILE;
+
 public class StadionService {
     private StadionRepositoryService databaseService;
 
@@ -25,7 +27,7 @@ public class StadionService {
 
         try {
             databaseService.addStadion(stadion);
-            FileManagement.scriereFisierChar("audit.txt", "creare stadion " + name);
+            FileManagement.scriereFisierChar(AUDIT_FILE, "creare stadion " + name);
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
         }
@@ -117,7 +119,7 @@ public class StadionService {
 
         try {
             databaseService.updateStadion(existingStadion.getNume(), existingStadion);
-            FileManagement.scriereFisierChar("audit.txt", "modificare stadion " + existingStadion.getNume());
+            FileManagement.scriereFisierChar(AUDIT_FILE, "modificare stadion " + existingStadion.getNume());
         } catch (InvalidDataException e) {
             System.out.println("Update failed: " + e.getMessage());
         }
@@ -158,7 +160,7 @@ public class StadionService {
         Stadion stadion = seachStadion(scanner);
         if (stadion != null) {
             databaseService.removeStadion(stadion);
-            FileManagement.scriereFisierChar("audit.txt", "stergere stadion " + stadion.getNume());
+            FileManagement.scriereFisierChar(AUDIT_FILE, "stergere stadion " + stadion.getNume());
             System.out.println("Stadium deleted successfully.");
         } else {
             System.out.println("Stadium not found.");

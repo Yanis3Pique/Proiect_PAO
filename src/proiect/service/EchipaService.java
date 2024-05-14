@@ -11,6 +11,8 @@ import proiect.utils.InvalidDataException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static proiect.utils.Constants.AUDIT_FILE;
+
 public class EchipaService {
     private EchipaRepositoryService databaseService;
     private AngajatRepositoryService antrenorRepositoryService;
@@ -50,7 +52,7 @@ public class EchipaService {
 
         try {
             databaseService.addEchipa(echipa);
-            FileManagement.scriereFisierChar("audit.txt", "create team " + nume);
+            FileManagement.scriereFisierChar(AUDIT_FILE, "create team " + nume);
         } catch (InvalidDataException e) {
             System.out.println("Team not created.");
         }
@@ -133,7 +135,7 @@ public class EchipaService {
             updateCoach(scanner, echipa);
             updateStadium(scanner, echipa);
             databaseService.updateEchipa(nume, echipa);
-            FileManagement.scriereFisierChar("audit.txt", "update team " + nume);
+            FileManagement.scriereFisierChar(AUDIT_FILE, "update team " + nume);
         } catch (InvalidDataException e) {
             System.out.println("Team not updated.");
         }
@@ -147,7 +149,7 @@ public class EchipaService {
         }
 
         databaseService.removeEchipa(echipa.getNume());
-        FileManagement.scriereFisierChar("audit.txt", "delete team " + echipa.getNume());
+        FileManagement.scriereFisierChar(AUDIT_FILE, "delete team " + echipa.getNume());
         System.out.println("Team deleted successfully.");
     }
 

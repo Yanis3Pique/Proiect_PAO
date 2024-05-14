@@ -10,6 +10,8 @@ import proiect.utils.InvalidDataException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static proiect.utils.Constants.AUDIT_FILE;
+
 public class MeciService {
     private MeciRepositoryService databaseService;
     private StadionRepositoryService stadionRepositoryService;
@@ -61,7 +63,7 @@ public class MeciService {
 
         try {
             databaseService.addMeci(meci);
-            FileManagement.scriereFisierChar("audit.txt", "creare meci " + homeTeam.getNume() + " vs " + awayTeam.getNume());
+            FileManagement.scriereFisierChar(AUDIT_FILE, "creare meci " + homeTeam.getNume() + " vs " + awayTeam.getNume());
         } catch (InvalidDataException e) {
             System.out.println("Creation failed: " + e.getMessage());
         }
@@ -120,7 +122,7 @@ public class MeciService {
 
         try {
             databaseService.updateMeci(newMeci.getEchipa1().getNume(), newMeci.getEchipa2().getNume(), newMeci.getData(), newMeci);
-            FileManagement.scriereFisierChar("audit.txt", "actualizare meci " + newMeci.getEchipa1().getNume() + " vs " + newMeci.getEchipa2().getNume());
+            FileManagement.scriereFisierChar(AUDIT_FILE, "actualizare meci " + newMeci.getEchipa1().getNume() + " vs " + newMeci.getEchipa2().getNume());
         } catch (InvalidDataException e) {
             System.out.println("Update failed: " + e.getMessage());
         }
@@ -131,7 +133,7 @@ public class MeciService {
         Meci meci = searchMeci(scanner);
         if (meci != null) {
             databaseService.removeMeci(meci);
-            FileManagement.scriereFisierChar("audit.txt", "stergere meci " + meci.getEchipa1().getNume() + " vs " + meci.getEchipa2().getNume());
+            FileManagement.scriereFisierChar(AUDIT_FILE, "stergere meci " + meci.getEchipa1().getNume() + " vs " + meci.getEchipa2().getNume());
         } else {
             System.out.println("Match not found.");
         }
