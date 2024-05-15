@@ -133,12 +133,15 @@ public class AngajatService {
 
     public void deleteAngajat(Scanner scanner) throws SQLException {
         System.out.println("Deleting an employee:");
-        Angajat angajat = searchAngajat(scanner);
-        databaseService.removeAngajat(angajat);
-        FileManagement.scriereFisierChar(AUDIT_FILE, "stergere angajat " + angajat.getPrenume() + " " + angajat.getNume());
-        System.out.println("Employee deleted successfully.");
+        try {
+            Angajat angajat = searchAngajat(scanner);
+            databaseService.removeAngajat(angajat);
+            FileManagement.scriereFisierChar(AUDIT_FILE, "stergere angajat " + angajat.getPrenume() + " " + angajat.getNume());
+            System.out.println("Employee deleted successfully.");
+        } catch (Exception e) {
+            System.out.println("Employee could not be deleted " + e.getMessage());
+        }
     }
-
     private boolean typeOfAngajatValidation(String typeOfAngajat) {
         if (!typeOfAngajat.equals("coach") && !typeOfAngajat.equals("player")) {
             System.out.println("Invalid type of employee.");
