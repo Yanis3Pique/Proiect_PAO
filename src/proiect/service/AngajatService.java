@@ -181,6 +181,7 @@ public class AngajatService {
             // position can only be GK, CB, LB, RB, LWB, RWB, CDM, CM, CAM, LM, RM, LW, RW, CF, ST
             String position;
             while (true) {
+                System.out.println("Position can only be GK, CB, LB, RB, LWB, RWB, CDM, CM, CAM, LM, RM, LW, RW, CF, ST");
                 System.out.println("Enter position:");
                 position = scanner.nextLine();
                 if (position.equals("GK") || position.equals("CB") || position.equals("LB") || position.equals("RB") ||
