@@ -1,22 +1,81 @@
-CLASE:
+## CLASE:
 
-Angajat - clasă abstractă
+### **Angajat**
+- **Descriere**: Clasă abstractă care reprezintă un angajat dintr-o organizație sportivă.
+#### Atribute:
+  - id
+  - nume
+  - prenume
+  - nationalitate
+  - varsta
+  - salariu
+<hr/>
 
-Antrenor - moștenește Angajat
+### **Antrenor**
+- **Descriere**: Clasă derivată din `Angajat`, care reprezintă un antrenor al unei echipe.
+#### Atribute:
+  - angajatId
+  - aniExperienta
+<hr/>
 
-Contract - leagă o echipă de un sponsor
+### **Contract**
+- **Descriere**: Clasă care leagă o echipă de un sponsor.
+#### Atribute:
+  - id
+  - team
+  - sponsor
+  - durationYears
+  - sumMoney
+<hr/>
 
-Echipa - conține un Antrenor și un Stadion
+### **Echipa**
+- **Descriere**: Clasă care reprezintă o echipă sportivă.
+#### Atribute:
+  - id
+  - nume
+  - antrenor
+  - stadion
+<hr/>
 
-Jucator - moștenește Angajat și are legatură cu Echipa prin echipaId
+### **Jucator**
+- **Descriere**: Clasă derivată din `Angajat`, care reprezintă un jucător dintr-o echipă sportivă.
+#### Atribute:  
+  - angajatId
+  - id_echipa
+  - pozitie
+  - numarTricou
+<hr/>
 
-Meci - conține două Echipe și un Stadion
+### **Meci**
+- **Descriere**: Clasă care reprezintă un meci între două echipe.
+#### Atribute:
+  - id
+  - echipa1
+  - echipa2
+  - data
+  - scor1
+  - scor2
+  - stadion
+<hr/>
 
-Sponsor
+### **Sponsor**
+- **Descriere**: Clasă care reprezintă un sponsor al unei echipe sportive.
+#### Atribute:
+  - id
+  - name
+  - country
+<hr/>
 
-Stadion
+### **Stadion**
+- **Descriere**: Clasă care reprezintă un stadion unde se desfășoară meciuri sportive.
+#### Atribute:
+  - id
+  - nume
+  - capacitate
+  - locatie
+<hr/>
 
-FUNCȚIONALITĂȚI:
+## FUNCȚIONALITĂȚI:
 1. Creează echipă
 2. Vizualizează echipă
 3. Actualizează echipă
