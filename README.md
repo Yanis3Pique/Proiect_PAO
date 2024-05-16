@@ -1,47 +1,105 @@
-CLASE:
+## CLASE:
 
-Angajat - clasă abstractă
+### **Angajat**
+- **Descriere**: Clasă abstractă care reprezintă un angajat dintr-o organizație sportivă.
+#### Atribute:
+  - id
+  - nume
+  - prenume
+  - nationalitate
+  - varsta
+  - salariu
+<hr/>
 
-Antrenor - moștenește Angajat
+### **Antrenor**
+- **Descriere**: Clasă derivată din `Angajat`, care reprezintă un antrenor al unei echipe.
+#### Atribute:
+  - angajatId
+  - aniExperienta
+<hr/>
 
-Contract - leagă o echipă de un sponsor
+### **Contract**
+- **Descriere**: Clasă care leagă o echipă de un sponsor.
+#### Atribute:
+  - id
+  - team
+  - sponsor
+  - durationYears
+  - sumMoney
+<hr/>
 
-Echipa - conține un Antrenor, o listă de Jucători și un Stadion
+### **Echipa**
+- **Descriere**: Clasă care reprezintă o echipă sportivă.
+#### Atribute:
+  - id
+  - nume
+  - antrenor
+  - stadion
+<hr/>
 
-Jucator - moștenește Angajat
+### **Jucator**
+- **Descriere**: Clasă derivată din `Angajat`, care reprezintă un jucător dintr-o echipă sportivă.
+#### Atribute:  
+  - angajatId
+  - id_echipa
+  - pozitie
+  - numarTricou
+<hr/>
 
-Meci - conține două Echipe
+### **Meci**
+- **Descriere**: Clasă care reprezintă un meci între două echipe.
+#### Atribute:
+  - id
+  - echipa1
+  - echipa2
+  - data
+  - scor1
+  - scor2
+  - stadion
+<hr/>
 
-Sponsor
+### **Sponsor**
+- **Descriere**: Clasă care reprezintă un sponsor al unei echipe sportive.
+#### Atribute:
+  - id
+  - name
+  - country
+<hr/>
 
-Stadion
+### **Stadion**
+- **Descriere**: Clasă care reprezintă un stadion unde se desfășoară meciuri sportive.
+#### Atribute:
+  - id
+  - nume
+  - capacitate
+  - locatie
+<hr/>
 
-FUNCȚIONALITĂȚI:
+## FUNCȚIONALITĂȚI:
 1. Creează echipă
 2. Vizualizează echipă
 3. Actualizează echipă
 4. Șterge echipă
-5. Adaugă jucător în echipă
-6. Șterge jucător din echipă
-7. Vezi jucătorii echipei
-8. Programează meci
-9. Vizualizează meci
-10. Actualizează scor meci
-11. Șterge meci
-12. Angajează angajat
-13. Vizualizează angajat
-14. Actualizează angajat
-15. Concediază angajat
-16. Creează stadion
-17. Vizualizează stadion
-18. Actualizează stadion
-19. Șterge stadion
-20. Creează sponsor
-21. Vizualizează sponsor
-22. Actualizează sponsor
-23. Șterge sponsor
-24. Semnează contract
-25. Vizualizează contract
-26. Actualizează contract
-27. Reziliază contract
-28. Vizualizează clasament campionat
+5. Vezi jucătorii echipei
+6. Programează meci
+7. Vizualizează meci
+8. Actualizează scor meci
+9. Șterge meci
+10. Angajează angajat
+11. Vizualizează angajat
+12. Actualizează angajat
+13. Concediază angajat
+14. Transferă jucător la o nouă echipă
+15. Creează stadion
+16. Vizualizează stadion
+17. Actualizează stadion
+18. Șterge stadion
+19. Creează sponsor
+20. Vizualizează sponsor
+21. Actualizează sponsor
+22. Șterge sponsor
+23. Semnează contract
+24. Vizualizează contract
+25. Actualizează contract
+26. Reziliază contract
+27. Vizualizează clasament campionat
