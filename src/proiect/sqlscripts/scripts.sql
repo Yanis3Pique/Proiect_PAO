@@ -142,3 +142,6 @@ INSERT INTO Meci (id, data, echipa1, echipa2, stadionId, scorEchipa1, scorEchipa
 (5, '2024-01-01', 1, 2, 1, 6, 2),
 (6, '2023-07-07', 3, 1, 1, 1, 6),
 (8, '2022-10-10', 8, 9, 5, 3, 0);
+
+-- COMMIT ALL CHANGES
+COMMIT;
