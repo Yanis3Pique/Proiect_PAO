@@ -81,7 +81,18 @@ public class MeciService {
                 String awayTeamName = scanner.nextLine();
                 System.out.print("Enter match date (YYYY-MM-DD): ");
                 String date = scanner.nextLine();
-                return databaseService.getMeci(homeTeamName, awayTeamName, date);
+                Echipa homeTeam = echipaRepositoryService.getEchipaByName(homeTeamName);
+                Echipa awayTeam = echipaRepositoryService.getEchipaByName(awayTeamName);
+                if (homeTeam == null) {
+                    System.out.println("Home team not found.");
+                    return null;
+                }
+                if (awayTeam == null) {
+                    System.out.println("Away team not found.");
+                    return null;
+                }
+                return databaseService.getMeci(homeTeam.getNume(), awayTeam.getNume(), date);
+
             case "id":
                 int id = scanner.nextInt();
                 scanner.nextLine();
@@ -100,7 +111,7 @@ public class MeciService {
     }
 
     public void viewAllMeci() throws SQLException {
-        System.out.println("MATChES:");
+        System.out.println("MATCHES:");
         databaseService.printAllMatches();
         System.out.println();
     }
@@ -109,7 +120,6 @@ public class MeciService {
         System.out.println("Updating a Match:");
         Meci existingMeci = searchMeci(scanner);
         if (existingMeci == null) {
-            System.out.println("Match not found.");
             return;
         }
         System.out.print("Enter new score for home team: ");
@@ -134,8 +144,6 @@ public class MeciService {
         if (meci != null) {
             databaseService.removeMeci(meci);
             FileManagement.scriereFisierChar(AUDIT_FILE, "stergere meci " + meci.getEchipa1().getNume() + " vs " + meci.getEchipa2().getNume());
-        } else {
-            System.out.println("Match not found.");
         }
     }
 }

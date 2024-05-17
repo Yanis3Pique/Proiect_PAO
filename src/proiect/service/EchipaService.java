@@ -32,21 +32,36 @@ public class EchipaService {
             nume = scanner.nextLine();
         } while (nume.length() < 3);
 
-        System.out.print("Enter coach's first and last name: ");
         Antrenor antrenor;
-        while(true) {
+        while (true) {
+            System.out.print("Enter coach's first and last name: ");
             String antrenorNume = scanner.nextLine();
             if (antrenorNume.split(" ").length == 2) {
-                antrenor = (Antrenor) antrenorRepositoryService.getAngajatByName(antrenorNume.split(" ")[0], antrenorNume.split(" ")[1]);
+                String firstName = antrenorNume.split(" ")[0];
+                String lastName = antrenorNume.split(" ")[1];
+                if (antrenorRepositoryService.getAngajatByName(firstName, lastName) instanceof Jucator) {
+                    System.out.println("Coach cannot be a player.");
+                    return;
+                }
+                antrenor = (Antrenor) antrenorRepositoryService.getAngajatByName(firstName, lastName);
+                if (antrenor == null) {
+                    System.out.println("Coach not found.");
+                    return;
+                }
                 break;
             } else {
-                System.out.println("Invalid input. Please make sure to include the first and a last name.");
+                System.out.println("Invalid input. Please make sure to include the first and last name.");
             }
         }
+
 
         System.out.print("Enter stadium name: ");
         String stadionNume = scanner.nextLine();
         Stadion stadion = stadionRepositoryService.getStadionByName(stadionNume);
+        if (stadion == null) {
+            System.out.println("Stadium not found.");
+            return;
+        }
 
         Echipa echipa = new Echipa(0, nume, antrenor, stadion);
 
@@ -80,6 +95,9 @@ public class EchipaService {
         Echipa echipa = searchEchipa(scanner);
         if (echipa != null) {
             System.out.println(echipa);
+        }
+        else {
+            System.out.println("Team not found.");
         }
     }
 

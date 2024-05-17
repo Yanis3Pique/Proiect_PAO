@@ -93,3 +93,12 @@ creare meci FC Bayern Munchen vs Gloria Buzau;2024-05-15T00:03:18.107115900adaug
 adaugare antrenor 12 12;2024-05-15T09:57:08.442467
 stergere angajat 12 12;2024-05-15T10:04:31.142934900
 adaugare jucator Sergio Busquets;2024-05-15T10:15:11.581813400
+adaugare antrenor Xavi Hernandez;2024-05-17T12:10:08.159408900
+adaugare jucator Lionel Messi;2024-05-17T12:10:42.119138700
+adaugare antrenor Xavi Hernandez;2024-05-17T12:16:04.593389200
+adaugare antrenor Lionel Scaloni;2024-05-17T12:16:29.121710900
+creare stadion Camp Nou;2024-05-17T12:19:17.958975900
+create team FC Barcelona;2024-05-17T12:19:30.032226
+adaugare jucator Sergio Busquets;2024-05-17T12:21:40.717110800
+update team FC Barcelona;2024-05-17T12:26:02.154221600
+Contract actualizat cu succes intre echipa FC Barcelona si sponsorul Nike;2024-05-17T12:32:21.931050300

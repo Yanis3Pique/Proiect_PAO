@@ -79,6 +79,9 @@ public class SponsorService {
         if (sponsor != null) {
             System.out.println(sponsor);
         }
+        else {
+            System.out.println("Sponsor not found.");
+        }
     }
 
     public void viewAllSponsors() throws SQLException {
@@ -91,6 +94,7 @@ public class SponsorService {
         System.out.println("Updating a Sponsor:");
         Sponsor existingSponsor = searchSponsor(scanner);
         if (existingSponsor == null) {
+            System.out.println("Sponsor not found.");
             return;
         }
         String newCountry = getNewSponsorCountry(scanner);

@@ -98,6 +98,9 @@ public class StadionService {
         if (stadion != null) {
             System.out.println(stadion);
         }
+        else {
+            System.out.println("Stadium not found.");
+        }
     }
 
     public void viewAllStadiums() throws SQLException {
@@ -110,6 +113,7 @@ public class StadionService {
         System.out.println("Updating a Stadium:");
         Stadion existingStadion = seachStadion(scanner);
         if (existingStadion == null) {
+            System.out.println("Stadium not found.");
             return;
         }
         int newCapacity = getNewStadiumCapacity(scanner);

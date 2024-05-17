@@ -1,8 +1,10 @@
 package proiect.service;
 
 import proiect.daoservices.AngajatRepositoryService;
+import proiect.daoservices.EchipaRepositoryService;
 import proiect.model.Angajat;
 import proiect.model.Antrenor;
+import proiect.model.Echipa;
 import proiect.model.Jucator;
 import proiect.utils.FileManagement;
 import proiect.utils.InvalidDataException;
@@ -14,12 +16,14 @@ import static proiect.utils.Constants.AUDIT_FILE;
 
 public class AngajatService {
     private AngajatRepositoryService databaseService;
+    private EchipaRepositoryService echipaService;
 
     public AngajatService() throws SQLException {
         this.databaseService = new AngajatRepositoryService();
+        this.echipaService = new EchipaRepositoryService();
     }
 
-    public void createAngajat(Scanner scanner) {
+    public void createAngajat(Scanner scanner) throws SQLException {
         System.out.println("Enter type of employee [coach/player]:");
         String typeOfAngajat = scanner.nextLine().toLowerCase();
         if (!typeOfAngajatValidation(typeOfAngajat)) { return; }
@@ -138,8 +142,8 @@ public class AngajatService {
             databaseService.removeAngajat(angajat);
             FileManagement.scriereFisierChar(AUDIT_FILE, "stergere angajat " + angajat.getPrenume() + " " + angajat.getNume());
             System.out.println("Employee deleted successfully.");
-        } catch (Exception e) {
-            System.out.println("Employee could not be deleted " + e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Employee not found.");
         }
     }
     private boolean typeOfAngajatValidation(String typeOfAngajat) {
@@ -150,7 +154,7 @@ public class AngajatService {
         return true;
     }
 
-    private void angajatInit(Scanner scanner, String typeOfAngajat) {
+    private void angajatInit(Scanner scanner, String typeOfAngajat) throws SQLException {
         System.out.println("Enter first name:");
         String firstName = scanner.nextLine();
         System.out.println("Enter last name:");
@@ -196,8 +200,12 @@ public class AngajatService {
             System.out.println("Enter team id:");
             int id_echipa = scanner.nextInt();
             scanner.nextLine();
+            Echipa echipa = echipaService.getEchipaById(id_echipa);
+            if (echipa == null) {
+                System.out.println("Team does not exist.");
+                return;
+            }
             Jucator jucator = new Jucator(0, 0, firstName, lastName, nationality, age, salary, id_echipa, position, number);
-            jucator.setPozitie(position);
             try {
                 databaseService.addAngajat(jucator);
                 FileManagement.scriereFisierChar(AUDIT_FILE, "adaugare jucator " + firstName + " " + lastName);
@@ -216,10 +224,19 @@ public class AngajatService {
             return;
         }
         Jucator jucator = (Jucator) angajat;
+        if (jucator == null) {
+            System.out.println("Player not found.");
+            return;
+        }
 
         System.out.println("Enter new team id:");
         int newTeamId = scanner.nextInt();
         scanner.nextLine();
+        Echipa echipa = echipaService.getEchipaById(newTeamId);
+        if (echipa == null) {
+            System.out.println("Team does not exist.");
+            return;
+        }
 
         jucator.setId_echipa(newTeamId);
         try {
